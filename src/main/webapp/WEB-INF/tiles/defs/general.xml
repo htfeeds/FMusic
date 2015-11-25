@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<definition name="layout.main" template="/WEB-INF/views/shared/layout/_MainLayout.jsp">
+		<put-attribute name="bodyClass" value="fmusic white-bg" />
+		<put-attribute name="header" value="/WEB-INF/views/shared/layout/_MainHeader.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/shared/layout/_MainFooter.jsp" />
+		<put-list-attribute name="stylesheets">
+			<add-attribute value="/static/css/bootstrap.min.css" />
+			<add-attribute value="/static/css/animate.css" />
+			<add-attribute value="/static/font-awesome/css/font-awesome.css" />
+			<add-attribute value="/static/css/plugins/iCheck/custom.css" />
+			<add-attribute value="/static/css/fmusic.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts">
+			<add-attribute value="/static/js/plugins/iCheck/icheck.min.js" />
+		</put-list-attribute>
+	</definition>
+
+	<definition name="home/index" extends="layout.main">
+		<put-attribute name="title" value="HomePage | FMusic" />
+		<put-attribute name="body" value="/WEB-INF/views/home/index.jsp" />
+		<put-attribute name="current" value="home" cascade="true" />
+	</definition>
+
+	<definition name="account/register" extends="layout.main">
+		<put-attribute name="bodyClass" value="fmusic gray-bg" />
+		<put-attribute name="title" value="Register  | FMusic" />
+		<put-attribute name="body" value="/WEB-INF/views/account/register.jsp" />
+		<put-attribute name="current" value="" cascade="true" />
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/validate/jquery.validate.min.js" />
+		</put-list-attribute>
+	</definition>
+
+	<definition name="account/login" extends="layout.main">
+		<put-attribute name="bodyClass" value="fmusic gray-bg" />
+		<put-attribute name="title" value="Login | FMusic" />
+		<put-attribute name="body" value="/WEB-INF/views/account/login.jsp" />
+		<put-attribute name="current" value="" cascade="true" />
+	</definition>
+
+</tiles-definitions>

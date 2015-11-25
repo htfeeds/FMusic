@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<definition name="layout.admin" template="/WEB-INF/views/shared/layout/_AdminLayout.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/shared/layout/_AdminHeader.jsp" />
+		<put-attribute name="leftmenu" value="/WEB-INF/views/shared/layout/_AdminLeftMenu.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/shared/layout/_AdminFooter.jsp" />
+		<put-list-attribute name="stylesheets">
+			<add-attribute value="/static/css/bootstrap.min.css" />
+			<add-attribute value="/static/font-awesome/css/font-awesome.css" />
+			<add-attribute value="/static/css/animate.css" />
+			<add-attribute value="/static/css/style.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts">
+			<add-attribute value="/static/js/plugins/metisMenu/jquery.metisMenu.js" />
+			<add-attribute value="/static/js/plugins/slimscroll/jquery.slimscroll.min.js" />
+			<add-attribute value="/static/js/inspinia.js" />
+			<add-attribute value="/static/js/plugins/pace/pace.min.js" />
+		</put-list-attribute>
+	</definition>
+
+	<definition name="admin/index" extends="layout.admin">
+		<put-attribute name="title" value="Dashboard | FMusic Administration" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/index.jsp" />
+		<put-attribute name="current" value="index" cascade="true" />
+	</definition>
+
+	<definition name="admin/user/list" extends="layout.admin">
+		<put-attribute name="title" value="Manage Users | FMusic Administration" />
+		<put-attribute name="current" value="user" cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/user/list.jsp" />
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="/static/css/plugins/sweetalert/sweetalert.css" />
+			<add-attribute value="/static/css/plugins/footable/footable.core.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/footable/footable.all.min.js" />
+			<add-attribute value="/static/js/plugins/sweetalert/sweetalert.min.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="admin/user/details" extends="layout.admin">
+		<put-attribute name="title" expression="User Details | FMusic Administration" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/user/details.jsp" />
+		<put-attribute name="current" value="user" cascade="true" />
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="/static/css/plugins/sweetalert/sweetalert.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/sweetalert/sweetalert.min.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="admin/user/create" extends="layout.admin">
+		<put-attribute name="title" expression="Add a new User | FMusic Administration" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/user/create.jsp" />
+		<put-attribute name="current" value="user" cascade="true" />
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="/static/css/plugins/datapicker/datepicker3.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/jquery-ui/jquery-ui.min.js" />
+			<add-attribute value="/static/js/plugins/validate/jquery.validate.min.js" />
+			<add-attribute value="/static/js/plugins/datapicker/bootstrap-datepicker.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="admin/user/edit" extends="layout.admin">
+		<put-attribute name="title" expression="Edit User details | FMusic Administration" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/user/edit.jsp" />
+		<put-attribute name="current" value="user" cascade="true" />
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="/static/css/plugins/datapicker/datepicker3.css" />
+			<add-attribute value="/static/css/plugins/sweetalert/sweetalert.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/jquery-ui/jquery-ui.min.js" />
+			<add-attribute value="/static/js/plugins/validate/jquery.validate.min.js" />
+			<add-attribute value="/static/js/plugins/datapicker/bootstrap-datepicker.js" />
+			<add-attribute value="/static/js/plugins/sweetalert/sweetalert.min.js" />
+		</put-list-attribute>
+	</definition>
+
+</tiles-definitions>

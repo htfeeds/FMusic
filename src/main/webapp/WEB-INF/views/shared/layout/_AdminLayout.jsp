@@ -1,0 +1,53 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<%@ include file="../taglib.jsp"%>
+
+<tiles:importAttribute name="stylesheets" />
+<tiles:importAttribute name="javascripts" />
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="EProject Sem 4 - Softech Aptech, Da Nang">
+    <meta name="author" content="HTFeeds">
+
+    <title>
+        <tiles:getAsString name="title" />
+    </title>
+
+    <c:forEach var="css" items="${stylesheets}">
+        <link rel="stylesheet" type="text/css" href="<c:url value="${css}"/>">
+    </c:forEach>
+
+    <script src="<c:url value="/static/js/jquery-2.1.1.js"/>"></script>
+    <script src="<c:url value="/static/js/bootstrap.min.js"/>"></script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <tiles:insertAttribute name="leftmenu" />
+
+        <div id="page-wrapper" class="gray-bg">
+            <tiles:insertAttribute name="header" />
+            <tiles:insertAttribute name="body" />
+            <tiles:insertAttribute name="footer" />
+        </div>
+
+    </div>
+
+    <%@ include file="../logout_form.jsp"%>
+
+	<c:forEach var="script" items="${javascripts}">
+		<script src="<c:url value="${script}"/>"></script>
+	</c:forEach>
+
+</body>
+
+</html>
