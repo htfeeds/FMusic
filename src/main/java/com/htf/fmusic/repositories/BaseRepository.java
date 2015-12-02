@@ -19,8 +19,10 @@ public interface BaseRepository<T, ID extends Serializable> extends Repository<T
 
     public T save(T persisted);
 
-    public void delete(ID id);
+    public void delete(T deleted);
 
     public long count();
+    
+    public void flush();
 
 }

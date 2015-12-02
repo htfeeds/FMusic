@@ -20,8 +20,6 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 
-import com.htf.fmusic.security.CustomLoginSuccessHandler;
-
 /**
  * @author HTFeeds
  */
@@ -37,8 +35,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Qualifier("customUserDetailsService")
 	UserDetailsService userDetailsService;
 
-	@Autowired
-	CustomLoginSuccessHandler loginSuccessHandler;
+	//@Autowired
+	//CustomLoginSuccessHandler loginSuccessHandler;
 	
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
@@ -53,10 +51,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers("/login").access("isAnonymous()")
         .antMatchers("/admin**").access("hasRole('ADMIN')")
         .antMatchers("/admin/**").access("hasRole('ADMIN')")
-        .and().formLogin().loginPage("/login").successHandler(loginSuccessHandler)
+        .and().formLogin().loginPage("/login")//.successHandler(loginSuccessHandler)
         .and().rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(864000)
         .and().logout().deleteCookies("JSESSIONID").logoutSuccessUrl("/")
-        //.and().csrf()
+        .and().csrf()
         .and().exceptionHandling().accessDeniedPage("/Access_Denied");
     }
 
@@ -66,7 +64,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         web
             .ignoring()
             .antMatchers("/static/**")
-            .antMatchers(HttpMethod.POST, "/rest/**");
+            .antMatchers(HttpMethod.POST, "/test/**")
+            .antMatchers(HttpMethod.POST, "/rest/**")
+            .antMatchers(HttpMethod.POST, "/admin/**");
     }
 
 	@Bean

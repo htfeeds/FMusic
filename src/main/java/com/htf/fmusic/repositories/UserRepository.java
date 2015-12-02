@@ -11,6 +11,4 @@ public interface UserRepository extends BaseRepository<User, Integer> {
 
     public User findByEmail(String email);
     
-    public void flush();
-
 }

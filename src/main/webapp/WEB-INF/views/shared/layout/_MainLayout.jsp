@@ -22,7 +22,7 @@
     </title>
 
     <c:forEach var="css" items="${stylesheets}">
-        <link rel="stylesheet" type="text/css" href="<c:url value=" ${css} "/>">
+        <link rel="stylesheet" type="text/css" href="<c:url value="${css}"/>">
     </c:forEach>
 
     <script src="<c:url value="/static/js/jquery-2.1.1.js"/>"></script>

@@ -10,7 +10,7 @@
 </style>
 
 <form:form id="userForm" method="POST" modelAttribute="user" enctype="multipart/form-data" class="form-horizontal">
-    <form:input type="hidden" path="id" />
+    <form:hidden path="id" />
 
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-8">
@@ -104,7 +104,10 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Avatar</label>
                                         <div class="col-sm-10">
-                                            <input type="file" id="image" name="image" class="form-control" />
+                                            <input type="file" id="image" name="image" class="form-control" accept="image/*"/>
+                                            <c:if test="${failed != null}">
+                                        		<span class="error"><c:out value="${failed}" /></span>
+                                        	</c:if>
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>

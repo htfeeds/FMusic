@@ -364,6 +364,7 @@ public final class User extends BaseEntity {
         this.birthDate = newBirthDate;
         this.phoneNumber = newPhoneNumber;
         this.sex = newSex;
+        this.state = newState;
         this.roles = newRoles;
     }
 

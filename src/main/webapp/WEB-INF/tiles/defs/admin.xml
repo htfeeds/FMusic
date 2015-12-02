@@ -41,7 +41,7 @@
 			<add-attribute value="/static/js/plugins/sweetalert/sweetalert.min.js" />
 		</put-list-attribute>
 	</definition>
-	
+
 	<definition name="admin/user/details" extends="layout.admin">
 		<put-attribute name="title" expression="User Details | FMusic Administration" />
 		<put-attribute name="body" value="/WEB-INF/views/admin/user/details.jsp" />
@@ -53,7 +53,7 @@
 			<add-attribute value="/static/js/plugins/sweetalert/sweetalert.min.js" />
 		</put-list-attribute>
 	</definition>
-	
+
 	<definition name="admin/user/create" extends="layout.admin">
 		<put-attribute name="title" expression="Add a new User | FMusic Administration" />
 		<put-attribute name="body" value="/WEB-INF/views/admin/user/create.jsp" />
@@ -67,7 +67,7 @@
 			<add-attribute value="/static/js/plugins/datapicker/bootstrap-datepicker.js" />
 		</put-list-attribute>
 	</definition>
-	
+
 	<definition name="admin/user/edit" extends="layout.admin">
 		<put-attribute name="title" expression="Edit User details | FMusic Administration" />
 		<put-attribute name="body" value="/WEB-INF/views/admin/user/edit.jsp" />

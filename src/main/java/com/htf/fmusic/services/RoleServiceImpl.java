@@ -43,7 +43,7 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     public void delete(Integer id) {
         LOGGER.info("Deleting a role entry with id: {}", id);
-        repository.delete(id);
+        
     }
 
     @Override

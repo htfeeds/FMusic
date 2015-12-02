@@ -34,25 +34,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public User create(User newUser) {
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        LOGGER.info("Creating a new user entry by using information: {}", newUser);
-
-        User created = repository.save(newUser);
-        LOGGER.info("Created a new user entry: {}", created);
-
-        return created;
-    }
-
-    @Override
-    @Transactional
-    public void delete(Integer id) {
-        LOGGER.info("Deleting a user entry with id: {}", id);
-        repository.delete(id);
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public List<User> findAll() {
         LOGGER.info("Finding all user entries.");
@@ -87,19 +68,47 @@ public class UserServiceImpl implements UserService {
         if (userEntry != null) {
             Hibernate.initialize(userEntry.getRoles());
         }
-        
+
         LOGGER.info("Found user entry: {}", userEntry);
 
         return userEntry;
     }
 
     @Override
+    @Transactional
+    public User create(User newUser) {
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        LOGGER.info("Creating a new user entry by using information: {}", newUser);
+
+        User created = repository.save(newUser);
+        LOGGER.info("Created a new user entry: {}", created);
+
+        return created;
+    }
+
+    @Override
+    @Transactional
+    public void delete(Integer id) {
+        LOGGER.info("Deleting a user entry with id: {}", id);
+        
+        User deleted = findUserEntryById(id);
+        LOGGER.debug("Found user entry: {}", deleted);
+        
+        repository.delete(deleted);
+        LOGGER.info("Deleted user entry: {}", deleted);
+    }
+
+    @Override
+    @Transactional
     public User update(User user) {
         LOGGER.info("Updating the information of a user entry by using information: {}", user);
 
         User updated = findUserEntryById(user.getId());
         updated.update(user.getFullname(), user.getEmail(), user.getBirthDate(), user.getPhoneNumber(), user.getSex(), user.getState(),
                 user.getRoles());
+
+        //We need to flush the changes or otherwise the returned object
+        //doesn't contain the updated audit information.
         repository.flush();
 
         LOGGER.info("Updated the information of the user entry: {}", updated);
@@ -107,15 +116,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User updateAvatar(Integer id, String newImageUrl) {
         User updated = findUserEntryById(id);
+        
+        updated.setImageUrl(newImageUrl);
+        repository.flush();
 
         return updated;
     }
 
     @Override
+    @Transactional
     public User updatePassword(Integer id, String newPassword) {
         User updated = findUserEntryById(id);
+        
         updated.setPassword(passwordEncoder.encode(newPassword));
         repository.flush();
 
@@ -136,4 +151,5 @@ public class UserServiceImpl implements UserService {
         Optional<User> userResult = repository.findOne(id);
         return userResult.orElseThrow(() -> new UserNotFoundException(id));
     }
+
 }

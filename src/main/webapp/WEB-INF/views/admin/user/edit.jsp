@@ -7,6 +7,16 @@
         display: inline-block;
         padding-left: 5px;
     }
+    .success {
+    	padding-top: 7px;
+    	margin-bottom: 0;
+    	color: #1ab394;
+    }
+    .failed {
+    	padding-top: 7px;
+    	margin-bottom: 0;
+    	color: #ed5565;
+    }
 </style>
 
 <div class="row wrapper border-bottom white-bg page-heading">
@@ -42,9 +52,31 @@
                     <div id="tab-1" class="tab-pane active">
                         <div class="panel-body">
 
-                            <form:form id="userForm" method="POST" modelAttribute="user" class="form-horizontal">
-                                <form:input type="hidden" path="id" />
+                            <form:form id="editUserForm" method="POST" modelAttribute="user" class="form-horizontal">
+                                <form:hidden path="id" />
+								<form:hidden path="password" />
+								<form:hidden path="imageUrl" />
+			                    
                                 <fieldset class="form-horizontal">
+                                	<div class="form-group">
+                                		<label class="col-lg-8">
+                                			<c:if test="${success != null}">
+                                				<p class="success">
+                                					<c:out value="${success}" />
+                                				</p>
+                                			</c:if>
+                                			<c:if test="${failed != null}">
+                                				<p class="failed">
+                                					<c:out value="${failed}" />
+                                				</p>
+                                			</c:if>
+                                		</label>
+                                    	<div class="col-lg-4" style="text-align: right">
+                                       		<input type="submit" name="save" class="btn btn-primary" value="Save and Continue" />
+                							<input type="submit" name="save" class="btn btn-success" value="Save" />
+                                    	</div>
+                                	</div>
+                                
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Fullname</label>
                                         <div class="col-sm-10">
@@ -57,7 +89,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Username</label>
                                         <div class="col-sm-10">
-                                            <form:input type="text" path="username" disabled="true" class="form-control" placeholder="Username" />
+                                            <form:input type="text" path="username" readonly="true" class="form-control" placeholder="Username" />
                                             <form:errors path="username" cssClass="error" />
                                         </div>
                                     </div>
@@ -122,16 +154,6 @@
                                             <form:errors path="roles" cssClass="error" />
                                         </div>
                                     </div>
-                                    <div class="hr-line-dashed"></div>
-                                    
-                                    <div class="form-group">
-                                    	<div class="col-sm-4 col-sm-offset-2">
-                                        	<a href="<spring:url value="list "/>" class="btn btn-white">Cancel</a>
-                                        	<input type="submit" name="save" class="btn btn-primary" value="Save and Continue" />
-                							<input type="submit" name="save" class="btn btn-success" value="Save" />
-                                    	</div>
-                                	</div>
-
                                 </fieldset>
                             </form:form>
 
@@ -146,10 +168,10 @@
                                 <input type="hidden" name="id" value="${user.id}" />
                                 <fieldset class="form-horizontal">
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">Avatar</label>
+                                        <label class="col-sm-2 control-label">New Image</label>
                                         <div class="col-sm-10">
                                             <div class="input-group">
-                                                <input type="file" id="newImage" name="newImage" class="form-control" />
+                                                <input type="file" id="newImage" name="newImage" class="form-control" accept="image/*"/>
                                                 <span class="input-group-btn" style="vertical-align:top">
             										<input type="submit" class="btn btn-primary" value="Change avatar"/>
 	            								</span>
@@ -165,7 +187,7 @@
                                 <input type="hidden" name="id" value="${user.id}" />
                                 <fieldset>
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">Password</label>
+                                        <label class="col-sm-2 control-label">New Password</label>
                                         <div class="col-sm-10">
                                             <div class="input-group">
                                                 <input type="text" id="newPassword" name="newPassword" placeholder="New password" class="form-control">
@@ -222,43 +244,15 @@
             format: "dd/mm/yyyy"
         });
 
-        $("#userForm").validate({
+        $("#editUserForm").validate({
             rules: {
                 fullname: {
                     required: true,
                     minlength: 6,
                 },
-                username: {
-                    required: true,
-                    minlength: 6,
-                    remote: {
-                        url: "<spring:url value='/check/username' />",
-                        type: "get",
-                        data: {
-                            username: function() {
-                                return $("#username").val();
-                            },
-                            id: function() {
-                                return $("#id").val();
-                            }
-                        }
-                    }
-                },
                 email: {
                     required: true,
-                    email: true,
-                    remote: {
-                        url: "<spring:url value='/check/email' />",
-                        type: "get",
-                        data: {
-                            username: function() {
-                                return $("#email").val();
-                            },
-                            id: function() {
-                                return $("#id").val();
-                            }
-                        }
-                    }
+                    email: true
                 },
                 birthDate: {
                     required: false,
@@ -287,7 +281,7 @@
         $("#avatarForm").validate({
             rules: {
             	newImage: {
-                    required: true
+                    required: true,
                 }
             }
         });
