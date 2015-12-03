@@ -29,24 +29,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    @Transactional
-    public Role create(Role newRole) {
-        LOGGER.info("Creating a new role entry by using information: {}", newRole);
-
-        Role created = repository.save(newRole);
-        LOGGER.info("Created a new role entry: {}", created);
-
-        return created;
-    }
-
-    @Override
-    @Transactional
-    public void delete(Integer id) {
-        LOGGER.info("Deleting a role entry with id: {}", id);
-        
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public List<Role> findAll() {
         LOGGER.info("Finding all role entries.");
@@ -68,18 +50,61 @@ public class RoleServiceImpl implements RoleService {
         return roleEntry;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Role findByType(String type) {
+        LOGGER.info("Finding role entry by using type: {}", type);
+
+        Role roleEntry = repository.findByType(type);
+        LOGGER.info("Found role entry: {}", roleEntry);
+
+        return roleEntry;
+    }
+
+    @Override
+    @Transactional
+    public Role create(Role newEntry) {
+        LOGGER.info("Creating a new role entry by using information: {}", newEntry);
+
+        Role created = repository.save(newEntry);
+        LOGGER.info("Created a new role entry: {}", created);
+
+        return created;
+    }
+
+    @Override
+    @Transactional
+    public void delete(Integer id) {
+        LOGGER.info("Deleting a role entry with id: {}", id);
+
+        Role deleted = findRoleEntryById(id);
+        LOGGER.debug("Found role entry: {}", deleted);
+
+        repository.delete(deleted);
+        LOGGER.info("Deleted user entry: {}");
+    }
+
+    @Override
+    @Transactional
+    public Role update(Role updatedEntry) {
+        LOGGER.info("Updating the information of a role entry by using information: {}", updatedEntry);
+
+        Role updated = findRoleEntryById(updatedEntry.getId());
+        updated.update(updatedEntry.getType(), updatedEntry.getDescription());
+
+        repository.flush();
+
+        LOGGER.info("Updated the information of the role entry: {}", updated);
+        return updated;
+    }
+
+    public boolean isTypeUnique(String type) {
+        return (repository.findByType(type) == null);
+    }
+
     private Role findRoleEntryById(Integer id) {
         Optional<Role> roleResult = repository.findOne(id);
         return roleResult.orElseThrow(() -> new RoleNotFoundException(id));
     }
 
-    @Override
-    public Role findByType(String roleType) {
-        LOGGER.info("Finding role entry by using type: {}", roleType);
-
-        Role roleEntry = repository.findByType(roleType);
-        LOGGER.info("Found role entry: {}", roleEntry);
-
-        return roleEntry;
-    }
 }

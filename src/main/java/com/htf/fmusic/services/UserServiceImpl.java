@@ -76,11 +76,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User create(User newUser) {
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        LOGGER.info("Creating a new user entry by using information: {}", newUser);
+    public User create(User newEntry) {
+        newEntry.setPassword(passwordEncoder.encode(newEntry.getPassword()));
+        LOGGER.info("Creating a new user entry by using information: {}", newEntry);
 
-        User created = repository.save(newUser);
+        User created = repository.save(newEntry);
         LOGGER.info("Created a new user entry: {}", created);
 
         return created;
@@ -90,22 +90,22 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void delete(Integer id) {
         LOGGER.info("Deleting a user entry with id: {}", id);
-        
+
         User deleted = findUserEntryById(id);
         LOGGER.debug("Found user entry: {}", deleted);
-        
+
         repository.delete(deleted);
         LOGGER.info("Deleted user entry: {}", deleted);
     }
 
     @Override
     @Transactional
-    public User update(User user) {
-        LOGGER.info("Updating the information of a user entry by using information: {}", user);
+    public User update(User updatedEntry) {
+        LOGGER.info("Updating the information of a user entry by using information: {}", updatedEntry);
 
-        User updated = findUserEntryById(user.getId());
-        updated.update(user.getFullname(), user.getEmail(), user.getBirthDate(), user.getPhoneNumber(), user.getSex(), user.getState(),
-                user.getRoles());
+        User updated = findUserEntryById(updatedEntry.getId());
+        updated.update(updatedEntry.getFullname(), updatedEntry.getEmail(), updatedEntry.getBirthDate(), updatedEntry.getPhoneNumber(),
+                updatedEntry.getSex(), updatedEntry.getState(), updatedEntry.getRoles());
 
         //We need to flush the changes or otherwise the returned object
         //doesn't contain the updated audit information.
@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User updateAvatar(Integer id, String newImageUrl) {
         User updated = findUserEntryById(id);
-        
+
         updated.setImageUrl(newImageUrl);
         repository.flush();
 
@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User updatePassword(Integer id, String newPassword) {
         User updated = findUserEntryById(id);
-        
+
         updated.setPassword(passwordEncoder.encode(newPassword));
         repository.flush();
 

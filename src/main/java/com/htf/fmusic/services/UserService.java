@@ -7,7 +7,7 @@ import com.htf.fmusic.models.User;
  */
 public interface UserService extends BaseService<User, Integer> {
 
-    public User update(User user);
+    public User update(User updatedEntry);
 
     public User updateAvatar(Integer id, String newImageUrl);
 

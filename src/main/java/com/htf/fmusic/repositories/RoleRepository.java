@@ -7,6 +7,6 @@ import com.htf.fmusic.models.Role;
  */
 public interface RoleRepository extends BaseRepository<Role, Integer> {
 
-    public Role findByType(String roleType);
+    public Role findByType(String type);
 
 }

@@ -1,7 +1,5 @@
 package com.htf.fmusic.models;
 
-import com.htf.fmusic.enums.RoleType;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,8 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @author HTFeeds
@@ -22,63 +22,81 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 @Table(name = "roles")
 public final class Role extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(name = "type", length = MAX_LENGTH_ROLE, unique = true, nullable = false)
-	private String type = RoleType.USER.getRoleType();
+    @NotEmpty
+    @Size(max = MAX_LENGTH_ROLE)
+    @Column(name = "type", length = MAX_LENGTH_ROLE, unique = true, nullable = false)
+    private String type;
 
-	@ManyToMany(mappedBy = "roles")
-	private Set<User> users = new HashSet<User>();
+    @Column(name = "description", nullable = true)
+    private String description;
 
-	public Integer getId() {
-		return id;
-	}
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users = new HashSet<User>();
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public Set<User> getUsers() {
-		return users;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setUsers(Set<User> users) {
-		this.users = users;
-	}
+    public Set<User> getUsers() {
+        return users;
+    }
 
-	@Override
-	public int hashCode() {
-		int hash = 0;
-		hash += (id != null ? id.hashCode() : 0);
-		return hash;
-	}
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 
-	@Override
-	public boolean equals(Object object) {
-		if (!(object instanceof Role)) {
-			return false;
-		}
-		Role other = (Role) object;
-		if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-			return false;
-		}
-		return true;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).append("id", this.id).append("type", this.type).toString();
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void update(String newType, String newDescription) {
+        this.type = newType;
+        this.description = newDescription;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Role)) {
+            return false;
+        }
+        Role other = (Role) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", this.id).append("type", this.type).append("description", this.description).toString();
+    }
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.ServletContext;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -41,7 +42,8 @@ public class UserManagementController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserManagementController.class);
 
-    private static final String AVATAR_LOCATION = "E:/Upload/";
+    private final String ABSTRACT_PATH;
+    private final String DIRECTORY;
 
     private final UserService userService;
 
@@ -51,9 +53,11 @@ public class UserManagementController {
     MessageSource messageSource;
 
     @Autowired
-    UserManagementController(UserService userService, RoleService roleService) {
+    UserManagementController(UserService userService, RoleService roleService, ServletContext servletContext) {
         this.userService = userService;
         this.roleService = roleService;
+        this.ABSTRACT_PATH = "/static/img/user/";
+        this.DIRECTORY = servletContext.getRealPath(ABSTRACT_PATH) + "/";
     }
 
     //-------------------Retrieve All Users----------------------------------------------------
@@ -101,8 +105,9 @@ public class UserManagementController {
         }
 
         if (!image.isEmpty()) {
-            //validate file filter
-            user.setImageUrl(FmusicFunctions.uploadImage(image, AVATAR_LOCATION));
+            String uploaded = FmusicFunctions.uploadImage(image, DIRECTORY);
+            String imageUrl = ABSTRACT_PATH + uploaded;
+            user.setImageUrl(imageUrl);
         }
 
         LOGGER.info("Nothing wrong with this user {}", user);
@@ -113,10 +118,10 @@ public class UserManagementController {
             redirectAttributes.addFlashAttribute("success", "The user has been created successfully.");
             model.asMap().clear();
             return "redirect:edit-" + u.getId();
-        } else {
-            model.asMap().clear();
-            return "redirect:list";
         }
+
+        model.asMap().clear();
+        return "redirect:list";
     }
 
     //------------------- Update a User --------------------------------------------------------
@@ -149,10 +154,10 @@ public class UserManagementController {
             redirectAttributes.addFlashAttribute("success", "This user has been changed successfully.");
             model.asMap().clear();
             return "redirect:edit-" + user.getId();
-        } else {
-            model.asMap().clear();
-            return "redirect:list";
         }
+
+        model.asMap().clear();
+        return "redirect:list";
     }
 
     //------------------- Update User Image ----------------------------------------------------
@@ -171,8 +176,9 @@ public class UserManagementController {
         }
 
         //validate file filter
-        String newImageUrl = FmusicFunctions.uploadImage(newImage, AVATAR_LOCATION);
-        userService.updateAvatar(id, newImageUrl);
+        String uploaded = FmusicFunctions.uploadImage(newImage, DIRECTORY);
+        String imageUrl = ABSTRACT_PATH + uploaded;
+        userService.updateAvatar(id, imageUrl);
 
         redirectAttributes.addFlashAttribute("success", "The avatar has been changed successfully.");
         model.asMap().clear();

@@ -3,16 +3,16 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
-        <h2>User Management</h2>
+        <h2>UserRole Management</h2>
         <ol class="breadcrumb">
             <li><a href="<spring:url value="/admin/"/>">Home</a></li>
-            <li><a href="<spring:url value="/admin/user/"/>">User Management</a></li>
+            <li><a href="<spring:url value="/admin/role/"/>">UserRole Management</a></li>
             <li class="active"><strong>List</strong></li>
         </ol>
     </div>
     <div class="col-lg-2">
         <div class="title-action">
-            <a href="<c:url value='create' />" class="btn btn-primary ">Add a new User</a>
+            <a href="<c:url value='create' />" class="btn btn-primary ">Add a new Role</a>
         </div>
     </div>
 </div>
@@ -29,57 +29,34 @@
                             <tr>
 
                                 <th>ID</th>
-                                <th data-hide="phone">Username</th>
-                                <th data-hide="phone">Fullname</th>
-                                <th data-hide="phone">Email</th>
+                                <th data-hide="phone">Type</th>
                                 <th data-hide="phone">Date added</th>
-                                <th data-hide="phone">Status</th>
-                                <th data-hide="phone,tablet">Phone number</th>
-                                <th data-hide="phone,tablet">Date modified</th>
+                                <th data-hide="phone">Date modified</th>
+                                <th data-hide="phone,tablet">Description</th>
                                 <th class="text-right">Action</th>
 
                             </tr>
                         </thead>
                         <tbody>
 
-                            <c:forEach items="${users}" var="user">
+                            <c:forEach items="${roles}" var="role">
                                 <tr>
-                                    <td>${user.id}</td>
+                                    <td>${role.id}</td>
                                     <td>
-                                        <c:out value="${user.username}" />
+                                        <c:out value="${role.type}" />
                                     </td>
                                     <td>
-                                        <c:out value="${user.fullname}" />
+                                        <fmt:formatDate type="date" value="${role.creationTime}" />
                                     </td>
                                     <td>
-                                        <c:out value="${user.email}" />
+                                        <fmt:formatDate type="date" value="${role.modificationTime}" />
                                     </td>
                                     <td>
-                                        <fmt:formatDate type="date" value="${user.creationTime}" />
-                                    </td>
-                                    <td>
-                                        <c:if test="${user.state eq 'Active'}">
-                                            <span class="label label-primary">${user.state}</span>
-                                        </c:if>
-                                        <c:if test="${user.state eq 'Inactive'}">
-                                            <span class="label label-info">${user.state}</span>
-                                        </c:if>
-                                        <c:if test="${user.state eq 'Deleted'}">
-                                            <span class="label label-danger">${user.state}</span>
-                                        </c:if>
-                                        <c:if test="${user.state eq 'Locked'}">
-                                            <span class="label label-warning">${user.state}</span>
-                                        </c:if>
-                                    </td>
-                                    <td>
-                                        <c:out value="${user.phoneNumber}" />
-                                    </td>
-                                    <td>
-                                        <fmt:formatDate type="date" value="${user.modificationTime}" />
+                                        <c:out value="${role.description}" />
                                     </td>
                                     <td class="text-right">
                                         <div class="btn-group">
-                                            <a href="<c:url value='details-${user.id}' />" class="btn-white btn btn-xs">View</a> <a href="<c:url value='edit-${user.id}' />" class="btn-white btn btn-xs">Edit</a> <a href="<c:url value='delete-${user.id}' />" class="btn-white btn btn-xs delete-user">Delete</a>
+                                            <a href="<c:url value='details-${role.id}' />" class="btn-white btn btn-xs">View</a> <a href="<c:url value='edit-${role.id}' />" class="btn-white btn btn-xs">Edit</a> <a href="<c:url value='delete-${role.id}' />" class="btn-white btn btn-xs delete-role">Delete</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -106,13 +83,13 @@
 <script>
 $(document).ready(function() {
 	$('.footable').footable();
-    $('.delete-user').click(
+    $('.delete-role').click(
         function(e) {
             e.preventDefault();
             var href = $(this).attr("href");
             swal({
                     title: "Are you sure?",
-                    text: "You will not be able to recover this user!",
+                    text: "You will not be able to recover this Role!",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#DD6B55",

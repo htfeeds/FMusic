@@ -84,4 +84,54 @@
 		</put-list-attribute>
 	</definition>
 
+	<definition name="admin/role/list" extends="layout.admin">
+		<put-attribute name="title" value="Manage UserRoles | FMusic Administration" />
+		<put-attribute name="current" value="role" cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/role/list.jsp" />
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="/static/css/plugins/sweetalert/sweetalert.css" />
+			<add-attribute value="/static/css/plugins/footable/footable.core.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/footable/footable.all.min.js" />
+			<add-attribute value="/static/js/plugins/sweetalert/sweetalert.min.js" />
+		</put-list-attribute>
+	</definition>
+
+	<definition name="admin/role/details" extends="layout.admin">
+		<put-attribute name="title" expression="Role Details | FMusic Administration" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/role/details.jsp" />
+		<put-attribute name="current" value="role" cascade="true" />
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="/static/css/plugins/sweetalert/sweetalert.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/sweetalert/sweetalert.min.js" />
+		</put-list-attribute>
+	</definition>
+
+	<definition name="admin/role/create" extends="layout.admin">
+		<put-attribute name="title" expression="Add a new Role | FMusic Administration" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/role/create.jsp" />
+		<put-attribute name="current" value="role" cascade="true" />
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/jquery-ui/jquery-ui.min.js" />
+			<add-attribute value="/static/js/plugins/validate/jquery.validate.min.js" />
+		</put-list-attribute>
+	</definition>
+
+	<definition name="admin/role/edit" extends="layout.admin">
+		<put-attribute name="title" expression="Edit Role details | FMusic Administration" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/role/edit.jsp" />
+		<put-attribute name="current" value="role" cascade="true" />
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="/static/css/plugins/sweetalert/sweetalert.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/jquery-ui/jquery-ui.min.js" />
+			<add-attribute value="/static/js/plugins/validate/jquery.validate.min.js" />
+			<add-attribute value="/static/js/plugins/sweetalert/sweetalert.min.js" />
+		</put-list-attribute>
+	</definition>
+
 </tiles-definitions>

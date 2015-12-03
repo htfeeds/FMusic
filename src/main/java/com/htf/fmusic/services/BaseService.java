@@ -14,7 +14,7 @@ public interface BaseService<T, ID extends Serializable> {
 
     public T findById(ID id);
 
-    public T create(T newEntity);
+    public T create(T newEntry);
 
     @PreAuthorize("hasRole('ADMIN') AND hasRole('DBA')")
     public void delete(ID id);
