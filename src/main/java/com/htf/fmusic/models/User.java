@@ -74,7 +74,7 @@ public final class User extends BaseEntity {
 
     @JsonView(Views.ExtendedPublic.class)
     @PhoneNumber
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable = true)
     private String phoneNumber;
 
     @JsonView(Views.ExtendedPublic.class)

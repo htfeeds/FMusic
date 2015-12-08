@@ -22,111 +22,130 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Table(name = "playlists")
 public final class Playlist extends BaseEntity {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@NotEmpty
-	@Column(name = "name", nullable = false)
-	private String name;
+    @NotEmpty
+    @Column(name = "name", nullable = false)
+    private String name;
 
-	@Column(name = "total_views")
-	private Integer totalViews;
+    @Column(name = "total_views")
+    private Integer totalViews;
 
-	@ManyToOne
-	@JoinColumn(name = "artist_id")
-	private Artist artist;
+    @Column(name = "image_url")
+    private String imageUrl;
 
-	@ManyToOne
-	@JoinColumn(name = "genre_id")
-	private Genre genre;
+    @ManyToOne
+    @JoinColumn(name = "artist_id")
+    private Artist artist;
 
-	@ManyToOne
-	@JoinColumn(name = "playlist_type_id")
-	private PlaylistType playlistType;
+    @ManyToOne
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
 
-	@ManyToMany(mappedBy = "playlists")
-	private Set<Song> songs = new HashSet<Song>();
+    @ManyToOne
+    @JoinColumn(name = "playlist_type_id")
+    private PlaylistType playlistType;
 
-	public Integer getId() {
-		return id;
-	}
+    @ManyToMany(mappedBy = "playlists")
+    private Set<Song> songs = new HashSet<Song>();
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Integer getTotalViews() {
-		return totalViews;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setTotalViews(Integer totalViews) {
-		this.totalViews = totalViews;
-	}
+    public Integer getTotalViews() {
+        return totalViews;
+    }
 
-	public Artist getArtist() {
-		return artist;
-	}
+    public void setTotalViews(Integer totalViews) {
+        this.totalViews = totalViews;
+    }
 
-	public void setArtist(Artist artist) {
-		this.artist = artist;
-	}
+    public Artist getArtist() {
+        return artist;
+    }
 
-	public Genre getGenre() {
-		return genre;
-	}
+    public void setArtist(Artist artist) {
+        this.artist = artist;
+    }
 
-	public void setGenre(Genre genre) {
-		this.genre = genre;
-	}
+    public Genre getGenre() {
+        return genre;
+    }
 
-	public PlaylistType getPlaylistType() {
-		return playlistType;
-	}
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
 
-	public void setPlaylistType(PlaylistType playlistType) {
-		this.playlistType = playlistType;
-	}
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
-	public Set<Song> getSongs() {
-		return songs;
-	}
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
-	public void setSongs(Set<Song> songs) {
-		this.songs = songs;
-	}
+    public PlaylistType getPlaylistType() {
+        return playlistType;
+    }
 
-	@Override
-	public int hashCode() {
-		int hash = 0;
-		hash += (id != null ? id.hashCode() : 0);
-		return hash;
-	}
+    public void setPlaylistType(PlaylistType playlistType) {
+        this.playlistType = playlistType;
+    }
 
-	@Override
-	public boolean equals(Object object) {
-		if (!(object instanceof Playlist)) {
-			return false;
-		}
-		Playlist other = (Playlist) object;
-		if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-			return false;
-		}
-		return true;
-	}
+    public Set<Song> getSongs() {
+        return songs;
+    }
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).append("id", this.id).append("name", this.name).append("totalViews", this.totalViews).toString();
-	}
+    public void setSongs(Set<Song> songs) {
+        this.songs = songs;
+    }
+
+    public void update(String newName, Integer newTotalViews, Artist newArtist, Genre newGenre, PlaylistType newPlaylistType) {
+        this.name = newName;
+        this.totalViews = newTotalViews;
+        this.artist = newArtist;
+        this.genre = newGenre;
+        this.playlistType = newPlaylistType;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Playlist)) {
+            return false;
+        }
+        Playlist other = (Playlist) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", this.id).append("name", this.name).append("totalViews", this.totalViews).toString();
+    }
 }

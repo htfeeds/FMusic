@@ -3,18 +3,18 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8">
-        <h2>User Details</h2>
+        <h2>Role Details</h2>
         <ol class="breadcrumb">
             <li><a href="<spring:url value="/admin/"/>">Home</a></li>
-            <li><a href="<spring:url value="/admin/user/"/>">User Management</a></li>
-            <li class="active"><strong>User details</strong></li>
+            <li><a href="<spring:url value="/admin/role/"/>">Role Management</a></li>
+            <li class="active"><strong>Role details</strong></li>
         </ol>
     </div>
     <div class="col-lg-4">
         <div class="title-action">
             <a href="<spring:url value="list"/>" class="btn btn-white">Go back</a>
-            <a href="<spring:url value="edit-${user.id}"/>" class="btn btn-warning">Edit</a>
-            <a href="<spring:url value="delete-${user.id}"/>" class="btn btn-danger delete-user">Delete</a>
+            <a href="<spring:url value="edit-${role.id}"/>" class="btn btn-warning">Edit</a>
+            <a href="<spring:url value="delete-${role.id}"/>" class="btn btn-danger delete-role">Delete</a>
         </div>
     </div>
 </div>
@@ -25,7 +25,7 @@
         <div class="col-lg-12">
             <div class="tabs-container">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab-1">User Info</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab-1">Role Info</a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
@@ -37,99 +37,25 @@
                                     <label class="col-lg-2 control-label">Id</label>
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
-                                            <c:out value="${user.id}" />
+                                            <c:out value="${role.id}" />
                                         </p>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-lg-2 control-label">Fullname</label>
+                                    <label class="col-lg-2 control-label">Type</label>
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
-                                            <c:out value="${user.fullname}" />
+                                            <c:out value="${role.type}" />
                                         </p>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-lg-2 control-label">Username</label>
+                                    <label class="col-lg-2 control-label">Description</label>
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
-                                            <c:out value="${user.username}" />
-                                        </p>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">Password</label>
-                                    <div class="col-lg-10">
-                                        <p class="form-control-static">
-                                            <c:out value="${user.password}" />
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">Email</label>
-                                    <div class="col-lg-10">
-                                        <p class="form-control-static">
-                                            <c:out value="${user.email}" />
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">Phone Number</label>
-                                    <div class="col-lg-10">
-                                        <p class="form-control-static">
-                                            <c:out value="${user.phoneNumber}" />
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">Birthday</label>
-                                    <div class="col-lg-10">
-                                        <p class="form-control-static">
-                                            <fmt:formatDate type="date" value="${user.birthDate}" />
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">Gender</label>
-                                    <div class="col-lg-10">
-                                        <p class="form-control-static">
-                                            <c:out value="${user.sex}" />
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">ImageUrl</label>
-                                    <div class="col-lg-10">
-                                        <p class="form-control-static">
-                                            <c:out value="${user.imageUrl}" />
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">State</label>
-                                    <div class="col-lg-10">
-                                        <p class="form-control-static">
-                                            <c:out value="${user.state}" />
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">Roles</label>
-                                    <div class="col-lg-10">
-                                        <p class="form-control-static">
-                                            <c:forEach items="${user.roles}" var="role">
-                                                <c:out value="${role.type}, "></c:out>
-                                            </c:forEach>
+                                            <c:out value="${role.description}" />
                                         </p>
                                     </div>
                                 </div>
@@ -138,7 +64,7 @@
                                     <label class="col-lg-2 control-label">Date added</label>
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
-                                            <fmt:formatDate type="both" value="${user.creationTime}" />
+                                            <fmt:formatDate type="both" value="${role.creationTime}" />
                                         </p>
                                     </div>
                                 </div>
@@ -147,11 +73,11 @@
                                     <label class="col-lg-2 control-label">Date modified</label>
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
-                                            <fmt:formatDate type="both" value="${user.modificationTime}" />
+                                            <fmt:formatDate type="both" value="${role.modificationTime}" />
                                         </p>
                                     </div>
                                 </div>
-
+                                
                             </fieldset>
                             
                         </div>
@@ -166,12 +92,12 @@
 
 <script>
 $(document).ready(function() {
-	$('.delete-user').click(function(e) {
+	$('.delete-role').click(function(e) {
 	    e.preventDefault();
 	    var href = $(this).attr("href");
 	    swal({
 	            title: "Are you sure?",
-	            text: "You will not be able to recover this user!",
+	            text: "You will not be able to recover this role!",
 	            type: "warning",
 	            showCancelButton: true,
 	            confirmButtonColor: "#DD6B55",
@@ -179,12 +105,13 @@ $(document).ready(function() {
 	            closeOnConfirm: false
 	        },
 	        function() {
-	            window.location.href = href;
-	            swal(
-	                "Deleted!",
-	                "Your imaginary file has been deleted.",
-	                "success");
-	        });
+            	$.get(href,function(){
+                	swal("Deleted!", "Role has been deleted.", "success");
+                	window.location.href = "list";
+            	}).fail(function(){
+            		swal("Error", "Role could not be deleted", "error");
+            	});
+            });
 	});
 });
 </script>

@@ -23,10 +23,8 @@ public class FmusicFunctions {
             new File(location).mkdir();
         }
 
-        //Full path of file will be created
-        String fileName = file.getOriginalFilename();
-
         //Split file name and it's extension.
+		String fileName = file.getOriginalFilename();
         String extension = "";
         int pos = fileName.lastIndexOf(".");
         if (pos > 0) {

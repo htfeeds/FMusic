@@ -21,18 +21,18 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8">
-        <h2>Edit User details</h2>
+        <h2>Edit Role details</h2>
         <ol class="breadcrumb">
             <li><a href="<spring:url value="/admin/"/>">Home</a></li>
-            <li><a href="<spring:url value="/admin/user/"/>">User Management</a></li>
-            <li class="active"><strong>User edit</strong></li>
+            <li><a href="<spring:url value="/admin/role/"/>">Role Management</a></li>
+            <li class="active"><strong>Role edit</strong></li>
         </ol>
     </div>
     <div class="col-lg-4">
         <div class="title-action">
             <a href="<spring:url value="list "/>" class="btn btn-white">Go Back</a>
-            <a href="<spring:url value="details-${user.id}"/>" class="btn btn-info">View Details</a>
-            <a href="<spring:url value="delete-${user.id}"/>" class="btn btn-danger delete-user">Delete</a>
+            <a href="<spring:url value="details-${role.id}"/>" class="btn btn-info">View Details</a>
+            <a href="<spring:url value="delete-${role.id}"/>" class="btn btn-danger delete-role">Delete</a>
         </div>
     </div>
 </div>
@@ -43,8 +43,7 @@
         <div class="col-lg-12">
             <div class="tabs-container">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab-1">User Info</a></li>
-                    <li class=""><a data-toggle="tab" href="#tab-2">Advanced</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab-1">Role Info</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -52,10 +51,8 @@
                     <div id="tab-1" class="tab-pane active">
                         <div class="panel-body">
 
-                            <form:form id="editUserForm" method="POST" modelAttribute="user" class="form-horizontal">
+                            <form:form id="editRoleForm" method="POST" modelAttribute="role" class="form-horizontal">
                                 <form:hidden path="id" />
-								<form:hidden path="password" />
-								<form:hidden path="imageUrl" />
 			                    
                                 <fieldset class="form-horizontal">
                                 	<div class="form-group">
@@ -78,131 +75,28 @@
                                 	</div>
                                 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">Fullname</label>
+                                        <label class="col-sm-2 control-label">Type</label>
                                         <div class="col-sm-10">
-                                            <form:input type="text" path="fullname" class="form-control" placeholder="Fullname" />
-                                            <form:errors path="fullname" cssClass="error" />
+                                            <form:input type="text" path="type" class="form-control" placeholder="Role name" />
+                                            <form:errors path="type" cssClass="error" />
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">Username</label>
+                                        <label class="col-sm-2 control-label">Description</label>
                                         <div class="col-sm-10">
-                                            <form:input type="text" path="username" readonly="true" class="form-control" placeholder="Username" />
-                                            <form:errors path="username" cssClass="error" />
+                                            <form:input type="text" path="description" class="form-control" placeholder="Description" />
+                                            <form:errors path="description" cssClass="error" />
                                         </div>
                                     </div>
-                                    <div class="hr-line-dashed"></div>
 
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Email</label>
-                                        <div class="col-sm-10">
-                                            <form:input type="email" path="email" class="form-control" placeholder="Email" />
-                                            <form:errors path="email" cssClass="error" />
-                                        </div>
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Phone number</label>
-                                        <div class="col-sm-10">
-                                            <form:input type="text" path="phoneNumber" class="form-control" placeholder="Phone number" />
-                                            <form:errors path="phoneNumber" cssClass="error" />
-                                        </div>
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
-
-                                    <div class="form-group" id="birth_date">
-                                        <label class="col-sm-2 control-label">Birthday</label>
-                                        <div class="col-sm-10 input-group date" style="padding-right:15px;padding-left:15px;">
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                            <form:input type="text" path="birthDate" class="form-control" />
-                                        </div>
-                                        <form:errors path="birthDate" cssClass="error col-md-10 col-md-offset-2" cssStyle="padding-left:20px" />
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Gender</label>
-                                        <div class="col-sm-10">
-                                            <div class="checkbox-inline i-checks">
-                                                <label>
-                                                    <form:radiobutton path="sex" value="Male" /> <i></i> Male </label>
-                                            </div>
-                                            <div class="checkbox-inline i-checks">
-                                                <label>
-                                                    <form:radiobutton path="sex" value="Female" /> <i></i> Female </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">State</label>
-                                        <div class="col-lg-4">
-                                            <form:select path="state" items="${states}" class="form-control" />
-                                            <form:errors path="state" cssClass="error" />
-                                        </div>
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Roles</label>
-                                        <div class="col-lg-4">
-                                            <form:select path="roles" items="${roles}" multiple="true" itemValue="id" itemLabel="type" class="form-control" />
-                                            <form:errors path="roles" cssClass="error" />
-                                        </div>
-                                    </div>
                                 </fieldset>
                             </form:form>
 
                         </div>
                     </div>
 
-
-                    <div id="tab-2" class="tab-pane">
-                        <div class="panel-body">
-
-                            <form:form id="avatarForm" action="update-avatar-${user.id}" method="POST" enctype="multipart/form-data" class="form-horizontal">
-                                <input type="hidden" name="id" value="${user.id}" />
-                                <fieldset class="form-horizontal">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">New Image</label>
-                                        <div class="col-sm-10">
-                                            <div class="input-group">
-                                                <input type="file" id="newImage" name="newImage" class="form-control" accept="image/*"/>
-                                                <span class="input-group-btn" style="vertical-align:top">
-            										<input type="submit" class="btn btn-primary" value="Change avatar"/>
-	            								</span>
-                                                <!-- Validate -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
-                                </fieldset>
-                            </form:form>
-
-                            <form:form id="passwordForm" action="update-password-${user.id}" method="POST" class="form-horizontal">
-                                <input type="hidden" name="id" value="${user.id}" />
-                                <fieldset>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">New Password</label>
-                                        <div class="col-sm-10">
-                                            <div class="input-group">
-                                                <input type="text" id="newPassword" name="newPassword" placeholder="New password" class="form-control">
-                                                <span class="input-group-btn" style="vertical-align:top">
-													<input type="submit" class="btn btn-primary" value="Change password"/>
-		            							</span>
-                                                <!-- Validate -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </form:form>
-                            
-                        </div>
-                    </div>
 
                 </div>
 
@@ -214,12 +108,12 @@
 
 <script>
     $(document).ready(function() {
-    	$('.delete-user').click(function(e) {
+    	$('.delete-role').click(function(e) {
     	    e.preventDefault();
     	    var href = $(this).attr("href");
     	    swal({
     	            title: "Are you sure?",
-    	            text: "You will not be able to recover this user!",
+    	            text: "You will not be able to recover this role!",
     	            type: "warning",
     	            showCancelButton: true,
     	            confirmButtonColor: "#DD6B55",
@@ -227,61 +121,23 @@
     	            closeOnConfirm: false
     	        },
     	        function() {
-    	            window.location.href = href;
-    	            swal(
-    	                "Deleted!",
-    	                "Your imaginary file has been deleted.",
-    	                "success");
-    	        });
+                	$.get(href,function(){
+                    	swal("Deleted!", "Role has been deleted.", "success");
+                    	window.location.href = "list";
+                	}).fail(function(){
+                		swal("Error", "Role could not be deleted", "error");
+                	});
+                });
     	});
 
-        $('#birth_date .input-group.date').datepicker({
-            startView: 1,
-            todayBtn: "linked",
-            keyboardNavigation: false,
-            forceParse: false,
-            autoclose: true,
-            format: "dd/mm/yyyy"
-        });
-
-        $("#editUserForm").validate({
+        $("#editRoleForm").validate({
             rules: {
-                fullname: {
+                type: {
                     required: true,
-                    minlength: 6,
+                    maxlength: 15
                 },
-                email: {
-                    required: true,
-                    email: true
-                },
-                birthDate: {
-                    required: false,
-                },
-                phoneNumber: {
-                    required: false,
-                    number: true,
-                    minlength: 10,
-                    maxlength: 12
-                },
-                state: {
-                    required: true
-                }
-            }
-        });
-        
-        $("#passwordForm").validate({
-            rules: {
-                newPassword: {
-                    required: true,
-                    minlength: 6
-                }
-            }
-        });
-        
-        $("#avatarForm").validate({
-            rules: {
-            	newImage: {
-                    required: true,
+                description: {
+                    required: false
                 }
             }
         });

@@ -127,8 +127,8 @@
                                     <label class="col-lg-2 control-label">Roles</label>
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
-                                            <c:forEach items="${user.roles}" var="role">
-                                                <c:out value="${role.type}, "></c:out>
+                                            <c:forEach varStatus="stt" items="${user.roles}" var="role">
+                                                <c:out value="${role.type}"></c:out>
                                             </c:forEach>
                                         </p>
                                     </div>
@@ -179,12 +179,13 @@ $(document).ready(function() {
 	            closeOnConfirm: false
 	        },
 	        function() {
-	            window.location.href = href;
-	            swal(
-	                "Deleted!",
-	                "Your imaginary file has been deleted.",
-	                "success");
-	        });
+            	$.get(href,function(){
+                	swal("Deleted!", "User has been deleted.", "success");
+                	window.location.href = "list";
+            	}).fail(function(){
+            		swal("Error", "User could not be deleted", "error");
+            	});
+            });
 	});
 });
 </script>

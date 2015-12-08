@@ -26,7 +26,7 @@
                 </div>
             </li>
 
-            <li class="${current == 'index' ? 'active' : ''}">
+            <li class="${current == 'dashboard' ? 'active' : ''}">
                 <a href='<spring:url value="/admin/" />'><i class="fa fa-th-large"></i><span class="nav-label">Dashboard</span></a>
             </li>
 
@@ -42,7 +42,7 @@
             </li>
 
             <li class="${current == 'role' ? 'active' : ''}">
-                <a href='<spring:url value="/admin/role/" />'><i class="fa fa-question"></i><span class="nav-label">Roles</span></a>
+                <a href='<spring:url value="/admin/role/" />'><i class="fa fa-user-md"></i><span class="nav-label">User Roles</span></a>
             </li>
 
             <li class="${current == 'song' ? 'active' : ''}">
@@ -58,15 +58,15 @@
             </li>
 
             <li class="${current == 'pltype' ? 'active' : ''}">
-                <a href='<spring:url value="/admin/pltype/" />'><i class="fa fa-question"></i><span class="nav-label">Playlist Type</span></a>
+                <a href='<spring:url value="/admin/pltype/" />'><i class="fa fa-play-circle-o"></i><span class="nav-label">Playlist Types</span></a>
             </li>
 
             <li class="${current == 'lyric' ? 'active' : ''}">
-                <a href='<spring:url value="/admin/lyric/" />'><i class="fa fa-question"></i><span class="nav-label">Lyrics</span></a>
+                <a href='<spring:url value="/admin/lyric/" />'><i class="fa fa-adn"></i><span class="nav-label">Lyrics</span></a>
             </li>
 
             <li class="${current == 'genre' ? 'active' : ''}">
-                <a href='<spring:url value="/admin/genre/" />'><i class="fa fa-question"></i><span class="nav-label">Genres</span></a>
+                <a href='<spring:url value="/admin/genre/" />'><i class="fa fa-asterisk"></i><span class="nav-label">Genres</span></a>
             </li>
 
             <li class="landing_link">

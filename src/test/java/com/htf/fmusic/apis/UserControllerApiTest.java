@@ -2,7 +2,7 @@ package com.htf.fmusic.apis;
 
 import org.springframework.web.client.RestTemplate;
 
-import com.htf.fmusic.dtos.Credentials;
+import com.htf.fmusic.models.Credentials;
 
 /**
  * @author HTFeeds

@@ -20,64 +20,80 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Table(name = "playlist_types")
 public final class PlaylistType extends BaseEntity {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@NotEmpty
-	@Column(name = "name", nullable = false)
-	private String name;
-	
-	@OneToMany(mappedBy = "playlistType")
-	private List<Playlist> playlists = new ArrayList<Playlist>();
+    @NotEmpty
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
 
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "description", nullable = true)
+    private String description;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @OneToMany(mappedBy = "playlistType")
+    private List<Playlist> playlists = new ArrayList<Playlist>();
 
-	public String getName() {
-		return name;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public List<Playlist> getPlaylists() {
-		return playlists;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setPlaylists(List<Playlist> playlists) {
-		this.playlists = playlists;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public int hashCode() {
-		int hash = 0;
-		hash += (id != null ? id.hashCode() : 0);
-		return hash;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	@Override
-	public boolean equals(Object object) {
-		if (!(object instanceof PlaylistType)) {
-			return false;
-		}
-		PlaylistType other = (PlaylistType) object;
-		if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-			return false;
-		}
-		return true;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).append("id", this.id).append("name", this.name).toString();
-	}
+    public List<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public void setPlaylists(List<Playlist> playlists) {
+        this.playlists = playlists;
+    }
+
+    public void update(String newName, String newDescription) {
+        this.name = newName;
+        this.description = newDescription;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof PlaylistType)) {
+            return false;
+        }
+        PlaylistType other = (PlaylistType) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", this.id).append("name", this.name).toString();
+    }
 }

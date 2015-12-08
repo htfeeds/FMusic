@@ -64,7 +64,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         web
             .ignoring()
             .antMatchers("/static/**")
-            .antMatchers(HttpMethod.POST, "/test/**")
             .antMatchers(HttpMethod.POST, "/rest/**")
             .antMatchers(HttpMethod.POST, "/admin/**");
     }

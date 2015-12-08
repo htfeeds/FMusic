@@ -3,7 +3,7 @@
 
 <div id="login-form" class="modal fade" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content animated bounceInRight">
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-6 b-r">

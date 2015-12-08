@@ -6,7 +6,7 @@ import com.htf.fmusic.models.User;
  * @author HTFeeds
  */
 public interface UserRepository extends BaseRepository<User, Integer> {
-
+    
     public User findByUsername(String username);
 
     public User findByEmail(String email);

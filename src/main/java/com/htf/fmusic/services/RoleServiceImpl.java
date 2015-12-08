@@ -98,8 +98,9 @@ public class RoleServiceImpl implements RoleService {
         return updated;
     }
 
-    public boolean isTypeUnique(String type) {
-        return (repository.findByType(type) == null);
+    @Override
+    public boolean isTypeUnique(Integer id, String type) {
+        return (repository.findByType(type) == null || ((id != null) && (repository.findByType(type).getId() == id)));
     }
 
     private Role findRoleEntryById(Integer id) {

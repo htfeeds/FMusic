@@ -10,7 +10,6 @@ public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, St
 
     @Override
     public void initialize(PhoneNumber arg0) {
-
     }
 
     @Override
@@ -18,17 +17,15 @@ public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, St
         try {
             if (number == null || number.isEmpty()) {
                 return true;
-            } else {
-                Double.parseDouble(number);
-                if (number.length() > 9 && number.length() < 13) {
-                    return true;
-                } else {
-                    return false;
-                }
+            }
+
+            Double.parseDouble(number);
+            if (number.length() > 9 && number.length() < 13) {
+                return true;
             }
         } catch (NumberFormatException e) {
-            return false;
         }
+        return false;
     }
 
 }

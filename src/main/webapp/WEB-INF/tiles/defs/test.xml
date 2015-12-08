@@ -4,7 +4,6 @@
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
 
-	<definition name="test/*" template="/WEB-INF/views/test/{1}.jsp">
-	</definition>
+	<definition name="test/*" template="/WEB-INF/views/test/{1}.jsp" />
 
 </tiles-definitions>

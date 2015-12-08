@@ -12,13 +12,17 @@ import com.htf.fmusic.services.RoleService;
  */
 @Component
 public class RoleConverter implements Converter<Object, Role> {
-	@Autowired
-	RoleService roleService;
+    @Autowired
+    RoleService roleService;
 
-	@Override
-	public Role convert(Object element) {
-		Integer id = Integer.parseInt((String) element);
-		Role role = roleService.findById(id);
-		return role;
-	}
+    @Override
+    public Role convert(Object element) {
+        if (element instanceof Role) {
+            return (Role) element;
+        }
+        
+        Integer id = Integer.parseInt((String) element);
+        Role role = roleService.findById(id);
+        return role;
+    }
 }

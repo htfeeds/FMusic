@@ -105,9 +105,7 @@
                                         <label class="col-sm-2 control-label">Avatar</label>
                                         <div class="col-sm-10">
                                             <input type="file" id="image" name="image" class="form-control" accept="image/*"/>
-                                            <c:if test="${failed != null}">
-                                        		<span class="error"><c:out value="${failed}" /></span>
-                                        	</c:if>
+                                        	<span class="error"><c:out value="${imgError}" /></span>
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>

@@ -10,14 +10,13 @@ import com.htf.fmusic.models.Song;
 /**
  * @author HTFeeds
  */
-public interface SongService {
+public interface SongService extends BaseService<Song, Integer> {
 
-	public Song create(Song newSong);
+    public List<Song> findByName(String name);
 
-	@PreAuthorize("#song.user.username == authentication.name or hasRole('ADMIN') AND hasRole('DBA')")
-	public Song delete(@P("song") Song song);
+    public Song update(Song updated);
 
-	public List<Song> findAll();
+    @PreAuthorize("#song.createdByUser.username == authentication.name or hasRole('ADMIN') AND hasRole('DBA')")
+    public Song delete(@P("song") Song song);
 
-	public Song findById(Integer id);
 }

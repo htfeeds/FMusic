@@ -11,6 +11,6 @@ public interface RoleService extends BaseService<Role, Integer> {
 
     public Role update(Role updated);
 
-    public boolean isTypeUnique(String type);
+    public boolean isTypeUnique(Integer id, String type);
 
 }

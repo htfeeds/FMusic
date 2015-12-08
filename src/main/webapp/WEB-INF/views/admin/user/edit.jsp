@@ -44,7 +44,7 @@
             <div class="tabs-container">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab-1">User Info</a></li>
-                    <li class=""><a data-toggle="tab" href="#tab-2">Advanced</a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-2">Others</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -227,12 +227,13 @@
     	            closeOnConfirm: false
     	        },
     	        function() {
-    	            window.location.href = href;
-    	            swal(
-    	                "Deleted!",
-    	                "Your imaginary file has been deleted.",
-    	                "success");
-    	        });
+                	$.get(href,function(){
+                    	swal("Deleted!", "User has been deleted.", "success");
+                    	window.location.href = "list";
+                	}).fail(function(){
+                		swal("Error", "User could not be deleted", "error");
+                	});
+                });
     	});
 
         $('#birth_date .input-group.date').datepicker({

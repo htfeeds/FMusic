@@ -3,10 +3,10 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
-        <h2>UserRole Management</h2>
+        <h2>Role Management</h2>
         <ol class="breadcrumb">
             <li><a href="<spring:url value="/admin/"/>">Home</a></li>
-            <li><a href="<spring:url value="/admin/role/"/>">UserRole Management</a></li>
+            <li><a href="<spring:url value="/admin/role/"/>">Role Management</a></li>
             <li class="active"><strong>List</strong></li>
         </ol>
     </div>
@@ -23,7 +23,7 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-content">
-
+                
                     <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
                         <thead>
                             <tr>
@@ -97,11 +97,12 @@ $(document).ready(function() {
                     closeOnConfirm: false
                 },
                 function() {
-                    window.location.href = href;
-                    swal(
-                        "Deleted!",
-                        "Your imaginary file has been deleted.",
-                        "success");
+                	$.get(href,function(){
+                    	swal("Deleted!", "Role has been deleted.", "success");
+                    	window.location.href = "list";
+                	}).fail(function(){
+                		swal("Error", "Role could not be deleted", "error");
+                	});
                 });
         });
 });
