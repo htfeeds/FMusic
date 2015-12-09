@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
+import com.htf.fmusic.converters.ArtistConverter;
+import com.htf.fmusic.converters.GenreConverter;
+import com.htf.fmusic.converters.PlaylistTypeConverter;
 import com.htf.fmusic.converters.RoleConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,15 @@ import java.util.List;
 @Configuration
 @EnableWebMvc
 public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
+
+    @Autowired
+    ArtistConverter artistConverter;
+
+    @Autowired
+    PlaylistTypeConverter playlistTypeConverter;
+
+    @Autowired
+    GenreConverter genreConverter;
 
     @Autowired
     RoleConverter roleConverter;
@@ -82,6 +94,9 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(artistConverter);
+        registry.addConverter(playlistTypeConverter);
+        registry.addConverter(genreConverter);
         registry.addConverter(roleConverter);
     }
 }

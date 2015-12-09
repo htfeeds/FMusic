@@ -21,18 +21,18 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8">
-        <h2>Edit User details</h2>
+        <h2>Edit Song details</h2>
         <ol class="breadcrumb">
             <li><a href="<spring:url value="/admin/"/>">Home</a></li>
-            <li><a href="<spring:url value="/admin/user/"/>">User Management</a></li>
-            <li class="active"><strong>User edit</strong></li>
+            <li><a href="<spring:url value="/admin/song/"/>">Song Management</a></li>
+            <li class="active"><strong>Song edit</strong></li>
         </ol>
     </div>
     <div class="col-lg-4">
         <div class="title-action">
             <a href="<spring:url value="list "/>" class="btn btn-white">Go Back</a>
-            <a href="<spring:url value="details-${user.id}"/>" class="btn btn-info">View Details</a>
-            <a href="<spring:url value="delete-${user.id}"/>" class="btn btn-danger delete-user">Delete</a>
+            <a href="<spring:url value="details-${song.id}"/>" class="btn btn-info">View Details</a>
+            <a href="<spring:url value="delete-${song.id}"/>" class="btn btn-danger delete-song">Delete</a>
         </div>
     </div>
 </div>
@@ -43,8 +43,7 @@
         <div class="col-lg-12">
             <div class="tabs-container">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab-1">User Info</a></li>
-                    <li class=""><a data-toggle="tab" href="#tab-2">Others</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab-1">Song Info</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -52,10 +51,8 @@
                     <div id="tab-1" class="tab-pane active">
                         <div class="panel-body">
 
-                            <form:form id="editUserForm" method="POST" modelAttribute="user" class="form-horizontal">
+                            <form:form id="editSongForm" method="POST" modelAttribute="song" enctype="multipart/form-data" class="form-horizontal">
                                 <form:hidden path="id" />
-								<form:hidden path="password" />
-								<form:hidden path="imageUrl" />
 			                    
                                 <fieldset class="form-horizontal">
                                 	<div class="form-group">
@@ -78,129 +75,92 @@
                                 	</div>
                                 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">Fullname</label>
+                                        <label class="col-sm-2 control-label">Name</label>
                                         <div class="col-sm-10">
-                                            <form:input type="text" path="fullname" class="form-control" placeholder="Fullname" />
-                                            <form:errors path="fullname" cssClass="error" />
+                                            <form:input type="text" path="name" class="form-control" placeholder="Song name" />
+                                            <form:errors path="name" cssClass="error" />
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Total Views</label>
+                                        <div class="col-sm-10">
+                                            <form:input type="text" path="totalViews" class="form-control" placeholder="Total Views" />
+                                            <form:errors path="totalViews" cssClass="error" />
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">Username</label>
+                                        <label class="col-sm-2 control-label">Week Views</label>
                                         <div class="col-sm-10">
-                                            <form:input type="text" path="username" readonly="true" class="form-control" placeholder="Username" />
-                                            <form:errors path="username" cssClass="error" />
+                                            <form:input type="text" path="weekViews" class="form-control" placeholder="Week Views" />
+                                            <form:errors path="weekViews" cssClass="error" />
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">Email</label>
+                                        <label class="col-sm-2 control-label">Description</label>
                                         <div class="col-sm-10">
-                                            <form:input type="email" path="email" class="form-control" placeholder="Email" />
-                                            <form:errors path="email" cssClass="error" />
+                                            <form:input type="text" path="description" class="form-control" placeholder="Description" />
+                                            <form:errors path="description" cssClass="error" />
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">Phone number</label>
-                                        <div class="col-sm-10">
-                                            <form:input type="text" path="phoneNumber" class="form-control" placeholder="Phone number" />
-                                            <form:errors path="phoneNumber" cssClass="error" />
-                                        </div>
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
-
-                                    <div class="form-group" id="birth_date">
-                                        <label class="col-sm-2 control-label">Birthday</label>
-                                        <div class="col-sm-10 input-group date" style="padding-right:15px;padding-left:15px;">
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                            <form:input type="text" path="birthDate" class="form-control" />
-                                        </div>
-                                        <form:errors path="birthDate" cssClass="error col-md-10 col-md-offset-2" cssStyle="padding-left:20px" />
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Gender</label>
-                                        <div class="col-sm-10">
-                                            <div class="checkbox-inline i-checks">
-                                                <label>
-                                                    <form:radiobutton path="sex" value="Male" /> <i></i> Male </label>
-                                            </div>
-                                            <div class="checkbox-inline i-checks">
-                                                <label>
-                                                    <form:radiobutton path="sex" value="Female" /> <i></i> Female </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">State</label>
+                                        <label class="col-sm-2 control-label">Genre</label>
                                         <div class="col-lg-4">
-                                            <form:select path="state" items="${states}" class="form-control" />
-                                            <form:errors path="state" cssClass="error" />
+                                            <form:select path="genre" class="form-control">
+                                            	<form:option label="" value="" />
+                                            	<form:options items="${genres}" itemLabel="name" itemValue="id" />
+                                            </form:select>
+                                            <form:errors path="genre" cssClass="error" />
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
-
+                                    
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">Roles</label>
-                                        <div class="col-lg-4">
-                                            <form:select path="roles" items="${roles}" multiple="true" itemValue="id" itemLabel="type" class="form-control" />
-                                            <form:errors path="roles" cssClass="error" />
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </form:form>
-
-                        </div>
-                    </div>
-
-
-                    <div id="tab-2" class="tab-pane">
-                        <div class="panel-body">
-
-                            <form:form id="avatarForm" action="update-avatar-${user.id}" method="POST" enctype="multipart/form-data" class="form-horizontal">
-                                <input type="hidden" name="id" value="${user.id}" />
-                                <fieldset class="form-horizontal">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">New Image</label>
+                                        <label class="col-sm-2 control-label">File Url</label>
                                         <div class="col-sm-10">
-                                            <div class="input-group">
-                                                <input type="file" id="newImage" name="newImage" class="form-control" accept="image/*"/>
-                                                <span class="input-group-btn" style="vertical-align:top">
-            										<input type="submit" class="btn btn-primary" value="Change avatar"/>
-	            								</span>
-                                                <!-- Validate -->
-                                            </div>
+                                        	<div class="input-group m-b">
+                                        		<span class="input-group-addon"> <input name="resource" value="url" type="radio" checked> </span> <form:input type="text" path="url" class="form-control" placeholder="File Url" />
+											</div>
+											<form:errors path="url" cssClass="error" />
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Upload to<br/><small class="text-navy">Application</small></label>
+                                        <div class="col-sm-10">
+											<div class="input-group">
+                                        		<span class="input-group-addon"> <input name="resource" value="application" type="radio"> </span> <input type="file" id="appFile" name="appFile" class="form-control" accept="audio/*">
+											</div>
+											<c:if test="${appFileError != null}">
+                                        		<span class="error"><c:out value="${appFileError}" /></span>
+                                        	</c:if>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Upload to<br/><small class="text-navy">Google Drive</small></label>
+                                        <div class="col-sm-10">
+											<div class="input-group">
+                                        		<span class="input-group-addon"> <input name="resource" value="google" type="radio"> </span> <input type="file" id="gFile" name="gFile" class="form-control" accept="audio/*">
+											</div>
+											<c:if test="${gFileError != null}">
+                                        		<span class="error"><c:out value="${gFileError}" /></span>
+                                        	</c:if>
+                                        </div>
+                                    </div>
+                                    
                                 </fieldset>
                             </form:form>
 
-                            <form:form id="passwordForm" action="update-password-${user.id}" method="POST" class="form-horizontal">
-                                <input type="hidden" name="id" value="${user.id}" />
-                                <fieldset>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">New Password</label>
-                                        <div class="col-sm-10">
-                                            <div class="input-group">
-                                                <input type="text" id="newPassword" name="newPassword" placeholder="New password" class="form-control">
-                                                <span class="input-group-btn" style="vertical-align:top">
-													<input type="submit" class="btn btn-primary" value="Change password"/>
-		            							</span>
-                                                <!-- Validate -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </form:form>
-                            
                         </div>
                     </div>
 
@@ -214,12 +174,12 @@
 
 <script>
     $(document).ready(function() {
-    	$('.delete-user').click(function(e) {
+    	$('.delete-song').click(function(e) {
     	    e.preventDefault();
     	    var href = $(this).attr("href");
     	    swal({
     	            title: "Are you sure?",
-    	            text: "You will not be able to recover this user!",
+    	            text: "You will not be able to recover this song!",
     	            type: "warning",
     	            showCancelButton: true,
     	            confirmButtonColor: "#DD6B55",
@@ -227,61 +187,27 @@
     	            closeOnConfirm: false
     	        },
     	        function() {
-    	            window.location.href = href;
-    	            swal(
-    	                "Deleted!",
-    	                "Your imaginary file has been deleted.",
-    	                "success");
-    	        });
+                	$.get(href,function(){
+                    	swal("Deleted!", "Song has been deleted.", "success");
+                    	window.location.href = "list";
+                	}).fail(function(){
+                		swal("Error", "Song could not be deleted", "error");
+                	});
+                });
     	});
 
-        $('#birth_date .input-group.date').datepicker({
-            startView: 1,
-            todayBtn: "linked",
-            keyboardNavigation: false,
-            forceParse: false,
-            autoclose: true,
-            format: "dd/mm/yyyy"
-        });
-
-        $("#editUserForm").validate({
+        $("#editSongForm").validate({
             rules: {
-                fullname: {
-                    required: true,
-                    minlength: 6,
-                },
-                email: {
-                    required: true,
-                    email: true
-                },
-                birthDate: {
-                    required: false,
-                },
-                phoneNumber: {
-                    required: false,
-                    number: true,
-                    minlength: 10,
-                    maxlength: 12
-                },
-                state: {
+                name: {
                     required: true
-                }
-            }
-        });
-        
-        $("#passwordForm").validate({
-            rules: {
-                newPassword: {
-                    required: true,
-                    minlength: 6
-                }
-            }
-        });
-        
-        $("#avatarForm").validate({
-            rules: {
-            	newImage: {
-                    required: true,
+                },
+                totalViews: {
+                    required: false,
+                    number: true
+                },
+                weekViews: {
+                    required: false,
+                    number: true
                 }
             }
         });

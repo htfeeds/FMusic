@@ -127,8 +127,11 @@
                                     <label class="col-lg-2 control-label">Roles</label>
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
-                                            <c:forEach varStatus="stt" items="${user.roles}" var="role">
-                                                <c:out value="${role.type}"></c:out>
+                                            <c:forEach items="${user.roles}" var="role" varStatus="loop">
+                                                <c:out value="${role.type}" />
+                                                <c:if test="${loop.index lt fn:length(user.roles) - 1}">
+                                                	<c:out value="," />
+                                                </c:if>
                                             </c:forEach>
                                         </p>
                                     </div>

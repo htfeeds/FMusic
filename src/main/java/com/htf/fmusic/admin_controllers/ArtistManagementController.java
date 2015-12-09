@@ -107,13 +107,13 @@ public class ArtistManagementController {
         }
 
         if (!image.isEmpty()) {
-            String uploaded = FmusicFunctions.uploadImage(image, DIRECTORY);
+            String uploaded = FmusicFunctions.uploadFile(image, DIRECTORY);
             String imageUrl = ABSTRACT_PATH + uploaded;
             artist.setImageUrl(imageUrl);
         }
 
         if (!cover.isEmpty()) {
-            String uploaded = FmusicFunctions.uploadImage(cover, DIRECTORY);
+            String uploaded = FmusicFunctions.uploadFile(cover, DIRECTORY);
             String coverUrl = ABSTRACT_PATH + uploaded;
             artist.setCoverImageUrl(coverUrl);
         }

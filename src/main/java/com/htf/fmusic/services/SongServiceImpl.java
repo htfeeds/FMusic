@@ -84,7 +84,8 @@ public class SongServiceImpl implements SongService {
         LOGGER.info("Updating the information of a song entry by using information: {}", updatedEntry);
 
         Song updated = findSongEntryById(updatedEntry.getId());
-        //
+        updated.update(updatedEntry.getName(), updatedEntry.getUrl(), updatedEntry.getTotalViews(), updatedEntry.getWeekViews(),
+                updatedEntry.getDescription(), updatedEntry.getGenre());
 
         //We need to flush the changes or otherwise the returned object
         //doesn't contain the updated audit information.

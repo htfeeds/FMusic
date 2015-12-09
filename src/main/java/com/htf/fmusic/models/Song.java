@@ -46,6 +46,14 @@ public final class Song extends BaseEntity {
     @Column(name = "description")
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
+
+    @ManyToOne
+    @JoinColumn(name = "lyric_id")
+    private Lyric lyric;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "song_artist_mappings", joinColumns = { @JoinColumn(name = "song_id") }, inverseJoinColumns = {
             @JoinColumn(name = "artist_id") })
@@ -54,16 +62,8 @@ public final class Song extends BaseEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "song_playlist_mappings", joinColumns = { @JoinColumn(name = "song_id") }, inverseJoinColumns = {
             @JoinColumn(name = "playlist_id") })
-    private Set<Artist> playlists = new HashSet<Artist>();
+    private Set<Playlist> playlists = new HashSet<Playlist>();
 
-    @ManyToOne
-    @JoinColumn(name = "genre_id")
-    private Genre genre;
-    
-    @ManyToOne
-    @JoinColumn(name = "lyric_id")
-    private Lyric lyric;
-    
     public Integer getId() {
         return id;
     }
@@ -120,6 +120,14 @@ public final class Song extends BaseEntity {
         this.artists = artists;
     }
 
+    public void setPlaylists(Set<Playlist> playlists) {
+        this.playlists = playlists;
+    }
+
+    public Set<Playlist> getPlaylists() {
+        return playlists;
+    }
+
     public Genre getGenre() {
         return genre;
     }
@@ -136,16 +144,13 @@ public final class Song extends BaseEntity {
         this.lyric = lyric;
     }
 
-    public Set<Artist> getPlaylists() {
-        return playlists;
-    }
-
-    public void setPlaylists(Set<Artist> playlists) {
-        this.playlists = playlists;
-    }
-
-    public void update(String newName, String newUrl, Integer newTotalViews, Integer newWeekViews, String newDescription, Set<Artist> newArtists) {
-
+    public void update(String newName, String newUrl, Integer newTotalViews, Integer newWeekViews, String newDescription, Genre newGenre) {
+        this.name = newName;
+        this.url = newUrl;
+        this.totalViews = newTotalViews;
+        this.weekViews = newWeekViews;
+        this.description = newDescription;
+        this.genre = newGenre;
     }
 
     @Override

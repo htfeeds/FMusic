@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FmusicFunctions {
     private static final Logger LOGGER = LoggerFactory.getLogger(FmusicFunctions.class);
 
-    public static String uploadImage(MultipartFile file, String location) throws IOException {
+    public static String uploadFile(MultipartFile file, String location) throws IOException {
         LOGGER.info("Uploading Image...");
 
         //checking directory exists
@@ -46,6 +46,7 @@ public class FmusicFunctions {
         FileCopyUtils.copy(file.getBytes(), f);
 
         LOGGER.info("Uploaded successfully.");
+        //return filename
         return f.getName();
     }
 }

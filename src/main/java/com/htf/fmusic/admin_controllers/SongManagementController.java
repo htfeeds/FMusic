@@ -1,7 +1,9 @@
 package com.htf.fmusic.admin_controllers;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -15,10 +17,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.htf.fmusic.models.Genre;
 import com.htf.fmusic.models.Song;
+import com.htf.fmusic.services.GenreService;
 import com.htf.fmusic.services.SongService;
+import com.htf.fmusic.utils.FmusicFunctions;
 
 /**
  * @author HTFeeds
@@ -29,12 +35,20 @@ public class SongManagementController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SongManagementController.class);
 
+    private final String ABSTRACT_PATH;
+    private final String DIRECTORY;
+
     private final SongService songService;
+    private final GenreService genreService;
 
     @Autowired
-    SongManagementController(SongService songService) {
+    SongManagementController(SongService songService, GenreService genreService, ServletContext servletContext) {
         LOGGER.info("Inside constructor of SongManagementController.");
+
         this.songService = songService;
+        this.genreService = genreService;
+        this.ABSTRACT_PATH = "/static/data/mp3/";
+        this.DIRECTORY = servletContext.getRealPath(ABSTRACT_PATH) + "/";
     }
 
     //-------------------Retrieve All Songs---------------------------------------------------
@@ -65,10 +79,28 @@ public class SongManagementController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String saveSong(@Valid @ModelAttribute("song") Song song, BindingResult result, @RequestParam String save, Model model,
-            RedirectAttributes redirectAttributes) {
+    public String saveSong(@Valid @ModelAttribute("song") Song song, BindingResult result, @RequestParam String save,
+            @RequestParam(required = false) String resource, @RequestParam MultipartFile appFile, @RequestParam MultipartFile gFile, Model model,
+            RedirectAttributes redirectAttributes) throws IOException {
         if (result.hasErrors()) {
             return "admin/song/create";
+        }
+
+        if (resource.equals("application")) {
+            if (appFile.isEmpty() || appFile.getSize() > 10024000) {
+                model.addAttribute("appFileError", "File cannot null and file size must be less than 10 MB.");
+                return "admin/song/create";
+            }
+            //Upload file to application
+            String uploaded = FmusicFunctions.uploadFile(appFile, DIRECTORY);
+            String fileUrl = ABSTRACT_PATH + uploaded;
+            song.setUrl(fileUrl);
+        } else if (resource.equals("google")) {
+            if (gFile.isEmpty() || gFile.getSize() > 10024000) {
+                model.addAttribute("gFileError", "File cannot null and file size must be less than 10 MB.");
+                return "admin/song/create";
+            }
+            //Upload file to google drive
         }
 
         Song r = songService.create(song);
@@ -91,10 +123,29 @@ public class SongManagementController {
     }
 
     @RequestMapping(value = "/edit-{id}", method = RequestMethod.POST)
-    public String update(@Valid @ModelAttribute Song song, BindingResult result, @PathVariable Integer id, @RequestParam String save, Model model,
-            RedirectAttributes redirectAttributes) {
+    public String update(@Valid @ModelAttribute Song song, BindingResult result, @PathVariable Integer id, @RequestParam String save,
+            @RequestParam(required = false) String resource, @RequestParam MultipartFile appFile, @RequestParam MultipartFile gFile, Model model,
+            RedirectAttributes redirectAttributes) throws IOException {
         if (result.hasErrors()) {
             return "admin/song/edit";
+        }
+
+        if (resource.equals("application")) {
+            if (appFile.isEmpty() || appFile.getSize() > 10024000) {
+                model.addAttribute("appFileError", "File cannot null and file size must be less than 10 MB.");
+                return "admin/song/edit";
+            }
+            //Upload file to application
+            String uploaded = FmusicFunctions.uploadFile(appFile, DIRECTORY);
+            String fileUrl = ABSTRACT_PATH + uploaded;
+            //Change SongUrl
+            song.setUrl(fileUrl);
+        } else if (resource.equals("google")) {
+            if (gFile.isEmpty() || gFile.getSize() > 10024000) {
+                model.addAttribute("gFileError", "File cannot null and file size must be less than 10 MB.");
+                return "admin/song/edit";
+            }
+            //Upload file to google drive
         }
 
         songService.update(song);
@@ -112,5 +163,11 @@ public class SongManagementController {
     public String deleteSong(@PathVariable Integer id, Model model) {
         songService.delete(id);
         return "redirect:list";
+    }
+
+    //------------------- Model Attributes -----------------------------------------------------
+    @ModelAttribute(value = "genres")
+    private List<Genre> initializeGenres() {
+        return genreService.findAll();
     }
 }

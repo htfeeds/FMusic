@@ -83,48 +83,50 @@
                                     <div class="hr-line-dashed"></div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">File</label>
-                                        <div class="col-sm-10">
-                                            <input type="file" id="file" name="file" class="form-control" accept="audio/*"/>
-                                            <c:if test="${fileError != null}">
-                                        		<span class="error"><c:out value="${fileError}" /></span>
-                                        	</c:if>
-                                        </div>
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
-
-                                    <div class="form-group">
                                         <label class="col-sm-2 control-label">Genre</label>
                                         <div class="col-lg-4">
-                                            <form:select path="genre" items="${genres}" itemValue="id" itemLabel="name" class="form-control" />
+                                            <form:select path="genre" class="form-control">
+                                            	<form:option label="Select Genre" value="" />
+                                            	<form:options items="${genres}" itemLabel="name" itemValue="id" />
+                                            </form:select>
                                             <form:errors path="genre" cssClass="error" />
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
                                     
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">Lyric</label>
-                                        <div class="col-lg-4">
-                                            <form:select path="lyric" items="${lyrics}" itemValue="id" itemLabel="title" class="form-control" />
-                                            <form:errors path="lyric" cssClass="error" />
-                                        </div>
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Artists</label>
-                                        <div class="col-lg-4">
-                                            <form:select path="artists" items="${artists}" multiple="true" itemValue="id" itemLabel="name" class="form-control" />
-                                            <form:errors path="artists" cssClass="error" />
+                                        <label class="col-sm-2 control-label">File Url</label>
+                                        <div class="col-sm-10">
+                                        	<div class="input-group m-b">
+                                        		<span class="input-group-addon"> <input name="resource" value="url" type="radio" checked> </span> <form:input type="text" path="url" class="form-control" placeholder="File Url" />
+											</div>
+											<form:errors path="url" cssClass="error" />
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
                                     
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">Playlists</label>
-                                        <div class="col-lg-4">
-                                            <form:select path="playlists" items="${playlists}" multiple="true" itemValue="id" itemLabel="name" class="form-control" />
-                                            <form:errors path="playlists" cssClass="error" />
+                                        <label class="col-sm-2 control-label">Upload to<br/><small class="text-navy">Application</small></label>
+                                        <div class="col-sm-10">
+											<div class="input-group">
+                                        		<span class="input-group-addon"> <input name="resource" value="application" type="radio"> </span> <input type="file" id="appFile" name="appFile" class="form-control" accept="audio/*">
+											</div>
+											<c:if test="${appFileError != null}">
+                                        		<span class="error"><c:out value="${appFileError}" /></span>
+                                        	</c:if>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Upload to<br/><small class="text-navy">Google Drive</small></label>
+                                        <div class="col-sm-10">
+											<div class="input-group">
+                                        		<span class="input-group-addon"> <input name="resource" value="google" type="radio"> </span> <input type="file" id="gFile" name="gFile" class="form-control" accept="audio/*">
+											</div>
+											<c:if test="${gFileError != null}">
+                                        		<span class="error"><c:out value="${gFileError}" /></span>
+                                        	</c:if>
                                         </div>
                                     </div>
 
@@ -146,10 +148,18 @@
 <script>
     $(document).ready(function() {
 
-        $("#songForm").validate({
+        $("#songFrm").validate({
             rules: {
                 name: {
                     required: true
+                },
+                totalViews: {
+                	required: false,
+                	number: true
+                },
+                weekViews: {
+                	required: false,
+                	number: true
                 }
             }
         });

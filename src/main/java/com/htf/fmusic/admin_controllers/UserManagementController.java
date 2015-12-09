@@ -54,6 +54,8 @@ public class UserManagementController {
 
     @Autowired
     UserManagementController(UserService userService, RoleService roleService, ServletContext servletContext) {
+        LOGGER.info("Inside constructor of UserManagementController.");
+
         this.userService = userService;
         this.roleService = roleService;
         this.ABSTRACT_PATH = "/static/img/user/";
@@ -91,6 +93,7 @@ public class UserManagementController {
     public String saveUser(@Valid @ModelAttribute("user") User user, BindingResult result, @RequestParam String save,
             @RequestParam MultipartFile image, Model model, RedirectAttributes redirectAttributes) throws IOException {
         boolean hasErrors = false;
+
         if (!userService.isUsernameUnique(user.getId(), user.getUsername())) {
             FieldError usernameError = new FieldError("user", "username",
                     messageSource.getMessage("UniqueUsername.user.username", new String[] { user.getUsername() }, Locale.getDefault()));
@@ -110,7 +113,7 @@ public class UserManagementController {
         }
 
         if (!image.isEmpty()) {
-            String uploaded = FmusicFunctions.uploadImage(image, DIRECTORY);
+            String uploaded = FmusicFunctions.uploadFile(image, DIRECTORY);
             String imageUrl = ABSTRACT_PATH + uploaded;
             user.setImageUrl(imageUrl);
         }
@@ -169,7 +172,7 @@ public class UserManagementController {
     public String updateAvatar(@PathVariable Integer id, @RequestParam MultipartFile newImage, Model model, RedirectAttributes redirectAttributes)
             throws IOException {
         if (newImage.isEmpty()) {
-            redirectAttributes.addFlashAttribute("failed", "Missing file.");
+            redirectAttributes.addFlashAttribute("failed", "File is missing.");
             model.asMap().clear();
             return "redirect:edit-" + id;
         }
@@ -179,7 +182,7 @@ public class UserManagementController {
             return "redirect:edit-" + id;
         }
 
-        String uploaded = FmusicFunctions.uploadImage(newImage, DIRECTORY);
+        String uploaded = FmusicFunctions.uploadFile(newImage, DIRECTORY);
         String imageUrl = ABSTRACT_PATH + uploaded;
         userService.updateAvatar(id, imageUrl);
         model.asMap().clear();

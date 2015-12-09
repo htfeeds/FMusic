@@ -83,9 +83,6 @@ public class PlaylistManagementController {
     public String newPlaylist(Model model) {
         Playlist playlist = new Playlist();
         model.addAttribute("playlist", playlist);
-        model.addAttribute("artists", initializeArtists());
-        model.addAttribute("genres", initializeGenres());
-        model.addAttribute("plTypes", initializePlaylistTypes());
         model.addAttribute("title", "Add a new Playlist | FMusic Administration");
         return "admin/playlist/create";
     }
@@ -103,7 +100,7 @@ public class PlaylistManagementController {
         }
 
         if (!image.isEmpty()) {
-            String uploaded = FmusicFunctions.uploadImage(image, DIRECTORY);
+            String uploaded = FmusicFunctions.uploadFile(image, DIRECTORY);
             String imageUrl = ABSTRACT_PATH + uploaded;
             playlist.setImageUrl(imageUrl);
         }
@@ -122,9 +119,6 @@ public class PlaylistManagementController {
     public String editPlaylist(@PathVariable Integer id, Model model) {
         Playlist playlist = playlistService.findById(id);
         model.addAttribute("playlist", playlist);
-        model.addAttribute("artists", initializeArtists());
-        model.addAttribute("genres", initializeGenres());
-        model.addAttribute("plTypes", initializePlaylistTypes());
         model.addAttribute("title", "Edit Playlist details | FMusic Administration");
         return "admin/playlist/edit";
     }
@@ -154,14 +148,17 @@ public class PlaylistManagementController {
     }
 
     //------------------- Model Attributes -----------------------------------------------------
+    @ModelAttribute(value = "artists")
     private List<Artist> initializeArtists() {
         return artistService.findAll();
     }
 
+    @ModelAttribute(value = "genres")
     private List<Genre> initializeGenres() {
         return genreService.findAll();
     }
 
+    @ModelAttribute(value = "plTypes")
     private List<PlaylistType> initializePlaylistTypes() {
         return plTypeService.findAll();
     }
