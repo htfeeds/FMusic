@@ -44,6 +44,8 @@
             <div class="tabs-container">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab-1">Song Info</a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-2">Artist mappings</a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-2">Playlist mappings</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -160,6 +162,14 @@
                                     
                                 </fieldset>
                             </form:form>
+
+                        </div>
+                    </div>
+
+					<div id="tab-2" class="tab-pane">
+                        <div class="panel-body">
+
+                            //do something here
 
                         </div>
                     </div>
