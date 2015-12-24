@@ -19,6 +19,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 /**
  * @author HTFeeds
  */
@@ -27,33 +29,42 @@ import org.springframework.format.annotation.DateTimeFormat;
 public final class Artist extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
+    @JsonView(Views.Summary.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @JsonView(Views.Summary.class)
     @NotEmpty
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @JsonView(Views.Summary.class)
     @Column(name = "real_name")
     private String realName;
 
+    @JsonView(Views.Summary.class)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Column(name = "birth_dt")
     private Date birthDate;
 
+    @JsonView(Views.Summary.class)
     @Column(name = "sex")
     private String sex;
 
+    @JsonView(Views.Summary.class)
     @Column(name = "country")
     private String country;
 
+    @JsonView(Views.ExtendedPublic.class)
     @Column(name = "image_url")
     private String imageUrl;
 
+    @JsonView(Views.ExtendedPublic.class)
     @Column(name = "cover_image_url")
     private String coverImageUrl;
 
+    @JsonView(Views.ExtendedPublic.class)
     @Column(name = "career")
     private String career;
 

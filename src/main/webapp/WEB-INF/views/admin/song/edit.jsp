@@ -17,6 +17,9 @@
     	margin-bottom: 0;
     	color: #ed5565;
     }
+    .chosen-container {
+    	width: 100%!important;
+    }
 </style>
 
 <div class="row wrapper border-bottom white-bg page-heading">
@@ -45,7 +48,6 @@
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab-1">Song Info</a></li>
                     <li class=""><a data-toggle="tab" href="#tab-2">Artist mappings</a></li>
-                    <li class=""><a data-toggle="tab" href="#tab-2">Playlist mappings</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -88,7 +90,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Total Views</label>
                                         <div class="col-sm-10">
-                                            <form:input type="text" path="totalViews" class="form-control" placeholder="Total Views" />
+                                            <form:input type="number" path="totalViews" class="form-control" placeholder="Total Views" />
                                             <form:errors path="totalViews" cssClass="error" />
                                         </div>
                                     </div>
@@ -97,7 +99,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Week Views</label>
                                         <div class="col-sm-10">
-                                            <form:input type="text" path="weekViews" class="form-control" placeholder="Week Views" />
+                                            <form:input type="number" path="weekViews" class="form-control" placeholder="Week Views" />
                                             <form:errors path="weekViews" cssClass="error" />
                                         </div>
                                     </div>
@@ -168,9 +170,58 @@
 
 					<div id="tab-2" class="tab-pane">
                         <div class="panel-body">
-
-                            //do something here
-
+                        
+                        	<form:form id="mappingArtistForm" class="form-horizontal m-b">
+                                <fieldset class="form-horizontal">
+                                
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Select Artist</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <select id="artistSelect" data-placeholder="Choose a Artist..." class="chosen-select">
+                                                	<option value="">Select</option>
+                                                	<c:forEach var="artist" items="${artists}">
+                                                		<option value="${artist.id}">${artist.name}</option>	
+                                                	</c:forEach>
+                                                </select>
+                                                <span class="input-group-btn" style="vertical-align:top">
+            										<input type="submit" class="btn btn-primary" value="Add Artist"/>
+	            								</span>
+                                                <!-- Validate -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </fieldset>
+                            </form:form>
+                            
+                            <div class="table-responsive">
+							    <table id="mappingArtistTable" class="table table-striped table-bordered">
+							        <thead>
+							            <tr>
+							                <th></th>
+							                <th>Artist Name</th>
+							                <th>Real Name</th>
+							                <th>Gender</th>
+							                <th>Country</th>
+							                <th>Delete</th>
+							            </tr>
+							        </thead>
+							        <tbody>
+							        	<c:forEach items="${song.artists}" var="artist" varStatus="loop">
+								            <tr>
+								                <td>${loop.index + 1}</td>
+								                <td>${artist.name}</td>
+								                <td>${artist.realName}</td>
+								                <td>${artist.sex}</td>
+								                <td>${artist.country}</td>
+								                <td><a href="javascript:removeArtist(${artist.id})"><i class="fa fa-times text-navy"></i></a></td>
+								            </tr>
+                                        </c:forEach>
+							        </tbody>
+							    </table>
+							</div>
+                        
                         </div>
                     </div>
 
@@ -184,6 +235,19 @@
 
 <script>
     $(document).ready(function() {
+    	//Chosen Select
+	    var config = {
+		    '.chosen-select'           : {},
+		    '.chosen-select-deselect'  : {allow_single_deselect:true},
+		    '.chosen-select-no-single' : {disable_search_threshold:10},
+		    '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+		    '.chosen-select-width'     : {width:"95%"}
+		}
+		for (var selector in config) {
+		    $(selector).chosen(config[selector]);
+		}
+	    
+    	//Delete Song
     	$('.delete-song').click(function(e) {
     	    e.preventDefault();
     	    var href = $(this).attr("href");
@@ -206,6 +270,7 @@
                 });
     	});
 
+    	//Validat
         $("#editSongForm").validate({
             rules: {
                 name: {
@@ -222,5 +287,58 @@
             }
         });
         
+    	//Ajax submit mappingArtistForm
+        $('#mappingArtistForm').submit(function(e) {
+            if ($('#artistSelect').val() != '') {
+
+                $.post('add-artist-${song.id}', {
+                    artist: $('#artistSelect').val()
+                }, function(artist) {
+                    if (artist != null) {
+                    	loadArtists();
+                    }
+                });
+
+                $('#artistSelect').val('').trigger('chosen:updated');
+
+            }
+            e.preventDefault();
+        });
+        
     });
+    
+    //Remove Artist function
+    function removeArtist(artistId) {
+        $.post('remove-artist-${song.id}', {
+                artist: artistId
+            },
+            function(response) {
+                if (response == 'true') {
+                    loadArtists();
+                } else {
+                    alert('Failure! An error has occurred!');
+                }
+            });
+    }
+    
+    //Load Artists function
+    function loadArtists() {
+    	$.get('get-artists-${song.id}', function(artists) {
+    		
+     		$('#mappingArtistTable').find('tbody').remove();
+     		
+     		for (var i=0; i<artists.length; i++) {
+    			var row = '<tr>';
+    			row += '<td>' + (i+1) + '</td>';
+    			row += '<td>' + artists[i].name + '</td>';
+    			row += '<td>' + artists[i].realName + '</td>';
+    			row += '<td>' + artists[i].sex + '</td>';
+    			row += '<td>' + artists[i].country + '</td>';
+    			row += '<td><a href="javascript:removeArtist(' + artists[i].id + ');"><i class="fa fa-times text-navy"></i></a></td>';
+    			row += '</tr>';
+    	 		$('#mappingArtistTable').append(row);
+     		}
+     	});
+    }
+    
 </script>

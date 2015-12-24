@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.htf.fmusic.exceptions.SongNotFoundException;
+import com.htf.fmusic.models.Artist;
 import com.htf.fmusic.models.Song;
 import com.htf.fmusic.repositories.SongRepository;
 
@@ -80,6 +81,13 @@ public class SongServiceImpl implements SongService {
 
     @Override
     @Transactional
+    public Song delete(Song song) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @Transactional
     public Song update(Song updatedEntry) {
         LOGGER.info("Updating the information of a song entry by using information: {}", updatedEntry);
 
@@ -95,9 +103,24 @@ public class SongServiceImpl implements SongService {
         return updated;
     }
 
-    private Song findSongEntryById(Integer id) {
-        Optional<Song> songResult = repository.findOne(id);
-        return songResult.orElseThrow(() -> new SongNotFoundException(id));
+    @Override
+    @Transactional
+    public Artist addArtist(Integer id, Artist artist) {
+        Song song = findById(id);
+        Artist added = song.addArtist(artist);
+        repository.flush();
+
+        return added;
+    }
+
+    @Override
+    @Transactional
+    public boolean removeArtist(Integer id, Artist artist) {
+        Song song = findById(id);
+        boolean removed = song.removeArtist(artist);
+        repository.flush();
+
+        return removed;
     }
 
     @Override
@@ -106,10 +129,9 @@ public class SongServiceImpl implements SongService {
         return null;
     }
 
-    @Override
-    public Song delete(Song song) {
-        // TODO Auto-generated method stub
-        return null;
+    private Song findSongEntryById(Integer id) {
+        Optional<Song> songResult = repository.findOne(id);
+        return songResult.orElseThrow(() -> new SongNotFoundException(id));
     }
 
 }

@@ -73,7 +73,7 @@
                                     <label class="col-lg-2 control-label">Artist</label>
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
-                                            <c:out value="${playlist.artist}" />
+                                            <c:out value="${playlist.artist.name}" />
                                         </p>
                                     </div>
                                 </div>
@@ -82,7 +82,7 @@
                                     <label class="col-lg-2 control-label">Genre</label>
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
-                                            <c:out value="${playlist.genre}" />
+                                            <c:out value="${playlist.genre.name}" />
                                         </p>
                                     </div>
                                 </div>
@@ -91,7 +91,7 @@
                                     <label class="col-lg-2 control-label">Playlist Type</label>
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
-                                            <c:out value="${playlist.playlistType}" />
+                                            <c:out value="${playlist.playlistType.name}" />
                                         </p>
                                     </div>
                                 </div>

@@ -58,7 +58,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Total Views</label>
                                         <div class="col-sm-10">
-                                            <form:input type="text" path="totalViews" class="form-control" placeholder="Total Views" />
+                                            <form:input type="number" path="totalViews" class="form-control" placeholder="Total Views" />
                                             <form:errors path="totalViews" cssClass="error" />
                                         </div>
                                     </div>
@@ -78,7 +78,10 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Artist</label>
                                         <div class="col-lg-4">
-                                            <form:select path="artist" items="${artists}" itemValue="id" itemLabel="name" class="form-control" />
+                                            <form:select path="artist" class="form-control">
+                                            	<form:option label="Select Artist" value="" />
+                                            	<form:options items="${artists}" itemLabel="name" itemValue="id" />
+                                            </form:select>
                                             <form:errors path="artist" cssClass="error" />
                                         </div>
                                     </div>
@@ -87,7 +90,10 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Genre</label>
                                         <div class="col-lg-4">
-                                            <form:select path="genre" items="${genres}" itemValue="id" itemLabel="name" class="form-control" />
+                                            <form:select path="genre" class="form-control">
+                                            	<form:option label="Select Genre" value="" />
+                                            	<form:options items="${genres}" itemValue="id" itemLabel="name" />
+                                            </form:select>
                                             <form:errors path="genre" cssClass="error" />
                                         </div>
                                     </div>
@@ -96,7 +102,10 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Playlist Type</label>
                                         <div class="col-lg-4">
-                                            <form:select path="playlistType" items="${pltypes}" itemValue="id" itemLabel="name" class="form-control" />
+                                            <form:select path="playlistType" class="form-control">
+                                            	<form:option label="Select PlaylistType" value="" />
+                                            	<form:options items="${plTypes}" itemValue="id" itemLabel="name" />
+                                            </form:select>
                                             <form:errors path="playlistType" cssClass="error" />
                                         </div>
                                     </div>

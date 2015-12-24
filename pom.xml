@@ -189,6 +189,13 @@
 			<version>3.0.5</version>
 		</dependency>
 
+		<!-- Atmosphere Runtime -->
+		<dependency>
+			<groupId>org.atmosphere</groupId>
+			<artifactId>atmosphere-runtime</artifactId>
+			<version>2.4.1.4</version>
+		</dependency>
+
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>

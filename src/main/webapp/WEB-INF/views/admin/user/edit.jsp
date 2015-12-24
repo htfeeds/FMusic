@@ -165,7 +165,6 @@
                         <div class="panel-body">
 
                             <form:form id="avatarForm" action="update-avatar-${user.id}" method="POST" enctype="multipart/form-data" class="form-horizontal">
-                                <input type="hidden" name="id" value="${user.id}" />
                                 <fieldset class="form-horizontal">
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">New Image</label>
@@ -184,7 +183,6 @@
                             </form:form>
 
                             <form:form id="passwordForm" action="update-password-${user.id}" method="POST" class="form-horizontal">
-                                <input type="hidden" name="id" value="${user.id}" />
                                 <fieldset>
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">New Password</label>

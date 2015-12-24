@@ -129,7 +129,10 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Country</label>
                                         <div class="col-lg-4">
-                                            <form:select path="country" items="${countries}" class="form-control" />
+                                            <form:select path="country" class="form-control">
+                                            	<form:option label="Select Country" value="" />
+                                            	<form:options items="${countries}" />
+                                            </form:select>
                                             <form:errors path="country" cssClass="error" />
                                         </div>
                                     </div>

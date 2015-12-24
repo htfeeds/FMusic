@@ -9,8 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -50,8 +50,8 @@ public final class Playlist extends BaseEntity {
     @JoinColumn(name = "playlist_type_id")
     private PlaylistType playlistType;
 
-    @ManyToMany(mappedBy = "playlists")
-    private Set<Song> songs = new HashSet<Song>();
+    @OneToMany(mappedBy = "playlist")
+    private Set<SongPlaylist> songPlaylists = new HashSet<SongPlaylist>();
 
     public Integer getId() {
         return id;
@@ -109,12 +109,12 @@ public final class Playlist extends BaseEntity {
         this.playlistType = playlistType;
     }
 
-    public Set<Song> getSongs() {
-        return songs;
+    public Set<SongPlaylist> getSongPlaylists() {
+        return songPlaylists;
     }
 
-    public void setSongs(Set<Song> songs) {
-        this.songs = songs;
+    public void setSongPlaylists(Set<SongPlaylist> songPlaylists) {
+        this.songPlaylists = songPlaylists;
     }
 
     public void update(String newName, Integer newTotalViews, Artist newArtist, Genre newGenre, PlaylistType newPlaylistType) {

@@ -2,6 +2,7 @@ package com.htf.fmusic.admin_controllers;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.validation.Valid;
@@ -17,11 +18,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.htf.fmusic.models.Artist;
 import com.htf.fmusic.models.Genre;
 import com.htf.fmusic.models.Song;
+import com.htf.fmusic.models.Views;
+import com.htf.fmusic.services.ArtistService;
 import com.htf.fmusic.services.GenreService;
 import com.htf.fmusic.services.SongService;
 import com.htf.fmusic.utils.FmusicFunctions;
@@ -40,13 +46,15 @@ public class SongManagementController {
 
     private final SongService songService;
     private final GenreService genreService;
+    private final ArtistService artistService;
 
     @Autowired
-    SongManagementController(SongService songService, GenreService genreService, ServletContext servletContext) {
+    SongManagementController(SongService songService, GenreService genreService, ServletContext servletContext, ArtistService artistService) {
         LOGGER.info("Inside constructor of SongManagementController.");
 
         this.songService = songService;
         this.genreService = genreService;
+        this.artistService = artistService;
         this.ABSTRACT_PATH = "/static/data/mp3/";
         this.DIRECTORY = servletContext.getRealPath(ABSTRACT_PATH) + "/";
     }
@@ -158,6 +166,35 @@ public class SongManagementController {
         return "redirect:list";
     }
 
+    //------------------- Get Artists of Song -------------------------------------------------
+    @JsonView(Views.Summary.class)
+    @ResponseBody
+    @RequestMapping(value = "/get-artists-{id}", method = RequestMethod.GET)
+    public Set<Artist> getMappedArtists(@PathVariable Integer id) {
+        Song song = songService.findById(id);
+        if (song != null) {
+            return song.getArtists();
+        }
+        return null;
+    }
+
+    //------------------- Mapping Artist To Song------------------------------------------------
+    @JsonView(Views.Summary.class)
+    @ResponseBody
+    @RequestMapping(value = "/add-artist-{id}", method = RequestMethod.POST)
+    public Artist mappingArtist(@PathVariable Integer id, @RequestParam Artist artist) {
+        Artist added = songService.addArtist(id, artist);
+        return added;
+    }
+
+    //------------------- Remove Artist From Song ---------------------------------------------
+    @ResponseBody
+    @RequestMapping(value = "/remove-artist-{id}", method = RequestMethod.POST)
+    public String removeMappedArtist(@PathVariable Integer id, @RequestParam Artist artist) {
+        Boolean removed = songService.removeArtist(id, artist);
+        return removed.toString();
+    }
+
     //------------------- Delete a Song ------------------------------------------------------
     @RequestMapping(value = "/delete-{id}", method = RequestMethod.GET)
     public String deleteSong(@PathVariable Integer id, Model model) {
@@ -169,5 +206,15 @@ public class SongManagementController {
     @ModelAttribute(value = "genres")
     private List<Genre> initializeGenres() {
         return genreService.findAll();
+    }
+
+    @ModelAttribute(value = "artists")
+    private List<Artist> initializeArtists() {
+        return artistService.findAll();
+    }
+
+    @ModelAttribute(value = "songArtists")
+    private List<Artist> getSongArtists() {
+        return artistService.findAll();
     }
 }

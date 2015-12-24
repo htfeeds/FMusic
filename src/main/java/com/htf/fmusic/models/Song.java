@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -59,10 +60,8 @@ public final class Song extends BaseEntity {
             @JoinColumn(name = "artist_id") })
     private Set<Artist> artists = new HashSet<Artist>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "song_playlist_mappings", joinColumns = { @JoinColumn(name = "song_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "playlist_id") })
-    private Set<Playlist> playlists = new HashSet<Playlist>();
+    @OneToMany(mappedBy = "song")
+    private Set<SongPlaylist> songPlaylists = new HashSet<SongPlaylist>();
 
     public Integer getId() {
         return id;
@@ -120,12 +119,12 @@ public final class Song extends BaseEntity {
         this.artists = artists;
     }
 
-    public void setPlaylists(Set<Playlist> playlists) {
-        this.playlists = playlists;
+    public Set<SongPlaylist> getSongPlaylists() {
+        return songPlaylists;
     }
 
-    public Set<Playlist> getPlaylists() {
-        return playlists;
+    public void setSongPlaylists(Set<SongPlaylist> songPlaylists) {
+        this.songPlaylists = songPlaylists;
     }
 
     public Genre getGenre() {
@@ -151,6 +150,18 @@ public final class Song extends BaseEntity {
         this.weekViews = newWeekViews;
         this.description = newDescription;
         this.genre = newGenre;
+    }
+
+    public Artist addArtist(Artist artist) {
+        if (this.artists.contains(artist)) {
+            return null;
+        }
+        this.artists.add(artist);
+        return artist;
+    }
+
+    public boolean removeArtist(Artist artist) {
+        return this.artists.remove(artist);
     }
 
     @Override

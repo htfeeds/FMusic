@@ -44,6 +44,7 @@
             <div class="tabs-container">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab-1">Playlist Info</a></li>
+                    <li><a data-toggle="tab" href="#tab-2">Songs mapping</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -87,7 +88,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Total Views</label>
                                         <div class="col-sm-10">
-                                            <form:input type="text" path="totalViews" class="form-control" placeholder="Total Views" />
+                                            <form:input type="number" path="totalViews" class="form-control" placeholder="Total Views" />
                                             <form:errors path="totalViews" cssClass="error" />
                                         </div>
                                     </div>
@@ -96,7 +97,10 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Artist</label>
                                         <div class="col-lg-4">
-                                            <form:select path="artist" items="${artists}" itemValue="id" itemLabel="name" class="form-control" />
+                                            <form:select path="artist" class="form-control">
+                                            	<form:option label="Select Artist" value="" />
+                                            	<form:options items="${artists}" itemLabel="name" itemValue="id" />
+                                            </form:select>
                                             <form:errors path="artist" cssClass="error" />
                                         </div>
                                     </div>
@@ -105,7 +109,10 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Genre</label>
                                         <div class="col-lg-4">
-                                            <form:select path="genre" items="${genres}" itemValue="id" itemLabel="name" class="form-control" />
+                                            <form:select path="genre" class="form-control">
+                                            	<form:option label="Select Genre" value="" />
+                                            	<form:options items="${genres}" itemValue="id" itemLabel="name" />
+                                            </form:select>
                                             <form:errors path="genre" cssClass="error" />
                                         </div>
                                     </div>
@@ -114,7 +121,10 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Playlist Type</label>
                                         <div class="col-lg-4">
-                                            <form:select path="playlistType" items="${pltypes}" itemValue="id" itemLabel="name" class="form-control" />
+                                            <form:select path="playlistType" class="form-control">
+                                            	<form:option label="Select PlaylistType" value="" />
+                                            	<form:options items="${plTypes}" itemValue="id" itemLabel="name" />
+                                            </form:select>
                                             <form:errors path="playlistType" cssClass="error" />
                                         </div>
                                     </div>
@@ -122,6 +132,185 @@
                                 
                             </form:form>
 
+                        </div>
+                    </div>
+                    
+                    <div id="tab-2" class="tab-pane">
+                        <div class="panel-body">
+                        
+                            <div class="table-responsive m-b">
+							    <table id="mappingArtistTable" class="table table-striped table-bordered">
+							        <thead>
+							            <tr>
+							                <th>Song Id</th>
+							                <th>Song Name</th>
+							                <th>Artists</th>
+							                <th>Order</th>
+							                <th>Action</th>
+							            </tr>
+							        </thead>
+							        <tbody>
+							        	<c:forEach items="${songPlaylists}" var="songPlaylist">
+								            <tr>
+								                <td>${songPlaylist.song.id}</td>
+								                <td>${songPlaylist.song.name}</td>
+							                	<td>${songPlaylist.song.artists}</td>
+								                <td>${songPlaylist.order}</td>
+								                <td><a><i class="fa fa-times text-navy"></i></a></td>
+								            </tr>
+                                        </c:forEach>
+							        </tbody>
+							    </table>
+							</div>
+							
+							<div class="title-action m-b">
+                            	<a onclick="fnClickAddRow();" href="javascript:void(0);" class="btn btn-primary ">Add new song</a>
+                           	</div>
+                        	<div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" data-page-size="15">
+                                    <thead>
+	                                    <tr>
+	                                    	<th></th>
+	                                        <th>Song Id</th>
+	                                        <th>Name</th>
+	                                        <th>Artists</th>
+	                                        <th>Total Views</th>
+	                                        <th>Action</th>
+	                                    </tr>
+                                    </thead>
+                                    <tbody>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td><input type="checkbox"  checked class="i-checks" name="input[]"></td>
+	                                        <td>20%</td>
+	                                        <td>Project This is example of project</td>
+	                                        <td><span class="pie">0.52/1.561</span></td>
+	                                        <td>Jul 14, 2013</td>
+	                                        <td><a href="#"><i class="fa fa-play text-navy"></i></a></td>
+	                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
                         </div>
                     </div>
 

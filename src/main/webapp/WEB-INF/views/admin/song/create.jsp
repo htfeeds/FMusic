@@ -58,7 +58,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Total Views</label>
                                         <div class="col-sm-10">
-                                            <form:input type="text" path="totalViews" class="form-control" placeholder="Total Views" />
+                                            <form:input type="number" path="totalViews" class="form-control" placeholder="Total Views" />
                                             <form:errors path="totalViews" cssClass="error" />
                                         </div>
                                     </div>
@@ -67,7 +67,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Week Views</label>
                                         <div class="col-sm-10">
-                                            <form:input type="text" path="weekViews" class="form-control" placeholder="Week Views" />
+                                            <form:input type="number" path="weekViews" class="form-control" placeholder="Week Views" />
                                             <form:errors path="weekViews" cssClass="error" />
                                         </div>
                                     </div>

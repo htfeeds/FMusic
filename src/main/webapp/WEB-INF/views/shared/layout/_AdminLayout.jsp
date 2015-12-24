@@ -18,11 +18,14 @@
     <title>
         <tiles:getAsString name="title" />
     </title>
-
+    
     <c:forEach var="css" items="${stylesheets}">
         <link rel="stylesheet" type="text/css" href="<c:url value="${css}"/>">
     </c:forEach>
 
+    <link rel="stylesheet" type="text/css" href="<c:url value="/static/css/animate.css"/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value="/static/css/style.css"/>">
+    
     <script src="<c:url value="/static/js/jquery-2.1.1.js"/>"></script>
     <script src="<c:url value="/static/js/bootstrap.min.js"/>"></script>
 

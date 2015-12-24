@@ -57,8 +57,11 @@
                                         <p class="form-control-static">
                                             <c:forEach items="${song.artists}" var="artist" varStatus="loop">
                                                 <c:out value="${artist.name}" />
-                                                <c:if test="${loop.index lt fn:length(song.artists) - 1}">
-                                                	<c:out value="ft"/>
+                                                <c:if test="${loop.index == 0 && loop.index lt fn:length(song.artists) - 1}">
+                                                	<c:out value="ft."/>
+                                                </c:if>
+                                                <c:if test="${loop.index > 0 && loop.index lt fn:length(song.artists) - 1}">
+                                                	<c:out value="&"/>
                                                 </c:if>
                                             </c:forEach>
                                         </p>
