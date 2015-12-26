@@ -309,16 +309,16 @@
     
     //Remove Artist function
     function removeArtist(artistId) {
-        $.post('remove-artist-${song.id}', {
-                artist: artistId
-            },
-            function(response) {
-                if (response == 'true') {
-                    loadArtists();
-                } else {
-                    alert('Failure! An error has occurred!');
-                }
-            });
+    	$.post('remove-artist-${song.id}', {
+            artist: artistId
+        },
+        function(response) {
+            if (response == 'true') {
+                loadArtists();
+            } else {
+                alert('Failure! An error has occurred!');
+            }
+        });
     }
     
     //Load Artists function

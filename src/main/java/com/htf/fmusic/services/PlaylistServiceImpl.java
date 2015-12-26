@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.htf.fmusic.exceptions.PlaylistNotFoundException;
 import com.htf.fmusic.models.Playlist;
+import com.htf.fmusic.models.Song;
+import com.htf.fmusic.models.SongPlaylist;
 import com.htf.fmusic.repositories.PlaylistRepository;
 
 /**
@@ -85,6 +87,26 @@ public class PlaylistServiceImpl implements PlaylistService {
 
         LOGGER.info("Updated the information of the playlist entry: {}", updated);
         return updated;
+    }
+
+    @Override
+    @Transactional
+    public Playlist addSongs(Integer id, List<Song> songs) {
+        Playlist playlist = findById(id);
+
+        for (Song song : songs) {
+            SongPlaylist sp = new SongPlaylist();
+            sp.setPlaylist(playlist);
+            sp.setSong(song);
+            sp.setOrder(0);
+
+            playlist.addSongPlaylist(sp);
+        }
+
+        repository.flush();
+
+        LOGGER.info("Updated the information of the playlist entry: {}", playlist);
+        return playlist;
     }
 
     private Playlist findPlaylistEntryById(Integer id) {

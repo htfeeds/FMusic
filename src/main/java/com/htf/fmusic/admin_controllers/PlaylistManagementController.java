@@ -1,6 +1,7 @@
 package com.htf.fmusic.admin_controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -17,17 +18,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.htf.fmusic.models.Artist;
 import com.htf.fmusic.models.Genre;
 import com.htf.fmusic.models.Playlist;
 import com.htf.fmusic.models.PlaylistType;
+import com.htf.fmusic.models.Song;
+import com.htf.fmusic.models.SongPlaylist;
+import com.htf.fmusic.models.Views;
 import com.htf.fmusic.services.ArtistService;
 import com.htf.fmusic.services.GenreService;
 import com.htf.fmusic.services.PlaylistService;
 import com.htf.fmusic.services.PlaylistTypeService;
+import com.htf.fmusic.services.SongPlaylistService;
+import com.htf.fmusic.services.SongService;
 import com.htf.fmusic.utils.FmusicFunctions;
 
 /**
@@ -46,16 +54,20 @@ public class PlaylistManagementController {
     private final PlaylistTypeService plTypeService;
     private final ArtistService artistService;
     private final GenreService genreService;
+    private final SongService songService;
+    private final SongPlaylistService songPlaylistService;
 
     @Autowired
     PlaylistManagementController(PlaylistService playlistService, PlaylistTypeService plTypeService, ArtistService artistService,
-            GenreService genreService, ServletContext servletContext) {
+            GenreService genreService, SongService songService, SongPlaylistService songPlaylistService, ServletContext servletContext) {
         LOGGER.info("Inside constructor of PlaylistManagementController.");
 
         this.playlistService = playlistService;
         this.plTypeService = plTypeService;
         this.artistService = artistService;
         this.genreService = genreService;
+        this.songService = songService;
+        this.songPlaylistService = songPlaylistService;
         this.ABSTRACT_PATH = "/static/img/playlist/";
         this.DIRECTORY = servletContext.getRealPath(ABSTRACT_PATH) + "/";
     }
@@ -140,6 +152,36 @@ public class PlaylistManagementController {
         return "redirect:list";
     }
 
+    //------------------- Get All Songs of Playlist --------------------------------------------
+    @JsonView(Views.ExtendedPublic.class)
+    @ResponseBody
+    @RequestMapping(value = "/get-songs-{id}", method = RequestMethod.GET)
+    public List<SongPlaylist> getSongs(@PathVariable Integer id) {
+        List<SongPlaylist> songPlaylists = songPlaylistService.findAll();
+        return songPlaylists;
+    }
+
+    //------------------- Mapping Song To Playlist----------------------------------------------
+    @JsonView(Views.ExtendedPublic.class)
+    @ResponseBody
+    @RequestMapping(value = "/add-songs-{id}", method = RequestMethod.POST)
+    public List<SongPlaylist> mappingSongs(@PathVariable Integer id, @RequestParam List<Song> songs) {
+        Playlist pl = playlistService.findById(id);
+
+        List<SongPlaylist> lsSongPlaylist = new ArrayList<SongPlaylist>();
+        for (Song song : songs) {
+            SongPlaylist sp = new SongPlaylist();
+            sp.setPlaylist(pl);
+            sp.setSong(song);
+            sp.setOrder(0);
+
+            lsSongPlaylist.add(sp);
+        }
+
+        List<SongPlaylist> songPlaylists = songPlaylistService.create(lsSongPlaylist);
+        return songPlaylists;
+    }
+
     //------------------- Delete a Playlist ---------------------------------------------------
     @RequestMapping(value = "/delete-{id}", method = RequestMethod.GET)
     public String deletePlaylist(@PathVariable Integer id, Model model) {
@@ -161,5 +203,10 @@ public class PlaylistManagementController {
     @ModelAttribute(value = "plTypes")
     private List<PlaylistType> initializePlaylistTypes() {
         return plTypeService.findAll();
+    }
+
+    @ModelAttribute(value = "songs")
+    private List<Song> initializeSongs() {
+        return songService.findAll();
     }
 }

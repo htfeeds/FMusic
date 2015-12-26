@@ -3,6 +3,7 @@ package com.htf.fmusic.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,6 +20,8 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 /**
  * @author HTFeeds
  */
@@ -27,41 +30,51 @@ import org.hibernate.validator.constraints.NotEmpty;
 public final class Song extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
+    @JsonView(Views.Summary.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "SONG_ID", unique = true, nullable = false)
     private Integer id;
 
+    @JsonView(Views.Summary.class)
     @NotEmpty
     @Column(name = "name", nullable = false)
     private String name;
 
+    @JsonView(Views.Summary.class)
     @Column(name = "url", nullable = true)
     private String url;
 
+    @JsonView(Views.Summary.class)
     @Column(name = "total_views")
     private Integer totalViews;
 
+    @JsonView(Views.Summary.class)
     @Column(name = "week_views")
     private Integer weekViews;
 
+    @JsonView(Views.Summary.class)
     @Column(name = "description")
     private String description;
 
+    @JsonView(Views.ExtendedPublic.class)
     @ManyToOne
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
+    @JsonView(Views.ExtendedPublic.class)
     @ManyToOne
     @JoinColumn(name = "lyric_id")
     private Lyric lyric;
 
+    @JsonView(Views.ExtendedPublic.class)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "song_artist_mappings", joinColumns = { @JoinColumn(name = "song_id") }, inverseJoinColumns = {
             @JoinColumn(name = "artist_id") })
     private Set<Artist> artists = new HashSet<Artist>();
 
-    @OneToMany(mappedBy = "song")
-    private Set<SongPlaylist> songPlaylists = new HashSet<SongPlaylist>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.song", cascade = CascadeType.ALL)
+    private Set<SongPlaylist> songPlaylists = new HashSet<SongPlaylist>(0);
 
     public Integer getId() {
         return id;

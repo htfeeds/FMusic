@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.htf.fmusic.enums.RoleType;
+import com.htf.fmusic.models.Playlist;
 import com.htf.fmusic.models.Role;
+import com.htf.fmusic.models.Song;
+import com.htf.fmusic.models.SongPlaylist;
 import com.htf.fmusic.models.User;
 
 /**
@@ -27,11 +30,19 @@ public class InitDbService {
 
     private final RoleService roleService;
     private final UserService userService;
+    private final SongService songService;
+    private final PlaylistService playlistService;
+    private final SongPlaylistService songPlaylistService;
 
     @Autowired
-    InitDbService(UserService userService, RoleService roleService) {
-        this.userService = userService;
+    public InitDbService(RoleService roleService, UserService userService, SongService songService, PlaylistService playlistService,
+            SongPlaylistService songPlaylistService) {
+        super();
         this.roleService = roleService;
+        this.userService = userService;
+        this.songService = songService;
+        this.playlistService = playlistService;
+        this.songPlaylistService = songPlaylistService;
     }
 
     @PostConstruct
@@ -71,8 +82,19 @@ public class InitDbService {
                 u.setEmail("fortest" + i + "@outlook.com");
 
                 userService.create(u);
+
             }
 
+            //Edit Playlist Mapping Songs
+            Song s = new Song();
+            s.setName("Hello");
+            songService.create(s);
+
+            Playlist pl = new Playlist();
+            pl.setName("Hello Album");
+            playlistService.create(pl);
+
+            
         }
     }
 }

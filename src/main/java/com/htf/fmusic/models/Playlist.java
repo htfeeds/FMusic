@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +17,8 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 /**
  * @author HTFeeds
  */
@@ -24,34 +27,42 @@ import org.hibernate.validator.constraints.NotEmpty;
 public final class Playlist extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
+    @JsonView(Views.Summary.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "PLAYLIST_ID", unique = true, nullable = false)
     private Integer id;
 
+    @JsonView(Views.Summary.class)
     @NotEmpty
     @Column(name = "name", nullable = false)
     private String name;
 
+    @JsonView(Views.Summary.class)
     @Column(name = "total_views")
     private Integer totalViews;
 
+    @JsonView(Views.Summary.class)
     @Column(name = "image_url")
     private String imageUrl;
 
+    @JsonView(Views.Summary.class)
     @ManyToOne
     @JoinColumn(name = "artist_id")
     private Artist artist;
 
+    @JsonView(Views.Summary.class)
     @ManyToOne
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
+    @JsonView(Views.Summary.class)
     @ManyToOne
     @JoinColumn(name = "playlist_type_id")
     private PlaylistType playlistType;
 
-    @OneToMany(mappedBy = "playlist")
-    private Set<SongPlaylist> songPlaylists = new HashSet<SongPlaylist>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.playlist")
+    private Set<SongPlaylist> songPlaylists = new HashSet<SongPlaylist>(0);
 
     public Integer getId() {
         return id;
@@ -123,6 +134,10 @@ public final class Playlist extends BaseEntity {
         this.artist = newArtist;
         this.genre = newGenre;
         this.playlistType = newPlaylistType;
+    }
+
+    public void addSongPlaylist(SongPlaylist songPlaylists) {
+        this.songPlaylists.add(songPlaylists);
     }
 
     @Override

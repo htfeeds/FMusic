@@ -1,5 +1,6 @@
 package com.htf.fmusic.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Lists;
 import com.htf.fmusic.exceptions.SongPlaylistNotFoundException;
 import com.htf.fmusic.models.SongPlaylist;
+import com.htf.fmusic.models.SongPlaylistId;
 import com.htf.fmusic.repositories.SongPlaylistRepository;
 
 /**
@@ -41,7 +44,7 @@ public class SongPlaylistServiceImpl implements SongPlaylistService {
 
     @Override
     @Transactional(readOnly = true)
-    public SongPlaylist findById(Integer id) {
+    public SongPlaylist findById(SongPlaylistId id) {
         LOGGER.info("Finding songPlaylist entry by using id: {}", id);
 
         SongPlaylist songPlaylistEntry = findSongPlaylistEntryById(id);
@@ -63,7 +66,19 @@ public class SongPlaylistServiceImpl implements SongPlaylistService {
 
     @Override
     @Transactional
-    public void delete(Integer id) {
+    public List<SongPlaylist> create(List<SongPlaylist> entities) {
+        LOGGER.info("Creating new {} songPlaylist entries", entities.size());
+
+        Iterable<SongPlaylist> created = repository.save(entities);
+        ArrayList<SongPlaylist> songPlaylists = Lists.newArrayList(created);
+        LOGGER.info("Created new {} songPlaylist entries", songPlaylists.size());
+
+        return songPlaylists;
+    }
+
+    @Override
+    @Transactional
+    public void delete(SongPlaylistId id) {
         LOGGER.info("Deleting a songPlaylist entry with id: {}", id);
 
         SongPlaylist deleted = findSongPlaylistEntryById(id);
@@ -78,12 +93,11 @@ public class SongPlaylistServiceImpl implements SongPlaylistService {
     public SongPlaylist update(SongPlaylist updatedEntry) {
         LOGGER.info("Updating the information of a songPlaylist entry by using information: {}", updatedEntry);
 
-        SongPlaylist updated = findSongPlaylistEntryById(updatedEntry.getId());
-        updated.update(updatedEntry.getSong(), updatedEntry.getPlaylist(), updatedEntry.getOrder());
+        //
         repository.flush();
 
-        LOGGER.info("Updated the information of the songPlaylist entry: {}", updated);
-        return updated;
+        //LOGGER.info("Updated the information of the songPlaylist entry: {}", updated);
+        return null;
     }
 
     private SongPlaylist findSongPlaylistEntryById(Integer id) {

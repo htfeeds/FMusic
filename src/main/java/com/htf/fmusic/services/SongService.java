@@ -23,5 +23,5 @@ public interface SongService extends BaseService<Song, Integer> {
     public Artist addArtist(Integer id, Artist artist);
 
     public boolean removeArtist(Integer id, Artist artist);
-    
+
 }

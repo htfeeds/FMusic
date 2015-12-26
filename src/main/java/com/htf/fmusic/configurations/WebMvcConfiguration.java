@@ -9,6 +9,7 @@ import com.htf.fmusic.converters.ArtistConverter;
 import com.htf.fmusic.converters.GenreConverter;
 import com.htf.fmusic.converters.PlaylistTypeConverter;
 import com.htf.fmusic.converters.RoleConverter;
+import com.htf.fmusic.converters.SongConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -46,6 +47,9 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Autowired
     RoleConverter roleConverter;
+
+    @Autowired
+    SongConverter songConverter;
 
     @Bean
     public StandardServletMultipartResolver multipartResolver() {
@@ -98,5 +102,6 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         registry.addConverter(playlistTypeConverter);
         registry.addConverter(genreConverter);
         registry.addConverter(roleConverter);
+        registry.addConverter(songConverter);
     }
 }

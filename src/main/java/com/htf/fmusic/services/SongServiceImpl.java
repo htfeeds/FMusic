@@ -36,6 +36,9 @@ public class SongServiceImpl implements SongService {
         LOGGER.info("Finding all song entries.");
 
         List<Song> songEntries = repository.findAll();
+        for (Song song : songEntries) {
+            Hibernate.initialize(song.getArtists());
+        }
         LOGGER.info("Found {} song entries", songEntries.size());
 
         return songEntries;
