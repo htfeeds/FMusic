@@ -85,16 +85,31 @@ public class InitDbService {
 
             }
 
+            for (int i = 0; i < 50; i++) {
+                Song s = new Song();
+                s.setName("Hello" + i);
+                songService.create(s);
+                songService.create(s);
+            }
+
             //Edit Playlist Mapping Songs
             Song s = new Song();
             s.setName("Hello");
             songService.create(s);
+            Song song = songService.create(s);
 
             Playlist pl = new Playlist();
             pl.setName("Hello Album");
             playlistService.create(pl);
+            Playlist playlist = playlistService.create(pl);
 
-            
+            SongPlaylist sp = new SongPlaylist();
+            sp.setSong(song);
+            sp.setPlaylist(playlist);
+            sp.setOrder(0);
+
+            songPlaylistService.create(sp);
         }
+
     }
 }

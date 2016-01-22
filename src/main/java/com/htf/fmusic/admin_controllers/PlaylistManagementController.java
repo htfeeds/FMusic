@@ -35,7 +35,6 @@ import com.htf.fmusic.services.GenreService;
 import com.htf.fmusic.services.PlaylistService;
 import com.htf.fmusic.services.PlaylistTypeService;
 import com.htf.fmusic.services.SongPlaylistService;
-import com.htf.fmusic.services.SongService;
 import com.htf.fmusic.utils.FmusicFunctions;
 
 /**
@@ -54,19 +53,17 @@ public class PlaylistManagementController {
     private final PlaylistTypeService plTypeService;
     private final ArtistService artistService;
     private final GenreService genreService;
-    private final SongService songService;
     private final SongPlaylistService songPlaylistService;
 
     @Autowired
     PlaylistManagementController(PlaylistService playlistService, PlaylistTypeService plTypeService, ArtistService artistService,
-            GenreService genreService, SongService songService, SongPlaylistService songPlaylistService, ServletContext servletContext) {
+            GenreService genreService, SongPlaylistService songPlaylistService, ServletContext servletContext) {
         LOGGER.info("Inside constructor of PlaylistManagementController.");
 
         this.playlistService = playlistService;
         this.plTypeService = plTypeService;
         this.artistService = artistService;
         this.genreService = genreService;
-        this.songService = songService;
         this.songPlaylistService = songPlaylistService;
         this.ABSTRACT_PATH = "/static/img/playlist/";
         this.DIRECTORY = servletContext.getRealPath(ABSTRACT_PATH) + "/";
@@ -152,19 +149,17 @@ public class PlaylistManagementController {
         return "redirect:list";
     }
 
-    //------------------- Get All Songs of Playlist --------------------------------------------
-    @JsonView(Views.ExtendedPublic.class)
-    @ResponseBody
-    @RequestMapping(value = "/get-songs-{id}", method = RequestMethod.GET)
-    public List<SongPlaylist> getSongs(@PathVariable Integer id) {
-        List<SongPlaylist> songPlaylists = songPlaylistService.findAll();
-        return songPlaylists;
+    //------------------- Mapping Song To Playlist----------------------------------------------
+    @RequestMapping(value = "/{id}/AddSongs", method = RequestMethod.GET)
+    public String mappingSongs(@PathVariable Integer id, Model model) {
+        Playlist playlist = playlistService.findById(id);
+        model.addAttribute("playlist", playlist);
+        return "admin/playlist/list_song";
     }
 
-    //------------------- Mapping Song To Playlist----------------------------------------------
-    @JsonView(Views.ExtendedPublic.class)
+    @JsonView(Views.Summary.class)
     @ResponseBody
-    @RequestMapping(value = "/add-songs-{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/AddSongs", method = RequestMethod.POST)
     public List<SongPlaylist> mappingSongs(@PathVariable Integer id, @RequestParam List<Song> songs) {
         Playlist pl = playlistService.findById(id);
 
@@ -180,6 +175,34 @@ public class PlaylistManagementController {
 
         List<SongPlaylist> songPlaylists = songPlaylistService.create(lsSongPlaylist);
         return songPlaylists;
+    }
+
+    //------------------- Get All Songs of Playlist --------------------------------------------
+    @JsonView(Views.ExtendedPublic.class)
+    @ResponseBody
+    @RequestMapping(value = "/{id}/GetSongPlaylists", method = RequestMethod.GET)
+    public List<SongPlaylist> getSongs(@PathVariable Integer id) {
+        Playlist playlist = playlistService.findById(id);
+        List<SongPlaylist> songPlaylists = songPlaylistService.findByPlaylist(playlist);
+        return songPlaylists;
+    }
+
+    //------------------- Edit order of SongPlaylist--------------------------------------------
+    @JsonView(Views.Summary.class)
+    @ResponseBody
+    @RequestMapping(value = "/{id}/UpdateSongPlaylist-{songPlaylistId}", method = RequestMethod.POST)
+    public SongPlaylist changeSongOrder(@PathVariable Integer id, @PathVariable Integer songPlaylistId, @RequestParam Integer order) {
+        SongPlaylist sp = songPlaylistService.changeOrder(songPlaylistId, order);
+        return sp;
+    }
+
+    //------------------- Remove Song From Playlist---------------------------------------------
+    @JsonView(Views.Summary.class)
+    @ResponseBody
+    @RequestMapping(value = "/{id}/RemoveSongPlaylist-{songPlaylistId}", method = RequestMethod.GET)
+    public SongPlaylist removeMappedSong(@PathVariable Integer id, @PathVariable Integer songPlaylistId) {
+        SongPlaylist sp = songPlaylistService.remove(songPlaylistId);
+        return sp;
     }
 
     //------------------- Delete a Playlist ---------------------------------------------------
@@ -203,10 +226,5 @@ public class PlaylistManagementController {
     @ModelAttribute(value = "plTypes")
     private List<PlaylistType> initializePlaylistTypes() {
         return plTypeService.findAll();
-    }
-
-    @ModelAttribute(value = "songs")
-    private List<Song> initializeSongs() {
-        return songService.findAll();
     }
 }

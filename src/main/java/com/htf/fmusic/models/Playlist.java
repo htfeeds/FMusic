@@ -61,7 +61,7 @@ public final class Playlist extends BaseEntity {
     @JoinColumn(name = "playlist_type_id")
     private PlaylistType playlistType;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.playlist")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "playlist")
     private Set<SongPlaylist> songPlaylists = new HashSet<SongPlaylist>(0);
 
     public Integer getId() {

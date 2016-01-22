@@ -73,7 +73,7 @@ public final class Song extends BaseEntity {
             @JoinColumn(name = "artist_id") })
     private Set<Artist> artists = new HashSet<Artist>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.song", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "song", cascade = CascadeType.ALL)
     private Set<SongPlaylist> songPlaylists = new HashSet<SongPlaylist>(0);
 
     public Integer getId() {

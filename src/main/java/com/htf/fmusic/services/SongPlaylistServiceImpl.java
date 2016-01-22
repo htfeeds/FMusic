@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 import com.htf.fmusic.exceptions.SongPlaylistNotFoundException;
+import com.htf.fmusic.models.Playlist;
 import com.htf.fmusic.models.SongPlaylist;
-import com.htf.fmusic.models.SongPlaylistId;
 import com.htf.fmusic.repositories.SongPlaylistRepository;
 
 /**
@@ -44,13 +45,28 @@ public class SongPlaylistServiceImpl implements SongPlaylistService {
 
     @Override
     @Transactional(readOnly = true)
-    public SongPlaylist findById(SongPlaylistId id) {
+    public SongPlaylist findById(Integer id) {
         LOGGER.info("Finding songPlaylist entry by using id: {}", id);
 
         SongPlaylist songPlaylistEntry = findSongPlaylistEntryById(id);
         LOGGER.info("Found songPlaylist entry: {}", songPlaylistEntry);
 
         return songPlaylistEntry;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SongPlaylist> findByPlaylist(Playlist playlist) {
+        LOGGER.info("Finding all songPlaylist entries by using playlist: {}", playlist);
+
+        List<SongPlaylist> lsSongPlaylist = repository.findByPlaylist(playlist);
+        LOGGER.info("Found songPlaylist entries: {}", lsSongPlaylist);
+
+        for (SongPlaylist sp : lsSongPlaylist) {
+            Hibernate.initialize(sp.getSong().getArtists());
+        }
+
+        return lsSongPlaylist;
     }
 
     @Override
@@ -78,7 +94,7 @@ public class SongPlaylistServiceImpl implements SongPlaylistService {
 
     @Override
     @Transactional
-    public void delete(SongPlaylistId id) {
+    public void delete(Integer id) {
         LOGGER.info("Deleting a songPlaylist entry with id: {}", id);
 
         SongPlaylist deleted = findSongPlaylistEntryById(id);
@@ -86,6 +102,20 @@ public class SongPlaylistServiceImpl implements SongPlaylistService {
 
         repository.delete(deleted);
         LOGGER.info("Deleted user entry: {}");
+    }
+
+    @Override
+    @Transactional
+    public SongPlaylist remove(Integer id) {
+        LOGGER.info("Deleting a songPlaylist entry with id: {}", id);
+
+        SongPlaylist deleted = findSongPlaylistEntryById(id);
+        LOGGER.debug("Found songPlaylist entry: {}", deleted);
+
+        repository.delete(deleted);
+        LOGGER.info("Deleted user entry: {}");
+
+        return deleted;
     }
 
     @Override
@@ -98,6 +128,19 @@ public class SongPlaylistServiceImpl implements SongPlaylistService {
 
         //LOGGER.info("Updated the information of the songPlaylist entry: {}", updated);
         return null;
+    }
+
+    @Override
+    @Transactional
+    public SongPlaylist changeOrder(Integer songPlaylistId, Integer order) {
+        LOGGER.info("Updating the order of a songPlaylist entry id: {}", songPlaylistId);
+
+        SongPlaylist sp = findById(songPlaylistId);
+        sp.updateOrder(order);
+        repository.flush();
+
+        LOGGER.info("Updated the order of the songPlaylist entry: {}", sp);
+        return sp;
     }
 
     private SongPlaylist findSongPlaylistEntryById(Integer id) {

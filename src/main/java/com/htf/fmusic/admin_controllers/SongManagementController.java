@@ -169,7 +169,7 @@ public class SongManagementController {
     //------------------- Get Artists of Song -------------------------------------------------
     @JsonView(Views.Summary.class)
     @ResponseBody
-    @RequestMapping(value = "/get-artists-{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/GetArtists", method = RequestMethod.GET)
     public Set<Artist> getMappedArtists(@PathVariable Integer id) {
         Song song = songService.findById(id);
         if (song != null) {
@@ -181,7 +181,7 @@ public class SongManagementController {
     //------------------- Mapping Artist To Song------------------------------------------------
     @JsonView(Views.Summary.class)
     @ResponseBody
-    @RequestMapping(value = "/add-artist-{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/AddArtist", method = RequestMethod.POST)
     public Artist mappingArtist(@PathVariable Integer id, @RequestParam Artist artist) {
         Artist added = songService.addArtist(id, artist);
         return added;
@@ -189,7 +189,7 @@ public class SongManagementController {
 
     //------------------- Remove Artist From Song ---------------------------------------------
     @ResponseBody
-    @RequestMapping(value = "/remove-artist-{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/RemoveArtist", method = RequestMethod.POST)
     public String removeMappedArtist(@PathVariable Integer id, @RequestParam Artist artist) {
         Boolean removed = songService.removeArtist(id, artist);
         return removed.toString();

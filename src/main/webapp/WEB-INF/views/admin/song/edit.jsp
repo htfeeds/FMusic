@@ -215,7 +215,7 @@
 								                <td>${artist.realName}</td>
 								                <td>${artist.sex}</td>
 								                <td>${artist.country}</td>
-								                <td><a href="javascript:removeArtist(${artist.id})"><i class="fa fa-times text-navy"></i></a></td>
+								                <td><a class="btn btn-primary btn-xs btn-outline" href="javascript:removeArtist(${artist.id})">Delete</a></td>
 								            </tr>
                                         </c:forEach>
 							        </tbody>
@@ -291,7 +291,7 @@
         $('#mappingArtistForm').submit(function(e) {
             if ($('#artistSelect').val() != '') {
 
-                $.post('add-artist-${song.id}', {
+                $.post('${song.id}/AddArtist', {
                     artist: $('#artistSelect').val()
                 }, function(artist) {
                     if (artist != null) {
@@ -309,7 +309,7 @@
     
     //Remove Artist function
     function removeArtist(artistId) {
-    	$.post('remove-artist-${song.id}', {
+    	$.post('${song.id}/RemoveArtist', {
             artist: artistId
         },
         function(response) {
@@ -323,7 +323,7 @@
     
     //Load Artists function
     function loadArtists() {
-    	$.get('get-artists-${song.id}', function(artists) {
+    	$.get('${song.id}/GetArtists', function(artists) {
     		
      		$('#mappingArtistTable').find('tbody').remove();
      		
@@ -334,7 +334,7 @@
     			row += '<td>' + artists[i].realName + '</td>';
     			row += '<td>' + artists[i].sex + '</td>';
     			row += '<td>' + artists[i].country + '</td>';
-    			row += '<td><a href="javascript:removeArtist(' + artists[i].id + ');"><i class="fa fa-times text-navy"></i></a></td>';
+    			row += '<td><a class="btn btn-primary btn-xs btn-outline" href="javascript:removeArtist(' + artists[i].id + ');">Delete</a></td>';
     			row += '</tr>';
     	 		$('#mappingArtistTable').append(row);
      		}

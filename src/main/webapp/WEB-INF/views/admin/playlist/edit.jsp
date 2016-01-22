@@ -17,6 +17,9 @@
     	margin-bottom: 0;
     	color: #ed5565;
     }
+    .jsgrid-table {
+    	width: 100%!important;
+	}
 </style>
 
 <div class="row wrapper border-bottom white-bg page-heading">
@@ -137,72 +140,12 @@
                     
                     <div id="tab-2" class="tab-pane">
                         <div class="panel-body">
-                        
-                            <div class="table-responsive m-b">
-							    <table id="mappingArtistTable" class="table table-striped table-bordered">
-							        <thead>
-							            <tr>
-							                <th>Song Id</th>
-							                <th>Song Name</th>
-							                <th>Artists</th>
-							                <th>Order</th>
-							                <th>Action</th>
-							            </tr>
-							        </thead>
-							        <tbody>
-							        	<c:forEach items="${songPlaylists}" var="songPlaylist">
-								            <tr>
-								                <td>${songPlaylist.song.id}</td>
-								                <td>${songPlaylist.song.name}</td>
-							                	<td>${songPlaylist.song.artists}</td>
-								                <td>${songPlaylist.order}</td>
-								                <td><a><i class="fa fa-times text-navy"></i></a></td>
-								            </tr>
-                                        </c:forEach>
-							        </tbody>
-							    </table>
-							</div>
-							
-							<div class="title-action m-b">
-                            	<a onclick="fnClickAddSongs();" href="javascript:void(0);" class="btn btn-primary ">Add new song</a>
+
+                            <div id="jsGrid"></div>
+                        	<div class="m-t">
+                            	<button type="button" id="btnAddSong" class="btn btn-primary">Add new song</button>
                            	</div>
-                        	<div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" data-page-size="15">
-                                    <thead>
-	                                    <tr>
-	                                    	<th></th>
-	                                        <th>Song Id</th>
-	                                        <th>Name</th>
-	                                        <th>Artists</th>
-	                                        <th>Total Views</th>
-	                                        <th>Action</th>
-	                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    	<c:forEach var="song" items="${songs}">
-                                    		<tr>
-                                    			<td><input type="checkbox" class="i-checks songs" name="songs[]" value="${song.id}"></td>
-                                    			<td>${song.id}</td>
-                                    			<td>${song.name}</td>
-                                    			<td>
-                                    				<c:forEach items="${song.artists}" var="artist" varStatus="loop">
-                                                		<c:out value="${artist.name}" />
-                                                		<c:if test="${loop.index == 0 && loop.index lt fn:length(song.artists) - 1}">
-                                                			<c:out value="ft."/>
-                                                		</c:if>
-                                                		<c:if test="${loop.index > 0 && loop.index lt fn:length(song.artists) - 1}">
-                                                			<c:out value="&"/>
-                                                		</c:if>
-                                            		</c:forEach>
-												</td>
-                                    			<td>${song.totalViews}</td>
-                                    			<td><a><i class="fa fa-play text-navy"></i></a></td>	
-                                    		</tr>
-                                    	</c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                            
+
                         </div>
                     </div>
 
@@ -252,22 +195,68 @@
         
     });
     
-    function fnClickAddSongs() {
-    	var songs = [];
-    	$('.songs:checked').each(function(i, e) {
-    	    songs.push($(this).val());
-    	});
-    	
-    	$.post('add-songs-${playlist.id}', {
-            songs: songs.join()
-        },
-        function(response) {
-            if (response != null) {
-            	alert(JSON.stringify(response));
-            } else {
-                alert('Failure! An error has occurred!');
-            }
+    $(function() {
+
+        $("#jsGrid").jsGrid({
+            height: "320px",
+            width: "100%",
+            editing: true,
+            sorting: true,
+            autoload: true,
+            deleteConfirm: "Do you really want to remove this song?",
+            controller: db,
+            fields: [
+				{ name: "id", type: "text", editing: false, visible: false },                     
+                { name: "song.id", type: "text", width: 35, align: "center", title: "Song ID", editing: false, visible: false },
+                { name: "song.name", type: "text", width: 200, align: "left", title: "Name", editing: false },
+                { name: "song.artists", type: "text", width: 150, align: "center", title: "Artists", editing: false,
+                  itemTemplate: function(value) {
+                      var artists = "";
+                      for (var i = 0; i < value.length; i++) {
+                          if (i == 0) {
+                              artists += value[i].name;
+                          } else if (i == 1) {
+                              artists += " ft. " + value[i].name;
+                          } else if (i > 1) {
+                              artists += " and " + value[i].name;
+                          }
+                      }
+                      return artists;
+                  }
+				},
+                { name: "order", type: "number", width: 50, align: "center", title: "Order", editing: true },
+                { type: "control" }
+            ]
         });
-    	
-    }
+        
+        $("#btnAddSong").click(function() {
+        	mywindow = window.open("${playlist.id}/AddSongs", "mywindow", "menubar=1,resizable=1,width=800,height=800");
+       	    mywindow.onbeforeunload = function(){
+       	    	//need to reload data of jsgrid
+    		};
+        });
+
+    });
+    
+   	var db = {
+   	    loadData: function(filter) {
+   	        return $.ajax({
+   	            type: "GET",
+   	            url: "${playlist.id}/GetSongPlaylists",
+   	            data: filter,
+   	            dataType: "json"
+   	        })
+   	    },
+
+   	    updateItem: function(item) {
+   	        $.post("${playlist.id}/UpdateSongPlaylist-" + item.id, {
+   	            order: item.order
+   	        });
+   	    },
+
+   	    deleteItem: function(item) {
+   	        return $.get("${playlist.id}/RemoveSongPlaylist-" + item.id);
+   	    }
+   	};
+        
 </script>
