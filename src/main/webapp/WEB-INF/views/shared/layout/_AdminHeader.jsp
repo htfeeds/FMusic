@@ -28,7 +28,7 @@
                 </a>
             </li>
 
-            <li><a href="javascript:formSubmit()"><i class="fa fa-sign-out"></i>Log out</a></li>
+            <li><a href="javascript:logout()"><i class="fa fa-sign-out"></i>Log out</a></li>
         </ul>
 
     </nav>

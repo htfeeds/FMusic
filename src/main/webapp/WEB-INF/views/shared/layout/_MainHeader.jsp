@@ -5,34 +5,61 @@
 
 <tilesx:useAttribute name="current" />
 
-<div class="navbar-wrapper">
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-                    <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href='<spring:url value="/"/>'>FMUSIC</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="${current == 'home' ? 'active' : ''}"><a href='<spring:url value="/"/>'>Home</a></li>
-                    <li class="${current == 'songs' ? 'active' : ''}"><a href='<spring:url value="/"/>'>Songs</a></li>
-                    <li class="${current == 'albums' ? 'active' : ''}"><a href='<spring:url value="/"/>'>Albums</a></li>
-                    <li class="${current == 'bxh' ? 'active' : ''}"><a href='<spring:url value="/"/>'>BXH</a></li>
-                    <li><a href='<spring:url value="/"/>'>Search</a></li>
-                    <security:authorize access="! isAuthenticated()">
-                        <li><a data-toggle="modal" href="#login-form">Sign In/Up</a></li>
-                    </security:authorize>
-                    <security:authorize access="isAuthenticated()">
-                        <li class="${current == 'account' ? 'active' : ''}">
-                            <a href="#">
-                                <c:out value="${loginModel.fullname}" />
-                            </a>
-                        </li>
-                    </security:authorize>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</div>
+<!-- TOP-BAR -->
+<div id="top-bar">
+	<div class="container">
+		<div id="site-description">Welcome to FMUSIC site.</div>
+		<ul id="top-links">
+			<security:authorize access="! isAuthenticated()">
+            	<li class="login"><a href="#" role="button" data-toggle="modal" data-target="#login-modal"><i class="fa fa-lock"></i><span>Login / Register</span></a></li>
+			</security:authorize>
+            <security:authorize access="isAuthenticated()">
+            	<li class="show_user_box dropdown">
+					<a href="#" class="link_user">
+						<c:if test="${not empty loginModel.imageUrl}">
+							<img class="avt" src="<c:url value="${loginModel.imageUrl}" />"><span>HTFeeds</span>
+						</c:if>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="#">Profile</a></li>
+						<li><a href="#">Account</a></li>
+						<li><a href="javascript:logout()">Log out</a></li>
+					</ul>
+				</li>
+            </security:authorize>
+			<li class="search">
+				<input type="text" value="" name="search" id="top-search" />		
+				<a href="#"></a>
+			</li>
+		</ul><!-- end top-links -->
+	</div><!-- end container -->
+</div> <!-- end top-bar -->
+
+<header>
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container">
+			<!-- Logo and toggle for navigation on mobile devices -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="index.html"><img style="display:initial" src="<c:url value="/static/img/logo.png"/>" alt="FMUSIC" /></a>
+			</div>
+
+			<!-- Navigation links -->
+			<div class="collapse navbar-collapse" id="main-nav">
+				<ul class="nav navbar-nav navbar-right">
+					<li class="${current == 'home' ? 'current' : ''}"><a href="index.html">Home</a></li>
+					<li><a href="contact.html">Song</a></li>
+					<li><a href="albums.html">Album</a></li>
+					<li><a href="contact.html">Top 10</a></li>
+					<li><a href="artists.html">Artist</a></li>
+					<li><a href="contact.html">Contact Us</a></li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div>
+	</nav>
+</header>

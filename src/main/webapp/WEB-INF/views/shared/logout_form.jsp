@@ -7,7 +7,7 @@
 </form>
 
 <script>
-	function formSubmit() {
+	function logout() {
 		document.getElementById("logoutForm").submit();
 	}
 </script>
