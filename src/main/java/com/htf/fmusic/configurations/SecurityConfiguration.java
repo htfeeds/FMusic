@@ -21,6 +21,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 
 import com.htf.fmusic.common.AjaxAuthenticationFailureHandler;
 import com.htf.fmusic.common.AjaxAuthenticationSuccessHandler;
+import com.htf.fmusic.common.CustomLogoutSuccessHandler;
 
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 
@@ -46,6 +47,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     AjaxAuthenticationFailureHandler ajaxLoginFailureHandler;
 	
 	@Autowired
+	CustomLogoutSuccessHandler logoutSuccessHandler;
+	
+	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);
 		auth.authenticationProvider(authenticationProvider());
@@ -55,12 +59,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
       http.authorizeRequests()
         .antMatchers("/", "/home").permitAll()
-        .antMatchers("/login").access("isAnonymous()")
+        //.antMatchers("/login").access("isAnonymous()")
         .antMatchers("/admin**").access("hasRole('ADMIN')")
         .antMatchers("/admin/**").access("hasRole('ADMIN')")
-        .and().formLogin().loginPage("/login").successHandler(ajaxLoginSuccessHandler).failureHandler(ajaxLoginFailureHandler)
+        .and().formLogin().loginPage("/login").successHandler(ajaxLoginSuccessHandler).failureHandler(ajaxLoginFailureHandler).permitAll()
         .and().rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(864000)
-        .and().logout().deleteCookies("JSESSIONID").logoutSuccessUrl("/")
+        .and().logout().deleteCookies("JSESSIONID").logoutSuccessHandler(logoutSuccessHandler)
         .and().csrf()
         .and().exceptionHandling().accessDeniedPage("/access_denied");
     }

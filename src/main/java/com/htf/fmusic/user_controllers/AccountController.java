@@ -1,6 +1,5 @@
 package com.htf.fmusic.user_controllers;
 
-import java.security.Principal;
 import java.util.Locale;
 
 import javax.validation.Valid;
@@ -96,12 +95,9 @@ public class AccountController {
         return "shared/_LogoutFormPartial";
     }
 
-    @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
-    public String accessDeniedPage(Model model, Principal principal) {
-        LOGGER.info("Access denied, username: {}", principal.getName());
-        model.addAttribute("user", principal.getName());
-
-        return "shared/access_denied";
+    @RequestMapping(value = "/access_denied", method = RequestMethod.GET)
+    public String accessDeniedPage(Model model) {
+        return "shared/401";
     }
 
 }

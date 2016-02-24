@@ -14,20 +14,24 @@
             	<li class="login"><a href="" role="button" data-toggle="modal" data-target="#login-modal"><i class="fa fa-lock"></i><span>Login</span></a></li>
 				<li class="register"><a href="<c:url value="/register"/>"><i class="fa fa-user"></i><span>Register</span></a></li>
 			</security:authorize>
-            <security:authorize access="isAuthenticated()">
-            	<li class="show_user_box dropdown">
-					<a href="#" data-toggle="dropdown" class="link_user">
-						<c:if test="${not empty loginModel.imageUrl}">
-							<img class="avt" src="<c:url value="${loginModel.imageUrl}" />"><span>HTFeeds</span>
-						</c:if>
-					</a>
-					<ul class="dropdown-menu animated fadeInRight">
-						<li><a href="#">Profile</a></li>
-						<li><a href="#">Account</a></li>
-						<li><a href="javascript:logout()">Log out</a></li>
-					</ul>
-				</li>
-            </security:authorize>
+			<security:authorize access="isAuthenticated()">
+			    <li class="show_user_box dropdown">
+			       <a href="#" data-toggle="dropdown" class="link_user"> 
+			          <c:if test="${not empty loginModel.imageUrl}">
+			             <img class="avt" src="<c:url value="${loginModel.imageUrl}" />">
+			          </c:if>
+			          <c:if test="${empty loginModel.imageUrl}">
+			             <img class="avt" src="<c:url value="/static/img/user/empty_avatar.jpg" />">
+			          </c:if>
+					  <span>${loginModel.fullname}</span>
+			       </a>
+			       <ul class="dropdown-menu animated fadeInRight">
+			          <li><a href="#">Profile</a></li>
+			          <li><a href="#">Account</a></li>
+			          <li><a href="javascript:logout()">Log out</a></li>
+			       </ul>
+			    </li>
+			</security:authorize>
 			<li class="search">
 				<input type="text" value="" name="search" id="top-search" />		
 				<a href="#"></a>

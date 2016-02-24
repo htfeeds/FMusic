@@ -39,8 +39,9 @@
 	<definition name="account/login" template="/WEB-INF/views/account/login.jsp"/>
 	<definition name="account/register" template="/WEB-INF/views/account/register.jsp"/>
 	<definition name="account/register_successful" template="/WEB-INF/views/account/register_successful.jsp"/>
-	<definition name="account/forgot_password" template="/WEB-INF/views/account/forgot_password.jsp"/>	
+	<definition name="account/forgot_password" template="/WEB-INF/views/account/forgot_password.jsp"/>
 	<definition name="shared/_UserLinkPartial" template="/WEB-INF/views/shared/_UserLinkPartial.jsp"/>
 	<definition name="shared/_LogoutFormPartial" template="/WEB-INF/views/shared/_LogoutFormPartial.jsp"/>
+	<definition name="shared/401" template="/WEB-INF/views/shared/401.jsp"/>	
 
 </tiles-definitions>

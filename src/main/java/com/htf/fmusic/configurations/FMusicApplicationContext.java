@@ -1,5 +1,6 @@
 package com.htf.fmusic.configurations;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,6 +15,7 @@ import com.htf.fmusic.common.ConstantDateTimeService;
 import com.htf.fmusic.common.CurrentTimeDateTimeService;
 import com.htf.fmusic.common.DateTimeService;
 import com.htf.fmusic.common.Profiles;
+import com.htf.fmusic.utils.WebInvocationPrivilegeEvaluatorUtil;
 
 /**
  * @author HTFeeds
@@ -61,5 +63,8 @@ public class FMusicApplicationContext {
     DateTimeService constantDateTimeService() {
         return new ConstantDateTimeService();
     }
+    
+    @Autowired
+    WebInvocationPrivilegeEvaluatorUtil wipe;
 
 }

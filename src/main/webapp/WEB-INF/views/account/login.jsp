@@ -37,10 +37,10 @@
 					<c:url var="loginUrl" value="/login" />
 					<form class="m-t" role="form" action="${loginUrl}" method="post">
 						<c:if test="${param.error != null}">
-							<p>Invalid username and password.</p>
+							<p class="text-danger">Invalid username and password.</p>
 						</c:if>
 						<c:if test="${param.logout != null}">
-							<p>You have been logged out.</p>
+							<p class="text-info">You have been logged out.</p>
 						</c:if>
 						<div class="form-group">
 							<input type="text" name="username" class="form-control" placeholder="Username" required>

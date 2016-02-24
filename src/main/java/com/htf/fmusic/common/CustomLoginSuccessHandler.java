@@ -22,9 +22,18 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomLoginSuccessHandler.class);
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    
+    public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
+        this.redirectStrategy = redirectStrategy;
+    }
+
+    protected RedirectStrategy getRedirectStrategy() {
+        return redirectStrategy;
+    }
 
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -56,14 +65,6 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         }
 
         return url;
-    }
-
-    public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
-        this.redirectStrategy = redirectStrategy;
-    }
-
-    protected RedirectStrategy getRedirectStrategy() {
-        return redirectStrategy;
     }
 
     private boolean isAdmin(List<String> roles) {

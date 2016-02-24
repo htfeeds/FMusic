@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class AjaxAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(AjaxAuthenticationFailureHandler.class);
+
+    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
+    public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
+        this.redirectStrategy = redirectStrategy;
+    }
+
+    protected RedirectStrategy getRedirectStrategy() {
+        return redirectStrategy;
+    }
 
     public AjaxAuthenticationFailureHandler() {
         LOGGER.info("Inside constructor of AjaxAuthenticationFailureHandler.");
@@ -29,7 +41,7 @@ public class AjaxAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
         if (RequestUtil.isAjaxRequest(request)) {
             RequestUtil.sendJsonResponse(response, "success", "false");
         } else {
-            super.onAuthenticationFailure(request, response, exception);
+            redirectStrategy.sendRedirect(request, response, "/login?error");
         }
     }
 
