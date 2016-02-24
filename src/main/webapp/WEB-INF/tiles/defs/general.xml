@@ -8,16 +8,16 @@
 		<put-attribute name="header" value="/WEB-INF/views/shared/layout/_MainHeader.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/views/shared/layout/_MainFooter.jsp" />
 		<put-list-attribute name="stylesheets">
-			<add-attribute value="/static/css/home/bootstrap.min.css" />
+			<add-attribute value="/static/css/bootstrap330.min.css" />
 			<add-attribute value="/static/font-awesome/css/font-awesome.css" />
 			<add-attribute value="/static/css/main.css" />
 			<add-attribute value="/static/css/responsive.css" />
+			<add-attribute value="/static/css/login-modal.css" />
+			<add-attribute value="/static/css/animate.css" />
 			<add-attribute value="/static/css/htfstyle.css" />
-			<add-attribute value="/static/css/home/login-modal.css" />
 		</put-list-attribute>
 		<put-list-attribute name="javascripts">
 			<add-attribute value="/static/js/scripts.js" />
-			<add-attribute value="/static/js/login-modal.js" />
 		</put-list-attribute>
 	</definition>
 
@@ -36,21 +36,11 @@
 		</put-list-attribute>
 	</definition>
 
-	<definition name="account/register" extends="layout.main">
-		<put-attribute name="bodyClass" value="fmusic gray-bg" />
-		<put-attribute name="title" value="Register  | FMusic" />
-		<put-attribute name="body" value="/WEB-INF/views/account/register.jsp" />
-		<put-attribute name="current" value="" cascade="true" />
-		<put-list-attribute name="javascripts" inherit="true">
-			<add-attribute value="/static/js/plugins/validate/jquery.validate.min.js" />
-		</put-list-attribute>
-	</definition>
-
-	<definition name="account/login" extends="layout.main">
-		<put-attribute name="bodyClass" value="fmusic gray-bg" />
-		<put-attribute name="title" value="Login | FMusic" />
-		<put-attribute name="body" value="/WEB-INF/views/account/login.jsp" />
-		<put-attribute name="current" value="" cascade="true" />
-	</definition>
+	<definition name="account/login" template="/WEB-INF/views/account/login.jsp"/>
+	<definition name="account/register" template="/WEB-INF/views/account/register.jsp"/>
+	<definition name="account/register_successful" template="/WEB-INF/views/account/register_successful.jsp"/>
+	<definition name="account/forgot_password" template="/WEB-INF/views/account/forgot_password.jsp"/>	
+	<definition name="shared/_UserLinkPartial" template="/WEB-INF/views/shared/_UserLinkPartial.jsp"/>
+	<definition name="shared/_LogoutFormPartial" template="/WEB-INF/views/shared/_LogoutFormPartial.jsp"/>
 
 </tiles-definitions>

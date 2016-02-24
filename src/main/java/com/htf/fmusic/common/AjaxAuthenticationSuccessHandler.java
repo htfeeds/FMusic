@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,21 +22,38 @@ import org.springframework.stereotype.Component;
  * @author HTFeeds
  */
 @Component
-public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomLoginSuccessHandler.class);
+public class AjaxAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AjaxAuthenticationSuccessHandler.class);
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
+    public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
+        this.redirectStrategy = redirectStrategy;
+    }
+
+    protected RedirectStrategy getRedirectStrategy() {
+        return redirectStrategy;
+    }
+
+    public AjaxAuthenticationSuccessHandler() {
+        LOGGER.info("Inside constructor of AjaxAuthenticationSuccessHandler.");
+    }
+
     @Override
-    protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        String targetUrl = determineTargetUrl(authentication);
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+            throws IOException, ServletException {
+        if (RequestUtil.isAjaxRequest(request)) {
+            RequestUtil.sendJsonResponse(response, "success", "true");
+        } else {
+            String targetUrl = determineTargetUrl(authentication);
 
-        if (response.isCommitted()) {
-            LOGGER.info("Can't redirect");
-            return;
+            if (response.isCommitted()) {
+                LOGGER.info("Can't redirect");
+                return;
+            }
+
+            redirectStrategy.sendRedirect(request, response, targetUrl);
         }
-
-        redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
     protected String determineTargetUrl(Authentication authentication) {
@@ -56,14 +74,6 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         }
 
         return url;
-    }
-
-    public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
-        this.redirectStrategy = redirectStrategy;
-    }
-
-    protected RedirectStrategy getRedirectStrategy() {
-        return redirectStrategy;
     }
 
     private boolean isAdmin(List<String> roles) {

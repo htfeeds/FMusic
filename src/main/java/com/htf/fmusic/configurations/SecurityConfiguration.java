@@ -18,6 +18,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import com.htf.fmusic.common.AjaxAuthenticationFailureHandler;
+import com.htf.fmusic.common.AjaxAuthenticationSuccessHandler;
+
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 
 /**
@@ -35,8 +39,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Qualifier("customUserDetailsService")
 	UserDetailsService userDetailsService;
 
-	//@Autowired
-	//CustomLoginSuccessHandler loginSuccessHandler;
+	@Autowired
+	AjaxAuthenticationSuccessHandler ajaxLoginSuccessHandler;
+	
+	@Autowired
+    AjaxAuthenticationFailureHandler ajaxLoginFailureHandler;
 	
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
@@ -51,11 +58,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers("/login").access("isAnonymous()")
         .antMatchers("/admin**").access("hasRole('ADMIN')")
         .antMatchers("/admin/**").access("hasRole('ADMIN')")
-        .and().formLogin().loginPage("/login")//.successHandler(loginSuccessHandler)
+        .and().formLogin().loginPage("/login").successHandler(ajaxLoginSuccessHandler).failureHandler(ajaxLoginFailureHandler)
         .and().rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(864000)
         .and().logout().deleteCookies("JSESSIONID").logoutSuccessUrl("/")
         .and().csrf()
-        .and().exceptionHandling().accessDeniedPage("/Access_Denied");
+        .and().exceptionHandling().accessDeniedPage("/access_denied");
     }
 
     @Override

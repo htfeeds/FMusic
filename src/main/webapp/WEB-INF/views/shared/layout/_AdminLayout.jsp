@@ -12,6 +12,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="icon" type="image/png" href="<c:url value="/static/favicon.png" />" />
     <meta name="description" content="EProject Sem 4 - Softech Aptech, Da Nang">
     <meta name="author" content="HTFeeds">
 
@@ -45,7 +46,7 @@
 
     </div>
 
-    <%@ include file="../logout_form.jsp"%>
+    <%@ include file="../_LogoutFormPartial.jsp"%>
 
 	<c:forEach var="script" items="${javascripts}">
 		<script src="<c:url value="${script}"/>"></script>

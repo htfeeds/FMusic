@@ -7,7 +7,7 @@
    #   Last Change   : 08/04/2015
    #
    ##################################################################### */
-   
+
 $(function() {
     
     var $formLogin = $('#login-form');
@@ -17,8 +17,55 @@ $(function() {
     var $modalAnimateTime = 300;
     var $msgAnimateTime = 150;
     var $msgShowTime = 2000;
-
     
+    $("form").submit(function (e) {
+        switch(this.id) {
+            case "login-form":
+            	e.preventDefault();
+            	$.ajax({
+            	    url: '/login/submit',
+            	    type: "POST",
+            	    data: $("#login-form").serialize(),
+            	    dataType: 'json',
+            	    success: function(result) {
+            	        if (result.success) {            	        	
+            	        	$(".login").remove();
+            	        	$.get("/get-user-link", function(data) {
+            	        		$("#top-links").prepend(data);
+            	        	});
+            	        	$("#login-modal").modal("hide");
+            	        } else {
+            	        	msgChange($('#div-login-msg'), $('#icon-login-msg'), $('#text-login-msg'), "error", "glyphicon-remove", "Invalid username or password.");
+            	        }
+            	    }
+            	});
+            	return false;
+                break;
+            case "lost-form":
+                var $ls_email=$('#lost_email').val();
+                if ($ls_email == "ERROR") {
+                    msgChange($('#div-lost-msg'), $('#icon-lost-msg'), $('#text-lost-msg'), "error", "glyphicon-remove", "Send error");
+                } else {
+                    msgChange($('#div-lost-msg'), $('#icon-lost-msg'), $('#text-lost-msg'), "success", "glyphicon-ok", "Send OK");
+                }
+                return false;
+                break;
+            case "register-form":
+                var $rg_username=$('#register_username').val();
+                var $rg_email=$('#register_email').val();
+                var $rg_password=$('#register_password').val();
+                if ($rg_username == "ERROR") {
+                    msgChange($('#div-register-msg'), $('#icon-register-msg'), $('#text-register-msg'), "error", "glyphicon-remove", "Register error");
+                } else {
+                    msgChange($('#div-register-msg'), $('#icon-register-msg'), $('#text-register-msg'), "success", "glyphicon-ok", "Register OK");
+                }
+                return false;
+                break;
+            default:
+                return false;
+        }
+        return false;
+    });
     
     $('#login_register_btn').click( function () { modalAnimate($formLogin, $formRegister) });
     $('#register_login_btn').click( function () { modalAnimate($formRegister, $formLogin); });

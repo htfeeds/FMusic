@@ -12,7 +12,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="icon" type="image/png" href="<c:url value="/static/favicon.png" />" />    
+    <link rel="icon" type="image/png" href="<c:url value="/static/favicon.png" />" />
 
     <title>
         <tiles:getAsString name="title" />
@@ -38,13 +38,15 @@
 
     <tiles:insertAttribute name="footer" />
 
-    <security:authorize access="! isAuthenticated()">
-        <%@ include file="../login_form.jsp"%>
-    </security:authorize>
-
-    <security:authorize access="isAuthenticated()">
-        <%@ include file="../logout_form.jsp"%>
-    </security:authorize>
+	<div id="authentication">
+	    <security:authorize access="! isAuthenticated()">
+	        <%@ include file="../_LoginFormPartial.jsp"%>
+	    </security:authorize>
+	
+	    <security:authorize access="isAuthenticated()">
+	        <%@ include file="../_LogoutFormPartial.jsp"%>
+	    </security:authorize>
+	</div>
 
     <c:forEach var="script" items="${javascripts}">
         <script src="<c:url value="${script}"/>"></script>

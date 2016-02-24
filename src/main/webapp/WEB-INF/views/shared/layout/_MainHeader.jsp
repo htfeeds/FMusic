@@ -11,16 +11,17 @@
 		<div id="site-description">Welcome to FMUSIC site.</div>
 		<ul id="top-links">
 			<security:authorize access="! isAuthenticated()">
-            	<li class="login"><a href="#" role="button" data-toggle="modal" data-target="#login-modal"><i class="fa fa-lock"></i><span>Login / Register</span></a></li>
+            	<li class="login"><a href="" role="button" data-toggle="modal" data-target="#login-modal"><i class="fa fa-lock"></i><span>Login</span></a></li>
+				<li class="register"><a href="<c:url value="/register"/>"><i class="fa fa-user"></i><span>Register</span></a></li>
 			</security:authorize>
             <security:authorize access="isAuthenticated()">
             	<li class="show_user_box dropdown">
-					<a href="#" class="link_user">
+					<a href="#" data-toggle="dropdown" class="link_user">
 						<c:if test="${not empty loginModel.imageUrl}">
 							<img class="avt" src="<c:url value="${loginModel.imageUrl}" />"><span>HTFeeds</span>
 						</c:if>
 					</a>
-					<ul class="dropdown-menu">
+					<ul class="dropdown-menu animated fadeInRight">
 						<li><a href="#">Profile</a></li>
 						<li><a href="#">Account</a></li>
 						<li><a href="javascript:logout()">Log out</a></li>
@@ -46,7 +47,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.html"><img style="display:initial" src="<c:url value="/static/img/logo.png"/>" alt="FMUSIC" /></a>
+				<a class="navbar-brand" href="<c:url value="/"/>"><img style="display:initial" src="<c:url value="/static/img/logo.png"/>" alt="FMUSIC" /></a>
 			</div>
 
 			<!-- Navigation links -->

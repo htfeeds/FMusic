@@ -78,7 +78,22 @@ public class AccountController {
         }
 
         userService.create(user);
-        return "account/register";
+        return "account/register_successful";
+    }
+    
+    @RequestMapping(value = "/forgot_password", method = RequestMethod.GET)
+    public String forgotPasswordPage(Model model) {
+        return "account/forgot_password";
+    }
+    
+    @RequestMapping(value = "/get-user-link", method = RequestMethod.GET)
+    public String getUserLink(Model model) {
+        return "shared/_UserLinkPartial";
+    }
+    
+    @RequestMapping(value = "/get-logout-form", method = RequestMethod.GET)
+    public String getLogoutForm(Model model) {
+        return "shared/_LogoutFormPartial";
     }
 
     @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
