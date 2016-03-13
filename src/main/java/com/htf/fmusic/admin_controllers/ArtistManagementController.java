@@ -180,6 +180,9 @@ public class ArtistManagementController {
         countries.add(Country.UK.getCountry());
         countries.add(Country.VN.getCountry());
         countries.add(Country.FR.getCountry());
+        countries.add(Country.KR.getCountry());
+        countries.add(Country.CA.getCountry());
+        countries.add(Country.UNKNOWN.getCountry());
         return countries;
     }
 }

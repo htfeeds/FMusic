@@ -1,3 +1,6 @@
+.inline-block{
+	display: inline-block;
+}
 a:focus {
 	outline: none;
 	text-decoration: initial;
@@ -18,10 +21,14 @@ a:focus {
 
 .views {
 	display: block;
-	float: right;
+	float: left;
 	font-size: 12px;
 	margin: 18px 0;
 	padding: 0 10px;
+}
+
+.views i {
+	opacity: 0.6;
 }
 
 .play-all {
@@ -125,4 +132,54 @@ a:focus {
 	cursor: pointer;
 	filter: alpha(opacity = 50);
 	opacity: .5
+}
+/** List Song **/
+.audiojs
+{
+  font-size:12px;
+  height:30px;
+  margin: 15px 15px 15px 25px;
+}
+
+.audiojs a
+{
+  color:#777777;
+  cursor:pointer;
+  display:inline-block;
+  height:30px;
+  margin:0;
+  width:30px;
+}
+
+.home_audio:hover{
+  background: #9427cc!important;
+}
+
+.home_audio a:hover
+{
+  color: white!important;
+}
+
+.audiojs a:hover
+{
+  color: #9427cc;
+}
+
+.audiojs .icon {
+  width: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 12px;
+}
+
+/* Other */
+body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
+	padding-right: 0px !important;
+	overflow-y: auto;
+}
+
+.error {
+	color: #cc5965;
+	display: inline-block;
+	margin-left: 5px;
 }

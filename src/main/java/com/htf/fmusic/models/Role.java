@@ -23,6 +23,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 public final class Role extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
+    
+    protected static final int MAX_LENGTH_ROLE = 15;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

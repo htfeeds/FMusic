@@ -37,9 +37,60 @@
 
 	<!-- User Management View -->
 
+	<!-- Artist Management View -->
+	<definition name="admin/artist/create" extends="layout.admin">
+		<put-attribute name="title" expression="${requestScope.title}" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/artist/create.jsp" />
+		<put-attribute name="current" value="artist" cascade="true" />
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="/static/css/plugins/datapicker/datepicker3.css" />
+			<add-attribute value="/static/css/plugins/chosen/chosen.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/jquery-ui/jquery-ui.min.js" />
+			<add-attribute value="/static/js/plugins/validate/jquery.validate.min.js" />
+			<add-attribute value="/static/js/plugins/datapicker/bootstrap-datepicker.js" />
+			<add-attribute value="/static/js/plugins/chosen/chosen.jquery.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="admin/artist/edit" extends="layout.admin">
+		<put-attribute name="title" expression="${requestScope.title}" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/artist/edit.jsp" />
+		<put-attribute name="current" value="artist" cascade="true" />
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="/static/css/plugins/sweetalert/sweetalert.css" />
+			<add-attribute value="/static/css/plugins/datapicker/datepicker3.css" />
+			<add-attribute value="/static/css/plugins/chosen/chosen.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/jquery-ui/jquery-ui.min.js" />
+			<add-attribute value="/static/js/plugins/validate/jquery.validate.min.js" />
+			<add-attribute value="/static/js/plugins/sweetalert/sweetalert.min.js" />
+			<add-attribute value="/static/js/plugins/datapicker/bootstrap-datepicker.js" />
+			<add-attribute value="/static/js/plugins/chosen/chosen.jquery.js" />
+		</put-list-attribute>
+	</definition>
+
 	<!-- Role Management View -->
 
 	<!-- Song Management View -->
+	<definition name="admin/song/create" extends="layout.admin">
+		<put-attribute name="title" expression="${requestScope.title}" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/song/create.jsp" />
+		<put-attribute name="current" value="song" cascade="true" />
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="/static/css/plugins/chosen/chosen.css" />
+			<add-attribute value="/static/css/plugins/iCheck/custom.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/jquery-ui/jquery-ui.min.js" />
+			<add-attribute value="/static/js/plugins/validate/jquery.validate.min.js" />
+			<add-attribute value="/static/js/plugins/chosen/chosen.jquery.js" />
+			<add-attribute value="/static/js/plugins/iCheck/icheck.min.js" />
+		</put-list-attribute>
+	</definition>
+
 	<definition name="admin/song/edit" extends="layout.admin">
 		<put-attribute name="title" expression="${requestScope.title}" />
 		<put-attribute name="body" value="/WEB-INF/views/admin/song/edit.jsp" />
@@ -47,16 +98,34 @@
 		<put-list-attribute name="stylesheets" inherit="true">
 			<add-attribute value="/static/css/plugins/chosen/chosen.css" />
 			<add-attribute value="/static/css/plugins/sweetalert/sweetalert.css" />
+			<add-attribute value="/static/css/plugins/iCheck/custom.css" />
 		</put-list-attribute>
 		<put-list-attribute name="javascripts" inherit="true">
 			<add-attribute value="/static/js/plugins/jquery-ui/jquery-ui.min.js" />
 			<add-attribute value="/static/js/plugins/validate/jquery.validate.min.js" />
 			<add-attribute value="/static/js/plugins/chosen/chosen.jquery.js" />
 			<add-attribute value="/static/js/plugins/sweetalert/sweetalert.min.js" />
+			<add-attribute value="/static/js/plugins/iCheck/icheck.min.js" />
 		</put-list-attribute>
 	</definition>
 
 	<!-- Playlist Management View -->
+	<definition name="admin/playlist/create" extends="layout.admin">
+		<put-attribute name="title" expression="${requestScope.title}" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/playlist/create.jsp" />
+		<put-attribute name="current" value="playlist" cascade="true" />
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="/static/css/plugins/chosen/chosen.css" />
+			<add-attribute value="/static/css/plugins/iCheck/custom.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/jquery-ui/jquery-ui.min.js" />
+			<add-attribute value="/static/js/plugins/validate/jquery.validate.min.js" />
+			<add-attribute value="/static/js/plugins/iCheck/icheck.min.js" />
+			<add-attribute value="/static/js/plugins/chosen/chosen.jquery.js" />
+		</put-list-attribute>
+	</definition>
+
 	<definition name="admin/playlist/edit" extends="layout.admin">
 		<put-attribute name="title" expression="${requestScope.title}" />
 		<put-attribute name="body" value="/WEB-INF/views/admin/playlist/edit.jsp" />
@@ -65,12 +134,16 @@
 			<add-attribute value="/static/css/plugins/sweetalert/sweetalert.css" />
 			<add-attribute value="/static/css/plugins/jsgrid-1.3.1/jsgrid.min.css" />
 			<add-attribute value="/static/css/plugins/jsgrid-1.3.1/jsgrid-theme.min.css" />
+			<add-attribute value="/static/css/plugins/chosen/chosen.css" />
+			<add-attribute value="/static/css/plugins/iCheck/custom.css" />
 		</put-list-attribute>
 		<put-list-attribute name="javascripts" inherit="true">
 			<add-attribute value="/static/js/plugins/jquery-ui/jquery-ui.min.js" />
 			<add-attribute value="/static/js/plugins/validate/jquery.validate.min.js" />
 			<add-attribute value="/static/js/plugins/sweetalert/sweetalert.min.js" />
 			<add-attribute value="/static/js/plugins/jsgrid-1.3.1/jsgrid.min.js" />
+			<add-attribute value="/static/js/plugins/iCheck/icheck.min.js" />
+			<add-attribute value="/static/js/plugins/chosen/chosen.jquery.js" />
 		</put-list-attribute>
 	</definition>
 	<definition name="admin/playlist/list_song" template="/WEB-INF/views/admin/playlist/list_song.jsp" />

@@ -21,9 +21,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.htf.fmusic.enums.Country;
 
 /**
  * @author HTFeeds
+ */
+/**
+ * @author htf52
+ *
  */
 @Entity
 @Table(name = "songs")
@@ -47,15 +52,31 @@ public final class Song extends BaseEntity {
 
     @JsonView(Views.Summary.class)
     @Column(name = "total_views")
-    private Integer totalViews;
+    private Integer totalViews = 0;
 
     @JsonView(Views.Summary.class)
     @Column(name = "week_views")
-    private Integer weekViews;
+    private Integer weekViews = 0;
+
+    @JsonView(Views.Summary.class)
+    @Column(name = "country")
+    private String country = Country.UNKNOWN.getCountry();
+
+    @JsonView(Views.Summary.class)
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @JsonView(Views.Summary.class)
     @Column(name = "description")
     private String description;
+
+    @JsonView(Views.Summary.class)
+    @Column(name = "show_on_home")
+    private Boolean onHome;
+
+    @JsonView(Views.Summary.class)
+    @Column(name = "is_published")
+    private Boolean isPublished;
 
     @JsonView(Views.ExtendedPublic.class)
     @ManyToOne
@@ -116,12 +137,44 @@ public final class Song extends BaseEntity {
         this.weekViews = weekViews;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getOnHome() {
+        return onHome;
+    }
+
+    public Boolean getIsPublished() {
+        return isPublished;
+    }
+
+    public void setIsPublished(Boolean isPublished) {
+        this.isPublished = isPublished;
+    }
+
+    public void setOnHome(Boolean onHome) {
+        this.onHome = onHome;
     }
 
     public Set<Artist> getArtists() {
@@ -156,12 +209,16 @@ public final class Song extends BaseEntity {
         this.lyric = lyric;
     }
 
-    public void update(String newName, String newUrl, Integer newTotalViews, Integer newWeekViews, String newDescription, Genre newGenre) {
+    public void update(String newName, String newUrl, Integer newTotalViews, Integer newWeekViews, String newCountry, String newDescription,
+            Boolean newOnHome, Boolean newIsPublished, Genre newGenre) {
         this.name = newName;
         this.url = newUrl;
         this.totalViews = newTotalViews;
         this.weekViews = newWeekViews;
+        this.country = newCountry;
         this.description = newDescription;
+        this.onHome = newOnHome;
+        this.isPublished = newIsPublished;
         this.genre = newGenre;
     }
 

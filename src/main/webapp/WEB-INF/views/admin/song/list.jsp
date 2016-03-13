@@ -34,7 +34,7 @@
                                 <th data-hide="phone">Week Views</th>
                                 <th data-hide="phone">Date added</th>
                                 <th data-hide="phone,tablet">Total Views</th>
-                                <th data-hide="phone,tablet">Date modified</th>
+                                <th data-hide="phone,tablet">On Homepage</th>
                                 <th class="text-right">Action</th>
 
                             </tr>
@@ -51,16 +51,21 @@
                                         <c:out value="${song.description}" />
                                     </td>
                                     <td>
-                                        <c:out value="${song.weekViews}" />
+                                        <fmt:formatNumber type="number" value="${song.weekViews}" />
                                     </td>
                                     <td>
                                         <fmt:formatDate type="date" value="${song.creationTime}" />
                                     </td>
                                     <td>
-                                        <c:out value="${song.totalViews}" />
+                                        <fmt:formatNumber type="number" value="${song.totalViews}" />
                                     </td>
                                     <td>
-                                        <fmt:formatDate type="date" value="${song.modificationTime}" />
+                                        <c:if test="${song.onHome eq true}">
+                                            <span class="label label-info">Yes</span>
+                                        </c:if>
+                                        <c:if test="${(song.onHome eq false)  || (song.onHome eq null)}">
+                                            <span class="label label-warning">No</span>
+                                        </c:if>
                                     </td>
                                     <td class="text-right">
                                         <div class="btn-group">

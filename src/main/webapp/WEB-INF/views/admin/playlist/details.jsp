@@ -55,16 +55,43 @@
                                     <label class="col-lg-2 control-label">Total Views</label>
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
-                                            <c:out value="${playlist.totalViews}" />
+                                            <fmt:formatNumber type="number" value="${playlist.totalViews}" />
                                         </p>
                                     </div>
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label class="col-lg-2 control-label">ImageUrl</label>
+                                    <label class="col-lg-2 control-label">Week Views</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control-static">
+                                            <c:out value="${playlist.weekViews}" />
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Country</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control-static">
+                                            <c:out value="${playlist.country}" />
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Image Url</label>
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
                                             <c:out value="${playlist.imageUrl}" />
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Slide Image Url</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control-static">
+                                            <c:out value="${playlist.slideImageUrl}" />
                                         </p>
                                     </div>
                                 </div>
@@ -88,10 +115,20 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-lg-2 control-label">Playlist Type</label>
+                                    <label class="col-lg-2 control-label">Type</label>
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
-                                            <c:out value="${playlist.playlistType.name}" />
+                                            <c:out value="${playlist.type}" />
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Week</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control-static">
+                                            <c:out value="${playlist.week.name}" />
+                                            (<fmt:formatDate pattern="dd-MM-yyyy" value="${playlist.week.startDate}" /> - <fmt:formatDate pattern="dd-MM-yyyy" value="${playlist.week.endDate}" />)
                                         </p>
                                     </div>
                                 </div>
@@ -110,6 +147,43 @@
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
                                             <fmt:formatDate type="both" value="${playlist.modificationTime}" />
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Show on Homepage</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control-static">
+                                            <c:if test="${(playlist.onHome eq false)  || (playlist.onHome eq null)}">
+                                            	<c:out value="No" />
+                                            </c:if>
+                                            <c:if test="${playlist.onHome eq true}">
+                                            	<c:out value="Yes" />
+                                            </c:if>
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Slide Actived</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control-static">
+                                        	<c:if test="${(playlist.slideActived eq false)  || (playlist.slideActived eq null)}">
+                                            	<c:out value="No" />
+                                            </c:if>
+                                            <c:if test="${playlist.slideActived eq true}">
+                                            	<c:out value="Yes" />
+                                            </c:if>
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Created By User</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control-static">
+                                            <c:out value="${playlist.createdByUser}" />
                                         </p>
                                     </div>
                                 </div>

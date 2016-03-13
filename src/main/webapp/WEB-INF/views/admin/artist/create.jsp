@@ -65,6 +65,21 @@
                                     <div class="hr-line-dashed"></div>
 
                                     <div class="form-group">
+                                        <label class="col-sm-2 control-label">Country</label>
+                                        <div class="col-lg-4">
+                                            <div class="input-group">
+                                                <form:select path="country" data-placeholder="Choose a Country..." class="chosen-select" style="width:350px;">
+                                                	<option value=""></option>
+                                                	<c:forEach var="country" items="${countries}">
+                                                		<option value="${country}">${country}</option>	
+                                                	</c:forEach>
+                                                </form:select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
                                         <label class="col-sm-2 control-label">Career</label>
                                         <div class="col-sm-10">
                                             <form:input path="career" class="form-control" placeholder="Career" />
@@ -97,18 +112,6 @@
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
-                                    
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Country</label>
-                                        <div class="col-lg-4">
-                                            <form:select path="country" class="form-control">
-                                            	<form:option label="Select Country" value="" />
-                                            	<form:options items="${countries}" />
-                                            </form:select>
-                                            <form:errors path="country" cssClass="error" />
-                                        </div>
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
 
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Profile Image</label>
@@ -126,7 +129,6 @@
                                         	<span class="error"><c:out value="${coverError}" /></span>
                                         </div>
                                     </div>
-                                    <div class="hr-line-dashed"></div>
 
                                 </fieldset>
                                 
@@ -145,7 +147,20 @@
 
 <script>
     $(document).ready(function() {
+    	
+    	//Chosen Select
+	    var config = {
+		    '.chosen-select'           : {},
+		    '.chosen-select-deselect'  : {allow_single_deselect:true},
+		    '.chosen-select-no-single' : {disable_search_threshold:10},
+		    '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+		    '.chosen-select-width'     : {width:"95%"}
+		}
+		for (var selector in config) {
+		    $(selector).chosen(config[selector]);
+		}
 
+    	//Date Picker
         $('#birth_date .input-group.date').datepicker({
             startView: 1,
             todayBtn: "linked",
@@ -155,6 +170,7 @@
             format: "dd/mm/yyyy"
         });
 
+    	//Validate
         $("#artistForm").validate({
             rules: {
                 name: {

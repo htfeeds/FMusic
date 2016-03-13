@@ -13,7 +13,7 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto);
 
 body {
-	background:url('../img/bg-pattern.png');
+ 	background:url('../img/bg-pattern.png');
 	font-family: 'Helvetica Neue', 'Arial' sans-serif;
 	font-family: 'Dosis';
 	font-size: 14px;
@@ -83,6 +83,16 @@ h1, h2 {
 
 h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
 	color: #8222b3;
+}
+
+h2 span.views {
+	float:right;
+	text-transform: none;
+	font-size: 14px;
+	color:#777777;
+	font-weight: 600;
+	margin: 16px 0;
+	padding: 0 20px;
 }
 
 h1 {
@@ -161,7 +171,7 @@ ol {
 ol li:before {
 	content: counter(my-badass-counter) '.';
 	counter-increment: my-badass-counter;
-	color: #8222b3;
+/* 	color: #8222b3; */
 	margin-right: 10px;
 }
 
@@ -214,7 +224,7 @@ blockquote.right {
   background: #1e1e1e;
   margin:0 auto;
   overflow: hidden;
-  padding: 35px 0px 135px;
+  padding: 35px 0px 55px; /* HTF Edited */
 }
 
 /*-------------------------------------------------------
@@ -426,8 +436,9 @@ ul.nav > li {
 }
 
 #breadcrumbs {
-	height:150px;
-	line-height: 150px;
+	background: rgba(148, 39, 204, 0.85); /* Background color overlay */
+	height:50px;
+	line-height: 50px;
 	color:white;
 	font-weight: 500;
 	font-size: 13px;
@@ -857,6 +868,10 @@ main h2 {
 
 .latest-content .latest-content-info .meta p {
 	padding-left: 10px;/*htf-edited*/
+	display: -webkit-box;/*htf-added*/
+	-webkit-box-orient: vertical;/*htf-added*/
+	-webkit-line-clamp: 1;/*htf-added*/
+	overflow: hidden;/*htf-added*/
 	color:#777777;
 	font-size: 13px;
 }
@@ -1311,6 +1326,8 @@ ul.share a:hover  {
 	width: 40%;
 	float: left;
 	margin: 13px 0 0 20px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .songs .track-meta h5 {
@@ -1325,8 +1342,17 @@ ul.share a:hover  {
 }
 
 .songs .track-meta h5 a:hover {/*htf-added*/
-	color: #8222b3;
+	color: #8222b3!important;
 	text-decoration: none;
+}
+
+.songs .track-meta h5 a.name-song {/*htf-added*/
+	font-size: 15px;
+}
+.songs .track-meta h5 a.name-single {/*htf-added*/
+	font-size: 14px;
+	margin-left: 3px;
+	color: #9a9a9a;
 }
 
 .songs .track-meta p {
@@ -1863,7 +1889,7 @@ a.next:hover, a.prev:hover {
 	width: 100%;
 	max-width: 470px;
 	height: 50px;
-	line-height: 30px;
+	line-height: 25px;
 	margin-bottom: 25px;
 	padding: 10px;
 	outline: none;
@@ -1876,13 +1902,13 @@ a.next:hover, a.prev:hover {
 
 #leave-comment textarea {
 	max-width: 730px;
-	height: 200px;
+	height: 79px;
 	resize:none;
 }
 
 #leave-comment #submitcomment {
 	float: left;
-	height: 45px;
+	height: 38px;
 	background: #9427cc;
 	border: none;
 	outline: none;

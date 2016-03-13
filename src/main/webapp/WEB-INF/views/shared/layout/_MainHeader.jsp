@@ -26,6 +26,9 @@
 					  <span>${loginModel.fullname}</span>
 			       </a>
 			       <ul class="dropdown-menu animated fadeInRight">
+			       	  <security:authorize access="hasRole('ADMIN')">
+      	 	 			  <li><a href="<c:url value="/admin/"/> ">Admin</a></li>
+      	 			  </security:authorize>
 			          <li><a href="#">Profile</a></li>
 			          <li><a href="#">Account</a></li>
 			          <li><a href="javascript:logout()">Log out</a></li>
@@ -57,12 +60,12 @@
 			<!-- Navigation links -->
 			<div class="collapse navbar-collapse" id="main-nav">
 				<ul class="nav navbar-nav navbar-right">
-					<li class="${current == 'home' ? 'current' : ''}"><a href="index.html">Home</a></li>
-					<li><a href="contact.html">Song</a></li>
-					<li><a href="albums.html">Album</a></li>
-					<li><a href="contact.html">Top 10</a></li>
-					<li><a href="artists.html">Artist</a></li>
-					<li><a href="contact.html">Contact Us</a></li>
+					<li class="${current == 'home' ? 'current' : ''}"><a href="<c:url value="/"/>">Home</a></li>
+					<li class="${current == 'song' ? 'current' : ''}"><a href="<c:url value="/song/"/>">Songs</a></li>
+					<li class="${current == 'album' ? 'current' : ''}"><a href="<c:url value="/playlist/"/>">Albums</a></li>
+					<li class="${current == 'top' ? 'current' : ''}"><a href="<c:url value="/top/"/>">Top 100</a></li>
+					<li class="${current == 'artist' ? 'current' : ''}"><a href="<c:url value="/artist/"/>">Artists</a></li>
+					<li class="${current == 'contact' ? 'current' : ''}"><a href="<c:url value="/contact/"/>">Contact Us</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
 		</div>

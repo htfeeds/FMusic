@@ -68,6 +68,21 @@ public class SongPlaylistServiceImpl implements SongPlaylistService {
 
         return lsSongPlaylist;
     }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<SongPlaylist> findByPlaylistOrderByOrderAsc(Playlist playlist) {
+        LOGGER.info("Finding all songPlaylist entries by using playlist: {}", playlist);
+
+        List<SongPlaylist> lsSongPlaylist = repository.findByPlaylistOrderByOrderAsc(playlist);
+        LOGGER.info("Found songPlaylist entries: {}", lsSongPlaylist);
+
+        for (SongPlaylist sp : lsSongPlaylist) {
+            Hibernate.initialize(sp.getSong().getArtists());
+        }
+
+        return lsSongPlaylist;
+    }
 
     @Override
     @Transactional

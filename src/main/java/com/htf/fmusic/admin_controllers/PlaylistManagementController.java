@@ -23,18 +23,20 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.htf.fmusic.enums.Country;
+import com.htf.fmusic.enums.PlaylistType;
 import com.htf.fmusic.models.Artist;
 import com.htf.fmusic.models.Genre;
 import com.htf.fmusic.models.Playlist;
-import com.htf.fmusic.models.PlaylistType;
 import com.htf.fmusic.models.Song;
 import com.htf.fmusic.models.SongPlaylist;
 import com.htf.fmusic.models.Views;
+import com.htf.fmusic.models.Week;
 import com.htf.fmusic.services.ArtistService;
 import com.htf.fmusic.services.GenreService;
 import com.htf.fmusic.services.PlaylistService;
-import com.htf.fmusic.services.PlaylistTypeService;
 import com.htf.fmusic.services.SongPlaylistService;
+import com.htf.fmusic.services.WeekService;
 import com.htf.fmusic.utils.FmusicFunctions;
 
 /**
@@ -50,20 +52,20 @@ public class PlaylistManagementController {
     private final String DIRECTORY;
 
     private final PlaylistService playlistService;
-    private final PlaylistTypeService plTypeService;
     private final ArtistService artistService;
     private final GenreService genreService;
+    private final WeekService weekService;
     private final SongPlaylistService songPlaylistService;
 
     @Autowired
-    PlaylistManagementController(PlaylistService playlistService, PlaylistTypeService plTypeService, ArtistService artistService,
-            GenreService genreService, SongPlaylistService songPlaylistService, ServletContext servletContext) {
+    PlaylistManagementController(PlaylistService playlistService, ArtistService artistService, GenreService genreService, WeekService weekService,
+            SongPlaylistService songPlaylistService, ServletContext servletContext) {
         LOGGER.info("Inside constructor of PlaylistManagementController.");
 
         this.playlistService = playlistService;
-        this.plTypeService = plTypeService;
         this.artistService = artistService;
         this.genreService = genreService;
+        this.weekService = weekService;
         this.songPlaylistService = songPlaylistService;
         this.ABSTRACT_PATH = "/static/img/playlist/";
         this.DIRECTORY = servletContext.getRealPath(ABSTRACT_PATH) + "/";
@@ -98,10 +100,15 @@ public class PlaylistManagementController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String savePlaylist(@Valid @ModelAttribute("playlist") Playlist playlist, BindingResult result, @RequestParam String save,
-            @RequestParam MultipartFile image, Model model, RedirectAttributes redirectAttributes) throws IOException {
+            @RequestParam MultipartFile image, @RequestParam MultipartFile slideImage, Model model, RedirectAttributes redirectAttributes)
+                    throws IOException {
         boolean hasErrors = false;
         if (image.getSize() > 1024000) {
             model.addAttribute("imgError", "File size must be less than 1 MB.");
+            hasErrors = true;
+        }
+        if (slideImage.getSize() > 1024000) {
+            model.addAttribute("slideImgError", "File size must be less than 1 MB.");
             hasErrors = true;
         }
         if (result.hasErrors() || hasErrors) {
@@ -113,6 +120,13 @@ public class PlaylistManagementController {
             String imageUrl = ABSTRACT_PATH + uploaded;
             playlist.setImageUrl(imageUrl);
         }
+
+        if (!slideImage.isEmpty()) {
+            String uploaded = FmusicFunctions.uploadFile(slideImage, DIRECTORY);
+            String imageUrl = ABSTRACT_PATH + uploaded;
+            playlist.setSlideImageUrl(imageUrl);
+        }
+
         Playlist r = playlistService.create(playlist);
 
         if (save.equals("Create and Edit")) {
@@ -223,8 +237,33 @@ public class PlaylistManagementController {
         return genreService.findAll();
     }
 
+    @ModelAttribute(value = "weeks")
+    private List<Week> initializeWeeks() {
+        return weekService.findAll();
+    }
+
     @ModelAttribute(value = "plTypes")
-    private List<PlaylistType> initializePlaylistTypes() {
-        return plTypeService.findAll();
+    private List<String> initializePlaylistTypes() {
+        List<String> types = new ArrayList<String>();
+        types.add(PlaylistType.OFFICIAL.getPlaylistType());
+        types.add(PlaylistType.COLLECTION.getPlaylistType());
+        types.add(PlaylistType.USER.getPlaylistType());
+        types.add(PlaylistType.TOP.getPlaylistType());
+        return types;
+    }
+
+    @ModelAttribute(value = "countries")
+    private List<String> initializeCountries() {
+        LOGGER.info("Create countries ModelAttribute");
+
+        List<String> countries = new ArrayList<String>();
+        countries.add(Country.US.getCountry());
+        countries.add(Country.UK.getCountry());
+        countries.add(Country.VN.getCountry());
+        countries.add(Country.FR.getCountry());
+        countries.add(Country.KR.getCountry());
+        countries.add(Country.CA.getCountry());
+        countries.add(Country.UNKNOWN.getCountry());
+        return countries;
     }
 }

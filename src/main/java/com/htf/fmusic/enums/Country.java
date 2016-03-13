@@ -4,7 +4,7 @@ package com.htf.fmusic.enums;
  * @author HTFeeds
  */
 public enum Country {
-    VN("Viet Nam"), US("United States"), UK("United Kingdom"), FR("France");
+    UNKNOWN("Unknown"), VN("Viet Nam"), US("United States"), UK("United Kingdom"), FR("France"), KR("Korea"), CA("Canada");
 
     String country;
 

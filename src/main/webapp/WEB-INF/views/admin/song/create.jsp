@@ -72,6 +72,32 @@
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Country</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <form:select path="country" data-placeholder="Choose a Country..." class="chosen-select" style="width:350px;">
+                                                	<option value=""></option>
+                                                	<c:forEach var="country" items="${countries}">
+                                                		<option value="${country}">${country}</option>	
+                                                	</c:forEach>
+                                                </form:select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Image</label>
+                                        <div class="col-sm-10">
+                                            <input type="file" id="image" name="image" class="form-control" accept="image/*"/>
+                                            <c:if test="${imgError != null}">
+                                        		<span class="error"><c:out value="${imgError}" /></span>
+                                        	</c:if>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
 
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Description</label>
@@ -129,6 +155,15 @@
                                         	</c:if>
                                         </div>
                                     </div>
+									<div class="hr-line-dashed"></div>
+                                    
+									<div class="form-group">
+                                    	<label class="col-sm-2 control-label"></label>
+									    <div class="col-lg-4">
+									        <div class="i-checks"><label> <input type="checkbox" name="isPublished"> <i></i> Published</label></div>
+									        <div class="i-checks"><label> <input type="checkbox" name="onHome"> <i></i> Show On Homepage </label></div>
+									    </div>
+									</div>
 
                                 </fieldset>
                                 
@@ -147,8 +182,24 @@
 
 <script>
     $(document).ready(function() {
+    	//Chosen Select
+	    var config = {
+		    '.chosen-select'           : {},
+		    '.chosen-select-deselect'  : {allow_single_deselect:true},
+		    '.chosen-select-no-single' : {disable_search_threshold:10},
+		    '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+		    '.chosen-select-width'     : {width:"95%"}
+		}
+		for (var selector in config) {
+		    $(selector).chosen(config[selector]);
+		}
+    	
+    	$('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
 
-        $("#songFrm").validate({
+        $("#songForm").validate({
             rules: {
                 name: {
                     required: true

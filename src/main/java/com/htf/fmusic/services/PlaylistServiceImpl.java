@@ -1,19 +1,28 @@
 package com.htf.fmusic.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.htf.fmusic.enums.PlaylistType;
 import com.htf.fmusic.exceptions.PlaylistNotFoundException;
+import com.htf.fmusic.models.Artist;
 import com.htf.fmusic.models.Playlist;
 import com.htf.fmusic.models.Song;
 import com.htf.fmusic.models.SongPlaylist;
+import com.htf.fmusic.models.Week;
 import com.htf.fmusic.repositories.PlaylistRepository;
+import com.htf.fmusic.repositories.SongPlaylistRepository;
+import com.htf.fmusic.repositories.WeekRepository;
 
 /**
  * @author HTFeeds
@@ -23,11 +32,17 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PlaylistServiceImpl.class);
 
+    private static final int PAGE_SIZE = 25;
+
     private final PlaylistRepository repository;
+    private final SongPlaylistRepository songPlaylistRepository;
+    private final WeekRepository weekRepository;
 
     @Autowired
-    PlaylistServiceImpl(PlaylistRepository repository) {
+    PlaylistServiceImpl(PlaylistRepository repository, SongPlaylistRepository songPlaylistRepository, WeekRepository weekRepository) {
         this.repository = repository;
+        this.songPlaylistRepository = songPlaylistRepository;
+        this.weekRepository = weekRepository;
     }
 
     @Override
@@ -81,8 +96,9 @@ public class PlaylistServiceImpl implements PlaylistService {
         LOGGER.info("Updating the information of a playlist entry by using information: {}", updatedEntry);
 
         Playlist updated = findPlaylistEntryById(updatedEntry.getId());
-        updated.update(updatedEntry.getName(), updatedEntry.getTotalViews(), updatedEntry.getArtist(), updatedEntry.getGenre(),
-                updatedEntry.getPlaylistType());
+        updated.update(updatedEntry.getName(), updatedEntry.getTotalViews(), updatedEntry.getWeekViews(), updatedEntry.getCountry(),
+                updatedEntry.getArtist(), updatedEntry.getGenre(), updatedEntry.getType(), updatedEntry.getOnHome(), updatedEntry.getWeek(),
+                updatedEntry.getSlideActived());
         repository.flush();
 
         LOGGER.info("Updated the information of the playlist entry: {}", updated);
@@ -94,16 +110,14 @@ public class PlaylistServiceImpl implements PlaylistService {
     public Playlist addSongs(Integer id, List<Song> songs) {
         Playlist playlist = findById(id);
 
-        for (Song song : songs) {
+        for (int i = 0; i < songs.size(); i++) {
             SongPlaylist sp = new SongPlaylist();
             sp.setPlaylist(playlist);
-            sp.setSong(song);
-            sp.setOrder(0);
+            sp.setSong(songs.get(i));
+            sp.setOrder(i + 1);
 
-            playlist.addSongPlaylist(sp);
+            songPlaylistRepository.save(sp);
         }
-
-        repository.flush();
 
         LOGGER.info("Updated the information of the playlist entry: {}", playlist);
         return playlist;
@@ -112,6 +126,109 @@ public class PlaylistServiceImpl implements PlaylistService {
     private Playlist findPlaylistEntryById(Integer id) {
         Optional<Playlist> playlistResult = repository.findOne(id);
         return playlistResult.orElseThrow(() -> new PlaylistNotFoundException(id));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Playlist> getSlideActivedPlaylists() {
+        LOGGER.info("Finding all playlist entries by slideActived: true.");
+
+        List<Playlist> playlistEntries = repository.findTop5BySlideActivedOrderByIdDesc(true);
+        LOGGER.info("Found {} playlist entries", playlistEntries.size());
+
+        return playlistEntries;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Playlist getLatestTopPlaylist(String country) {
+        LOGGER.info("Finding lastest top playlist entry by country: {}", country);
+
+        Week lastestWeek = weekRepository.findFirstByOrderByEndDateDesc();
+        Playlist playlistEntry = repository.findFirstByWeekAndTypeAndCountry(lastestWeek, PlaylistType.TOP.getPlaylistType(), country);
+        LOGGER.info("Found playlist entry: {}", playlistEntry);
+
+        return playlistEntry;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Playlist> getUserPlaylists(String username) {
+        LOGGER.info("Finding all playlist entries by username: {}", username);
+
+        List<Playlist> playlistEntries = repository.findByCreatedByUserOrderByIdDesc(username);
+        LOGGER.info("Found {} playlist entries", playlistEntries.size());
+
+        return playlistEntries;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Playlist> getHomePlaylists() {
+        LOGGER.info("Finding home playlist entries");
+
+        List<Boolean> onHomes = new ArrayList<Boolean>();
+        onHomes.add(true);
+
+        List<String> types = new ArrayList<String>();
+        types.add(PlaylistType.OFFICIAL.getPlaylistType());
+        types.add(PlaylistType.COLLECTION.getPlaylistType());
+
+        PageRequest request = new PageRequest(0, PAGE_SIZE, Sort.Direction.DESC, "id");
+
+        Page<Playlist> playlistEntries = repository.findByOnHomeInAndTypeIn(onHomes, types, request);
+        LOGGER.info("Found {} playlist entries", playlistEntries.getContent().size());
+
+        return playlistEntries;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Playlist> getAllOfficialAndCollectionPlaylists(int page) {
+        LOGGER.info("Finding all playlists entries page {}", page);
+
+        List<String> types = new ArrayList<String>();
+        types.add(PlaylistType.OFFICIAL.getPlaylistType());
+        types.add(PlaylistType.COLLECTION.getPlaylistType());
+
+        PageRequest request = new PageRequest(page - 1, PAGE_SIZE, Sort.Direction.DESC, "id");
+
+        Page<Playlist> playlistEntries = repository.findByTypeIn(types, request);
+        LOGGER.info("Found {} playlist entries", playlistEntries.getContent().size());
+
+        return playlistEntries;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Playlist> getPlaylistByGenreName(String genreName, int page) {
+        LOGGER.info("Finding all official and collection playlists entries page {}", page);
+
+        List<String> types = new ArrayList<String>();
+        types.add(PlaylistType.OFFICIAL.getPlaylistType());
+        types.add(PlaylistType.COLLECTION.getPlaylistType());
+
+        PageRequest request = new PageRequest(page - 1, PAGE_SIZE, Sort.Direction.DESC, "id");
+
+        Page<Playlist> playlistEntries = repository.findByTypeInAndGenreName(types, genreName, request);
+        LOGGER.info("Found {} playlist entries", playlistEntries.getContent().size());
+
+        return playlistEntries;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Playlist> getRelatedPlaylists(Artist artist) {
+        LOGGER.info("Finding Top 4 related playlist entries of :{}", artist);
+
+        List<String> types = new ArrayList<String>();
+        types.add(PlaylistType.OFFICIAL.getPlaylistType());
+        types.add(PlaylistType.COLLECTION.getPlaylistType());
+
+        List<Playlist> playlistEntries = repository.findTop4ByTypeInAndArtistOrderByIdDesc(types, artist);
+        LOGGER.info("Found {} playlist entries", playlistEntries.size());
+
+        return playlistEntries;
     }
 
 }

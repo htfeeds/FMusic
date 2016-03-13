@@ -56,9 +56,9 @@
             <li class="${current == 'playlist' ? 'active' : ''}">
                 <a href='<spring:url value="/admin/playlist/" />'><i class="fa fa-youtube-play"></i><span class="nav-label">Playlists</span></a>
             </li>
-
-            <li class="${current == 'pltype' ? 'active' : ''}">
-                <a href='<spring:url value="/admin/pltype/" />'><i class="fa fa-play-circle-o"></i><span class="nav-label">Playlist Types</span></a>
+            
+            <li class="${current == 'week' ? 'active' : ''}">
+                <a href='<spring:url value="/admin/week/" />'><i class="fa fa-calendar"></i><span class="nav-label">Weeks</span></a>
             </li>
 
             <li class="${current == 'lyric' ? 'active' : ''}">

@@ -81,7 +81,7 @@
                                     <label class="col-lg-2 control-label">Total Views</label>
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
-                                            <c:out value="${song.totalViews}" />
+                                            <fmt:formatNumber type="number" value="${song.totalViews}" />
                                         </p>
                                     </div>
                                 </div>
@@ -90,11 +90,29 @@
                                     <label class="col-lg-2 control-label">Week Views</label>
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
-                                            <c:out value="${song.weekViews}" />
+                                            <fmt:formatNumber type="number" value="${song.weekViews}" />
                                         </p>
                                     </div>
                                 </div>
-
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Country</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control-static">
+                                            <c:out value="${song.country}" />
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">ImageUrl</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control-static">
+                                            <c:out value="${song.imageUrl}" />
+                                        </p>
+                                    </div>
+                                </div>
+                                
                                 <div class="form-group">
                                     <label class="col-lg-2 control-label">Genre</label>
                                     <div class="col-lg-10">
@@ -127,6 +145,34 @@
                                     <div class="col-lg-10">
                                         <p class="form-control-static">
                                             <fmt:formatDate type="both" value="${song.modificationTime}" />
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Show on Homepage</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control-static">
+                                            <c:if test="${(song.onHome eq false)  || (song.onHome eq null)}">
+                                            	<c:out value="No" />
+                                            </c:if>
+                                            <c:if test="${song.onHome eq true}">
+                                            	<c:out value="Yes" />
+                                            </c:if>
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Published</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control-static">
+                                            <c:if test="${(song.isPublished eq false)  || (song.isPublished eq null)}">
+                                            	<c:out value="No" />
+                                            </c:if>
+                                            <c:if test="${song.isPublished eq true}">
+                                            	<c:out value="Yes" />
+                                            </c:if>
                                         </p>
                                     </div>
                                 </div>

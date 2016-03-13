@@ -3,11 +3,8 @@ package com.htf.fmusic.models;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,74 +23,67 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity implements Serializable {
 
-	protected static final long serialVersionUID = 1L;
-	
-	protected static final int MAX_LENGTH_USER = 64;
-	protected static final int MAX_LENGTH_PASSWORD = 100;
-	protected static final int MAX_LENGTH_EMAIL = 100;
-	protected static final int MAX_LENGTH_ROLE = 15;
+    protected static final long serialVersionUID = 1L;
 
-	@CreatedBy
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "created_by_user_id")
-	protected User createdByUser;
+    @Column(name = "created_by_user", nullable = true)
+    @CreatedBy
+    private String createdByUser;
 
-	@LastModifiedBy
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "modified_by_user_id")
-	protected User modifiedByUser;
+    @Column(name = "modified_by_user", nullable = true)
+    @LastModifiedBy
+    private String modifiedByUser;
 
-	@CreatedDate
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "creation_time")
-	protected Date creationTime;
+    @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "creation_time")
+    protected Date creationTime;
 
-	@LastModifiedDate
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "modification_time")
-	protected Date modificationTime;
+    @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "modification_time")
+    protected Date modificationTime;
 
-	@Version
-	protected long version;
+    @Version
+    protected long version;
 
-	public User getCreatedByUser() {
-		return createdByUser;
-	}
+    public String getCreatedByUser() {
+        return createdByUser;
+    }
 
-	public void setCreatedByUser(User createdByUser) {
-		this.createdByUser = createdByUser;
-	}
+    public void setCreatedByUser(String createdByUser) {
+        this.createdByUser = createdByUser;
+    }
 
-	public User getModifiedByUser() {
-		return modifiedByUser;
-	}
+    public String getModifiedByUser() {
+        return modifiedByUser;
+    }
 
-	public void setModifiedByUser(User modifiedByUser) {
-		this.modifiedByUser = modifiedByUser;
-	}
+    public void setModifiedByUser(String modifiedByUser) {
+        this.modifiedByUser = modifiedByUser;
+    }
 
-	public Date getCreationTime() {
-		return creationTime;
-	}
+    public Date getCreationTime() {
+        return creationTime;
+    }
 
-	public void setCreationTime(Date creationTime) {
-		this.creationTime = creationTime;
-	}
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
+    }
 
-	public Date getModificationTime() {
-		return modificationTime;
-	}
+    public Date getModificationTime() {
+        return modificationTime;
+    }
 
-	public void setModificationTime(Date modificationTime) {
-		this.modificationTime = modificationTime;
-	}
+    public void setModificationTime(Date modificationTime) {
+        this.modificationTime = modificationTime;
+    }
 
-	public long getVersion() {
-		return version;
-	}
+    public long getVersion() {
+        return version;
+    }
 
-	public void setVersion(long version) {
-		this.version = version;
-	}
+    public void setVersion(long version) {
+        this.version = version;
+    }
 
 }

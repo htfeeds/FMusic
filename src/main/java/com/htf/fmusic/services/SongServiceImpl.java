@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.hibernate.Hibernate;
@@ -22,6 +25,8 @@ import com.htf.fmusic.repositories.SongRepository;
 public class SongServiceImpl implements SongService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SongServiceImpl.class);
+
+    private static final int PAGE_SIZE = 35;
 
     private final SongRepository repository;
 
@@ -96,7 +101,8 @@ public class SongServiceImpl implements SongService {
 
         Song updated = findSongEntryById(updatedEntry.getId());
         updated.update(updatedEntry.getName(), updatedEntry.getUrl(), updatedEntry.getTotalViews(), updatedEntry.getWeekViews(),
-                updatedEntry.getDescription(), updatedEntry.getGenre());
+                updatedEntry.getCountry(), updatedEntry.getDescription(), updatedEntry.getOnHome(), updatedEntry.getIsPublished(),
+                updatedEntry.getGenre());
 
         //We need to flush the changes or otherwise the returned object
         //doesn't contain the updated audit information.
@@ -135,6 +141,64 @@ public class SongServiceImpl implements SongService {
     private Song findSongEntryById(Integer id) {
         Optional<Song> songResult = repository.findOne(id);
         return songResult.orElseThrow(() -> new SongNotFoundException(id));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Song> getAllSongs(int page) {
+        LOGGER.info("Finding all song entries page: {}.", page);
+
+        PageRequest request = new PageRequest(page - 1, PAGE_SIZE, Sort.Direction.DESC, "id");
+        Page<Song> songEntries = repository.findByIsPublished(true, request);
+        for (Song song : songEntries) {
+            Hibernate.initialize(song.getArtists());
+        }
+        LOGGER.info("Found {} song entries", songEntries.getContent().size());
+
+        return songEntries;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Song> getHomeSongs() {
+        LOGGER.info("Finding top 20 song entries by onHome: true");
+
+        List<Song> songEntries = repository.findTop20ByOnHomeOrderByIdDesc(true);
+        for (Song song : songEntries) {
+            Hibernate.initialize(song.getArtists());
+        }
+        LOGGER.info("Found {} song entries", songEntries.size());
+
+        return songEntries;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Song> getSongsByGenreName(String genreName, int page) {
+        LOGGER.info("Finding song entries by genre: {}, page: {}.", genreName, page);
+
+        PageRequest request = new PageRequest(page - 1, PAGE_SIZE, Sort.Direction.DESC, "id");
+        Page<Song> songEntries = repository.findByIsPublishedAndGenreName(true, genreName, request);
+        for (Song song : songEntries) {
+            Hibernate.initialize(song.getArtists());
+        }
+        LOGGER.info("Found {} song entries", songEntries.getContent().size());
+
+        return songEntries;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Song> getRelatedSongs(Artist artist) {
+        LOGGER.info("Finding Top 6 song entries of artist:");
+
+        List<Song> songEntries = repository.findTop6ByIsPublishedTrueAndArtistsNameOrderByIdDesc(artist.getName());
+        for (Song song : songEntries) {
+            Hibernate.initialize(song.getArtists());
+        }
+        LOGGER.info("Found {} song entries", songEntries.size());
+
+        return songEntries;
     }
 
 }

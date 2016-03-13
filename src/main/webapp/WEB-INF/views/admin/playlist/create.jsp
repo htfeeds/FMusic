@@ -63,6 +63,30 @@
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Week Views</label>
+                                        <div class="col-sm-10">
+                                            <form:input type="number" path="weekViews" class="form-control" placeholder="Total Views" />
+                                            <form:errors path="weekViews" cssClass="error" />
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Country</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <form:select path="country" data-placeholder="Choose a Country..." class="chosen-select" style="width:350px;">
+                                                	<option value=""></option>
+                                                	<c:forEach var="country" items="${countries}">
+                                                		<option value="${country}">${country}</option>	
+                                                	</c:forEach>
+                                                </form:select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
 
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Image</label>
@@ -75,6 +99,17 @@
                                     </div>
                                     <div class="hr-line-dashed"></div>
 
+									<div class="form-group">
+                                        <label class="col-sm-2 control-label">Slide Image</label>
+                                        <div class="col-sm-10">
+                                            <input type="file" id="slideImage" name="slideImage" class="form-control" accept="image/*"/>
+                                            <c:if test="${slideImgError != null}">
+                                        		<span class="error"><c:out value="${slideImgError}" /></span>
+                                        	</c:if>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+									
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Artist</label>
                                         <div class="col-lg-4">
@@ -100,16 +135,37 @@
                                     <div class="hr-line-dashed"></div>
                                     
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">Playlist Type</label>
-                                        <div class="col-lg-4">
-                                            <form:select path="playlistType" class="form-control">
-                                            	<form:option label="Select PlaylistType" value="" />
-                                            	<form:options items="${plTypes}" itemValue="id" itemLabel="name" />
-                                            </form:select>
-                                            <form:errors path="playlistType" cssClass="error" />
+                                        <label class="col-sm-2 control-label">Week</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <form:select path="week" data-placeholder="Choose a Week..." class="chosen-select" style="width:350px;">
+                                                	<option value=""></option>
+                                                	<c:forEach var="week" items="${weeks}">
+                                                		<option value="${week.id}">${week.name}</option>	
+                                                	</c:forEach>
+                                                </form:select>
+                                            </div>
                                         </div>
                                     </div>
-
+                                    <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Type</label>
+                                        <div class="col-lg-4">
+                                            <form:select path="type" items="${plTypes}" class="form-control" />
+                                            <form:errors path="type" cssClass="error" />
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
+                                    	<label class="col-sm-2 control-label"></label>
+									    <div class="col-lg-4">
+									        <div class="i-checks"><label> <input type="checkbox" name="onHome"> <i></i> Show On Homepage </label></div>
+									        <div class="i-checks"><label> <input type="checkbox" name="slideActived"> <i></i> Active Slide </label></div>
+									    </div>
+									</div>
+		
                                 </fieldset>
                                 
                             </div>
@@ -127,6 +183,22 @@
 
 <script>
     $(document).ready(function() {
+    	//Chosen Select
+	    var config = {
+		    '.chosen-select'           : {},
+		    '.chosen-select-deselect'  : {allow_single_deselect:true},
+		    '.chosen-select-no-single' : {disable_search_threshold:10},
+		    '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+		    '.chosen-select-width'     : {width:"95%"}
+		}
+		for (var selector in config) {
+		    $(selector).chosen(config[selector]);
+		}
+    	
+    	$('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
 
         $("#playlistForm").validate({
             rules: {

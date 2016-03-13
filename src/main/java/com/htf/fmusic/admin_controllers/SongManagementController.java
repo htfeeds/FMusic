@@ -1,6 +1,7 @@
 package com.htf.fmusic.admin_controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.htf.fmusic.enums.Country;
 import com.htf.fmusic.models.Artist;
 import com.htf.fmusic.models.Genre;
 import com.htf.fmusic.models.Song;
@@ -44,6 +46,9 @@ public class SongManagementController {
     private final String ABSTRACT_PATH;
     private final String DIRECTORY;
 
+    private final String IMAGE_PATH;
+    private final String IMAGE_DIRECTORY;
+
     private final SongService songService;
     private final GenreService genreService;
     private final ArtistService artistService;
@@ -57,6 +62,8 @@ public class SongManagementController {
         this.artistService = artistService;
         this.ABSTRACT_PATH = "/static/data/mp3/";
         this.DIRECTORY = servletContext.getRealPath(ABSTRACT_PATH) + "/";
+        this.IMAGE_PATH = "/static/img/song/";
+        this.IMAGE_DIRECTORY = servletContext.getRealPath(IMAGE_PATH) + "/";
     }
 
     //-------------------Retrieve All Songs---------------------------------------------------
@@ -88,12 +95,23 @@ public class SongManagementController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String saveSong(@Valid @ModelAttribute("song") Song song, BindingResult result, @RequestParam String save,
-            @RequestParam(required = false) String resource, @RequestParam MultipartFile appFile, @RequestParam MultipartFile gFile, Model model,
-            RedirectAttributes redirectAttributes) throws IOException {
-        if (result.hasErrors()) {
+            @RequestParam(required = false) String resource, @RequestParam MultipartFile appFile, @RequestParam MultipartFile gFile,
+            @RequestParam MultipartFile image, Model model, RedirectAttributes redirectAttributes) throws IOException {
+        boolean hasErrors = false;
+        if (image.getSize() > 1024000) {
+            model.addAttribute("imgError", "File size must be less than 1 MB.");
+            hasErrors = true;
+        }
+        if (result.hasErrors() || hasErrors) {
             return "admin/song/create";
         }
-
+        //Upload Image
+        if (!image.isEmpty()) {
+            String uploaded = FmusicFunctions.uploadFile(image, IMAGE_DIRECTORY);
+            String imageUrl = IMAGE_PATH + uploaded;
+            song.setImageUrl(imageUrl);
+        }
+        //Upload mp3 file
         if (resource.equals("application")) {
             if (appFile.isEmpty() || appFile.getSize() > 10024000) {
                 model.addAttribute("appFileError", "File cannot null and file size must be less than 10 MB.");
@@ -216,5 +234,20 @@ public class SongManagementController {
     @ModelAttribute(value = "songArtists")
     private List<Artist> getSongArtists() {
         return artistService.findAll();
+    }
+
+    @ModelAttribute(value = "countries")
+    private List<String> initializeCountries() {
+        LOGGER.info("Create countries ModelAttribute");
+
+        List<String> countries = new ArrayList<String>();
+        countries.add(Country.US.getCountry());
+        countries.add(Country.UK.getCountry());
+        countries.add(Country.VN.getCountry());
+        countries.add(Country.FR.getCountry());
+        countries.add(Country.KR.getCountry());
+        countries.add(Country.CA.getCountry());
+        countries.add(Country.UNKNOWN.getCountry());
+        return countries;
     }
 }

@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import com.htf.fmusic.converters.ArtistConverter;
 import com.htf.fmusic.converters.GenreConverter;
-import com.htf.fmusic.converters.PlaylistTypeConverter;
 import com.htf.fmusic.converters.RoleConverter;
 import com.htf.fmusic.converters.SongConverter;
+import com.htf.fmusic.converters.WeekConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -40,10 +41,10 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
     ArtistConverter artistConverter;
 
     @Autowired
-    PlaylistTypeConverter playlistTypeConverter;
+    GenreConverter genreConverter;
 
     @Autowired
-    GenreConverter genreConverter;
+    WeekConverter weekConverter;
 
     @Autowired
     RoleConverter roleConverter;
@@ -82,7 +83,8 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        objectMapper.registerModule(new JSR310Module());
+        //objectMapper.registerModule(new JSR310Module());
+        objectMapper.registerModule(new Hibernate4Module());
         objectMapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
 
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
@@ -99,8 +101,8 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(artistConverter);
-        registry.addConverter(playlistTypeConverter);
         registry.addConverter(genreConverter);
+        registry.addConverter(weekConverter);
         registry.addConverter(roleConverter);
         registry.addConverter(songConverter);
     }

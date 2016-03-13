@@ -15,6 +15,8 @@ public interface SongPlaylistService extends BaseService<SongPlaylist, Integer> 
     public List<SongPlaylist> create(List<SongPlaylist> entities);
 
     public List<SongPlaylist> findByPlaylist(Playlist playlist);
+    
+    public List<SongPlaylist> findByPlaylistOrderByOrderAsc(Playlist playlist);
 
     public SongPlaylist changeOrder(Integer songPlaylistId, Integer order);
 

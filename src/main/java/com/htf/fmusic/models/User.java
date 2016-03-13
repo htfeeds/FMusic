@@ -17,15 +17,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,9 +30,13 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "users")
-public final class User extends BaseEntity {
+public final class User extends SimpleBaseEntity {
 
     private static final long serialVersionUID = 1L;
+
+    protected static final int MAX_LENGTH_USER = 64;
+    protected static final int MAX_LENGTH_PASSWORD = 100;
+    protected static final int MAX_LENGTH_EMAIL = 100;
 
     @JsonView(Views.Summary.class)
     @Id
@@ -92,54 +93,6 @@ public final class User extends BaseEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role_mappings", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private Set<Role> roles = new HashSet<Role>();
-
-    @OneToMany(mappedBy = "createdByUser")
-    private List<Song> createdSongs = new ArrayList<Song>();
-
-    @OneToMany(mappedBy = "modifiedByUser")
-    private List<Song> modifiedSongs = new ArrayList<Song>();
-
-    @OneToMany(mappedBy = "createdByUser")
-    private List<Playlist> createdPlaylists = new ArrayList<Playlist>();
-
-    @OneToMany(mappedBy = "modifiedByUser")
-    private List<Playlist> modifiedPlaylists = new ArrayList<Playlist>();
-
-    @OneToMany(mappedBy = "createdByUser")
-    private List<PlaylistType> createdPlaylistTypes = new ArrayList<PlaylistType>();
-
-    @OneToMany(mappedBy = "modifiedByUser")
-    private List<PlaylistType> modifiedPlaylistTypes = new ArrayList<PlaylistType>();
-
-    @OneToMany(mappedBy = "createdByUser")
-    private List<Genre> createdGenres = new ArrayList<Genre>();
-
-    @OneToMany(mappedBy = "modifiedByUser")
-    private List<Genre> modifiedGenres = new ArrayList<Genre>();
-
-    @OneToMany(mappedBy = "createdByUser")
-    private List<Lyric> createdLyrics = new ArrayList<Lyric>();
-
-    @OneToMany(mappedBy = "modifiedByUser")
-    private List<Lyric> modifiedLyrics = new ArrayList<Lyric>();
-
-    @OneToMany(mappedBy = "createdByUser")
-    private List<Artist> createdArtists = new ArrayList<Artist>();
-
-    @OneToMany(mappedBy = "modifiedByUser")
-    private List<Artist> modifiedArtists = new ArrayList<Artist>();
-
-    @OneToMany(mappedBy = "createdByUser")
-    private List<Role> createdRoles = new ArrayList<Role>();
-
-    @OneToMany(mappedBy = "modifiedByUser")
-    private List<Role> modifiedRoles = new ArrayList<Role>();
-
-    @OneToMany(mappedBy = "createdByUser")
-    private List<User> createdUsers = new ArrayList<User>();
-
-    @OneToMany(mappedBy = "modifiedByUser")
-    private List<User> modifiedUsers = new ArrayList<User>();
 
     public Integer getId() {
         return id;
@@ -227,134 +180,6 @@ public final class User extends BaseEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-
-    public List<Song> getCreatedSongs() {
-        return createdSongs;
-    }
-
-    public void setCreatedSongs(List<Song> createdSongs) {
-        this.createdSongs = createdSongs;
-    }
-
-    public List<Song> getModifiedSongs() {
-        return modifiedSongs;
-    }
-
-    public void setModifiedSongs(List<Song> modifiedSongs) {
-        this.modifiedSongs = modifiedSongs;
-    }
-
-    public List<Playlist> getCreatedPlaylists() {
-        return createdPlaylists;
-    }
-
-    public void setCreatedPlaylists(List<Playlist> createdPlaylists) {
-        this.createdPlaylists = createdPlaylists;
-    }
-
-    public List<Playlist> getModifiedPlaylists() {
-        return modifiedPlaylists;
-    }
-
-    public void setModifiedPlaylists(List<Playlist> modifiedPlaylists) {
-        this.modifiedPlaylists = modifiedPlaylists;
-    }
-
-    public List<PlaylistType> getCreatedPlaylistTypes() {
-        return createdPlaylistTypes;
-    }
-
-    public void setCreatedPlaylistTypes(List<PlaylistType> createdPlaylistTypes) {
-        this.createdPlaylistTypes = createdPlaylistTypes;
-    }
-
-    public List<PlaylistType> getModifiedPlaylistTypes() {
-        return modifiedPlaylistTypes;
-    }
-
-    public void setModifiedPlaylistTypes(List<PlaylistType> modifiedPlaylistTypes) {
-        this.modifiedPlaylistTypes = modifiedPlaylistTypes;
-    }
-
-    public List<Genre> getCreatedGenres() {
-        return createdGenres;
-    }
-
-    public void setCreatedGenres(List<Genre> createdGenres) {
-        this.createdGenres = createdGenres;
-    }
-
-    public List<Genre> getModifiedGenres() {
-        return modifiedGenres;
-    }
-
-    public void setModifiedGenres(List<Genre> modifiedGenres) {
-        this.modifiedGenres = modifiedGenres;
-    }
-
-    public List<Lyric> getCreatedLyrics() {
-        return createdLyrics;
-    }
-
-    public void setCreatedLyrics(List<Lyric> createdLyrics) {
-        this.createdLyrics = createdLyrics;
-    }
-
-    public List<Lyric> getModifiedLyrics() {
-        return modifiedLyrics;
-    }
-
-    public void setModifiedLyrics(List<Lyric> modifiedLyrics) {
-        this.modifiedLyrics = modifiedLyrics;
-    }
-
-    public List<Artist> getCreatedArtists() {
-        return createdArtists;
-    }
-
-    public void setCreatedArtists(List<Artist> createdArtists) {
-        this.createdArtists = createdArtists;
-    }
-
-    public List<Artist> getModifiedArtists() {
-        return modifiedArtists;
-    }
-
-    public void setModifiedArtists(List<Artist> modifiedArtists) {
-        this.modifiedArtists = modifiedArtists;
-    }
-
-    public List<Role> getCreatedRoles() {
-        return createdRoles;
-    }
-
-    public void setCreatedRoles(List<Role> createdRoles) {
-        this.createdRoles = createdRoles;
-    }
-
-    public List<Role> getModifiedRoles() {
-        return modifiedRoles;
-    }
-
-    public void setModifiedRoles(List<Role> modifiedRoles) {
-        this.modifiedRoles = modifiedRoles;
-    }
-
-    public List<User> getCreatedUsers() {
-        return createdUsers;
-    }
-
-    public void setCreatedUsers(List<User> createdUsers) {
-        this.createdUsers = createdUsers;
-    }
-
-    public List<User> getModifiedUsers() {
-        return modifiedUsers;
-    }
-
-    public void setModifiedUsers(List<User> modifiedUsers) {
-        this.modifiedUsers = modifiedUsers;
     }
 
     public void update(String newFullname, String newEmail, Date newBirthDate, String newPhoneNumber, String newSex, String newState,

@@ -14,4 +14,6 @@ public interface SongPlaylistRepository extends BaseRepository<SongPlaylist, Int
 
     public List<SongPlaylist> findByPlaylist(Playlist playlist);
     
+    public List<SongPlaylist> findByPlaylistOrderByOrderAsc(Playlist playlist);
+    
 }

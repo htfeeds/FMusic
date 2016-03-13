@@ -20,6 +20,9 @@
     .chosen-container {
     	width: 100%!important;
     }
+    #selectCountry .chosen-container {
+    	width: 350px!important;
+    }
 </style>
 
 <div class="row wrapper border-bottom white-bg page-heading">
@@ -104,6 +107,21 @@
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Country</label>
+                                        <div class="col-sm-10">
+                                            <div id="selectCountry" class="input-group">
+                                                <form:select path="country" data-placeholder="Choose a Country..." class="chosen-select" style="width:350px">
+                                                	<option value="${song.country}">${song.country}</option>
+                                                	<c:forEach var="country" items="${countries}">
+                                                		<option value="${country}">${country}</option>	
+                                                	</c:forEach>
+                                                </form:select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
 
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Description</label>
@@ -161,6 +179,15 @@
                                         	</c:if>
                                         </div>
                                     </div>
+                                    <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
+                                    	<label class="col-sm-2 control-label"></label>
+									    <div class="col-lg-4">
+									        <div class="i-checks"><label> <input type="checkbox" name="isPublished" ${song.isPublished eq true ? 'checked' : ''}> <i></i> Published </label></div>
+									        <div class="i-checks"><label> <input type="checkbox" name="onHome" ${song.onHome eq true ? 'checked' : ''}> <i></i> Show On Homepage </label></div>
+									    </div>
+									</div>
                                     
                                 </fieldset>
                             </form:form>
@@ -235,6 +262,12 @@
 
 <script>
     $(document).ready(function() {
+    	
+    	$('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    	
     	//Chosen Select
 	    var config = {
 		    '.chosen-select'           : {},

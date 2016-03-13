@@ -18,6 +18,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.htf.fmusic.enums.Country;
 
 /**
  * @author HTFeeds
@@ -40,11 +41,36 @@ public final class Playlist extends BaseEntity {
 
     @JsonView(Views.Summary.class)
     @Column(name = "total_views")
-    private Integer totalViews;
+    private Integer totalViews = 0;
+
+    @JsonView(Views.Summary.class)
+    @Column(name = "week_views")
+    private Integer weekViews = 0;
+
+    @JsonView(Views.Summary.class)
+    @Column(name = "country")
+    private String country = Country.UNKNOWN.getCountry();
 
     @JsonView(Views.Summary.class)
     @Column(name = "image_url")
     private String imageUrl;
+
+    @JsonView(Views.Summary.class)
+    @Column(name = "show_on_home")
+    private Boolean onHome;
+
+    @JsonView(Views.Summary.class)
+    @ManyToOne
+    @JoinColumn(name = "week_id")
+    private Week week;
+
+    @JsonView(Views.Summary.class)
+    @Column(name = "slide_image_url")
+    private String slideImageUrl;
+
+    @JsonView(Views.Summary.class)
+    @Column(name = "slide_actived")
+    private Boolean slideActived;
 
     @JsonView(Views.Summary.class)
     @ManyToOne
@@ -57,9 +83,8 @@ public final class Playlist extends BaseEntity {
     private Genre genre;
 
     @JsonView(Views.Summary.class)
-    @ManyToOne
-    @JoinColumn(name = "playlist_type_id")
-    private PlaylistType playlistType;
+    @Column(name = "type")
+    private String type;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "playlist")
     private Set<SongPlaylist> songPlaylists = new HashSet<SongPlaylist>(0);
@@ -88,6 +113,22 @@ public final class Playlist extends BaseEntity {
         this.totalViews = totalViews;
     }
 
+    public Integer getWeekViews() {
+        return weekViews;
+    }
+
+    public void setWeekViews(Integer weekViews) {
+        this.weekViews = weekViews;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public Artist getArtist() {
         return artist;
     }
@@ -112,12 +153,44 @@ public final class Playlist extends BaseEntity {
         this.imageUrl = imageUrl;
     }
 
-    public PlaylistType getPlaylistType() {
-        return playlistType;
+    public Boolean getOnHome() {
+        return onHome;
     }
 
-    public void setPlaylistType(PlaylistType playlistType) {
-        this.playlistType = playlistType;
+    public void setOnHome(Boolean onHome) {
+        this.onHome = onHome;
+    }
+
+    public Week getWeek() {
+        return week;
+    }
+
+    public void setWeek(Week week) {
+        this.week = week;
+    }
+
+    public String getSlideImageUrl() {
+        return slideImageUrl;
+    }
+
+    public void setSlideImageUrl(String slideImageUrl) {
+        this.slideImageUrl = slideImageUrl;
+    }
+
+    public Boolean getSlideActived() {
+        return slideActived;
+    }
+
+    public void setSlideActived(Boolean slideActived) {
+        this.slideActived = slideActived;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Set<SongPlaylist> getSongPlaylists() {
@@ -128,12 +201,18 @@ public final class Playlist extends BaseEntity {
         this.songPlaylists = songPlaylists;
     }
 
-    public void update(String newName, Integer newTotalViews, Artist newArtist, Genre newGenre, PlaylistType newPlaylistType) {
+    public void update(String newName, Integer newTotalViews, Integer newWeekViews, String newCountry, Artist newArtist, Genre newGenre,
+            String newType, Boolean newOnHome, Week newWeek, Boolean newSlideActived) {
         this.name = newName;
         this.totalViews = newTotalViews;
+        this.weekViews = newWeekViews;
+        this.country = newCountry;
         this.artist = newArtist;
         this.genre = newGenre;
-        this.playlistType = newPlaylistType;
+        this.type = newType;
+        this.onHome = newOnHome;
+        this.week = newWeek;
+        this.slideActived = newSlideActived;
     }
 
     public void addSongPlaylist(SongPlaylist songPlaylists) {

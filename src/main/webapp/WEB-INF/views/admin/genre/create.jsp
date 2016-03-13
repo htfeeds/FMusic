@@ -80,15 +80,15 @@
 </form:form>
 
 <script>
-    $(document).ready(function() {
+	$(document).ready(function() {
 
-        $("#genreForm").validate({
-            rules: {
-                name: {
-                    required: true
-                }
-            }
-        });
-        
-    });
+		$("#genreForm").validate({
+			rules : {
+				name : {
+					required : true
+				}
+			}
+		});
+
+	});
 </script>

@@ -32,9 +32,9 @@
                                 <th data-hide="phone">Name</th>
                                 <th data-hide="phone">Artist</th>
                                 <th data-hide="phone">TotalViews</th>
+                                <th data-hide="phone,tablet">On homepage</th>
+                                <th data-hide="phone,tablet">Slide Actived</th>
                                 <th data-hide="phone">Date added</th>
-                                <th data-hide="phone,tablet">Genre</th>
-                                <th data-hide="phone,tablet">Date modified</th>
                                 <th class="text-right">Action</th>
 
                             </tr>
@@ -51,16 +51,26 @@
                                         <c:out value="${playlist.artist.name}" />
                                     </td>
                                     <td>
-                                        <c:out value="${playlist.totalViews}" />
+                                        <fmt:formatNumber type="number" value="${playlist.totalViews}" />
+                                    </td>
+                                    <td>
+                                        <c:if test="${playlist.onHome eq true}">
+                                            <span class="label label-info">Yes</span>
+                                        </c:if>
+                                        <c:if test="${(playlist.onHome eq false)  || (playlist.onHome eq null)}">
+                                            <span class="label label-warning">No</span>
+                                        </c:if>
+                                    </td>
+                                    <td>
+                                        <c:if test="${playlist.slideActived eq true}">
+                                            <span class="label label-info">Yes</span>
+                                        </c:if>
+                                        <c:if test="${(playlist.slideActived eq false)  || (playlist.slideActived eq null)}">
+                                            <span class="label label-warning">No</span>
+                                        </c:if>
                                     </td>
                                     <td>
                                         <fmt:formatDate type="date" value="${playlist.creationTime}" />
-                                    </td>
-                                    <td>
-                                        <c:out value="${playlist.genre.name}" />
-                                    </td>
-                                    <td>
-                                        <fmt:formatDate type="date" value="${playlist.modificationTime}" />
                                     </td>
                                     <td class="text-right">
                                         <div class="btn-group">
@@ -89,29 +99,27 @@
 </div>
 
 <script>
-$(document).ready(function() {
-	$('.footable').footable();
-    $('.delete-playlist').click(
-        function(e) {
-            e.preventDefault();
-            var href = $(this).attr("href");
-            swal({
-                    title: "Are you sure?",
-                    text: "You will not be able to recover this playlist!",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function() {
-                	$.get(href,function(){
-                    	swal("Deleted!", "Playlist has been deleted.", "success");
-                    	window.location.href = "list";
-                	}).fail(function(){
-                		swal("Error", "Playlist could not be deleted", "error");
-                	});
-                });
-        });
-});
+	$(document).ready(function() {
+		$('.footable').footable();
+		$('.delete-playlist').click(function(e) {
+			e.preventDefault();
+			var href = $(this).attr("href");
+			swal({
+				title : "Are you sure?",
+				text : "You will not be able to recover this playlist!",
+				type : "warning",
+				showCancelButton : true,
+				confirmButtonColor : "#DD6B55",
+				confirmButtonText : "Yes, delete it!",
+				closeOnConfirm : false
+			}, function() {
+				$.get(href, function() {
+					swal("Deleted!", "Playlist has been deleted.", "success");
+					window.location.href = "list";
+				}).fail(function() {
+					swal("Error", "Playlist could not be deleted", "error");
+				});
+			});
+		});
+	});
 </script>
