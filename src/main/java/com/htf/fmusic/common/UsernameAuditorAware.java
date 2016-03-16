@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @author HTFeeds
@@ -25,10 +25,16 @@ public class UsernameAuditorAware implements AuditorAware<String> {
             return null;
         }
 
-        String username = ((User) authentication.getPrincipal()).getUsername();
+        Object principal = authentication.getPrincipal();
 
-        LOGGER.debug("Returning username: {}", username);
-        return username;
+        if (principal instanceof UserDetails) {
+            String username = ((org.springframework.security.core.userdetails.User) authentication.getPrincipal()).getUsername();
+
+            LOGGER.debug("Returning username: {}", username);
+            return username;
+        } else {
+            return null;
+        }
     }
 
 }

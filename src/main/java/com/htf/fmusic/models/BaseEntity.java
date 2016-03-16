@@ -25,6 +25,12 @@ public abstract class BaseEntity implements Serializable {
 
     protected static final long serialVersionUID = 1L;
 
+    //    @JsonView(Views.Summary.class)
+    //    @Id
+    //    @GeneratedValue(strategy = GenerationType.AUTO)
+    //    @Column(nullable = false, updatable = false)
+    //    private Integer id;
+
     @Column(name = "created_by_user", nullable = true)
     @CreatedBy
     private String createdByUser;
@@ -44,46 +50,23 @@ public abstract class BaseEntity implements Serializable {
     protected Date modificationTime;
 
     @Version
-    protected long version;
+    @Column(nullable = false, insertable = false, columnDefinition = "INT DEFAULT 0")
+    protected Integer version;
 
     public String getCreatedByUser() {
         return createdByUser;
-    }
-
-    public void setCreatedByUser(String createdByUser) {
-        this.createdByUser = createdByUser;
     }
 
     public String getModifiedByUser() {
         return modifiedByUser;
     }
 
-    public void setModifiedByUser(String modifiedByUser) {
-        this.modifiedByUser = modifiedByUser;
-    }
-
     public Date getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(Date creationTime) {
-        this.creationTime = creationTime;
-    }
-
     public Date getModificationTime() {
         return modificationTime;
-    }
-
-    public void setModificationTime(Date modificationTime) {
-        this.modificationTime = modificationTime;
-    }
-
-    public long getVersion() {
-        return version;
-    }
-
-    public void setVersion(long version) {
-        this.version = version;
     }
 
 }

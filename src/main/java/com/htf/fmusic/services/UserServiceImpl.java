@@ -12,7 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.htf.fmusic.exceptions.UserNotFoundException;
+import com.htf.fmusic.models.Playlist;
 import com.htf.fmusic.models.User;
+import com.htf.fmusic.repositories.PlaylistRepository;
 import com.htf.fmusic.repositories.UserRepository;
 
 /**
@@ -29,7 +31,8 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository, PlaylistRepository playlistRepository) {
+        super();
         this.repository = repository;
     }
 
@@ -150,6 +153,16 @@ public class UserServiceImpl implements UserService {
     private User findUserEntryById(Integer id) {
         Optional<User> userResult = repository.findOne(id);
         return userResult.orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+    @Override
+    @Transactional
+    public boolean addPlaylistToUser(String username, Playlist playlist) {
+        User user = findByUsername(username);
+        boolean b = user.addPlaylist(playlist);
+        repository.flush();
+
+        return b;
     }
 
 }

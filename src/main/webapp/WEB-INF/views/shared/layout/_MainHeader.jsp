@@ -10,6 +10,7 @@
 	<div class="container">
 		<div id="site-description">Welcome to FMUSIC site.</div>
 		<ul id="top-links">
+			<c:url var="uploadUrl" value="/playlist/upload" />
 			<security:authorize access="! isAuthenticated()">
             	<li class="login"><a href="" role="button" data-toggle="modal" data-target="#login-modal"><i class="fa fa-lock"></i><span>Login</span></a></li>
 				<li class="register"><a href="<c:url value="/register"/>"><i class="fa fa-user"></i><span>Register</span></a></li>
@@ -29,16 +30,13 @@
 			       	  <security:authorize access="hasRole('ADMIN')">
       	 	 			  <li><a href="<c:url value="/admin/"/> ">Admin</a></li>
       	 			  </security:authorize>
-			          <li><a href="#">Profile</a></li>
+			          <li><a href="<c:url value="/user/${loginModel.username}"/> ">Profile</a></li>
 			          <li><a href="#">Account</a></li>
 			          <li><a href="javascript:logout()">Log out</a></li>
 			       </ul>
 			    </li>
 			</security:authorize>
-			<li class="search">
-				<input type="text" value="" name="search" id="top-search" />		
-				<a href="#"></a>
-			</li>
+			<li class="upload"><a href="" data-login="${loginModel == null ? 'false' : 'true'}"></a></li>
 		</ul><!-- end top-links -->
 	</div><!-- end container -->
 </div> <!-- end top-bar -->

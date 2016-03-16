@@ -1,19 +1,19 @@
 package com.htf.fmusic.services;
 
-import com.nitorcreations.junit.runners.NestedRunner;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.htf.fmusic.models.User;
+import com.htf.fmusic.repositories.PlaylistRepository;
 import com.htf.fmusic.repositories.UserRepository;
-
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.BDDMockito.given;
-
-import java.util.Optional;
+import com.nitorcreations.junit.runners.NestedRunner;
 
 /**
  * @author HTFeeds
@@ -22,13 +22,15 @@ import java.util.Optional;
 public class UserServiceTest {
 
     private UserRepository userRepository;
+    private PlaylistRepository playlistRepository;
 
     private UserService userService;
 
     @Before
     public void setUp() {
         userRepository = mock(UserRepository.class);
-        userService = new UserServiceImpl(userRepository);
+        playlistRepository = mock(PlaylistRepository.class);
+        userService = new UserServiceImpl(userRepository, playlistRepository);
     }
 
     public class Update {

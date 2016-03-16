@@ -16,7 +16,7 @@
       	 <security:authorize access="hasRole('ADMIN')">
       	 	 <li><a href="<c:url value="/admin/"/> ">Admin</a></li>
       	 </security:authorize>	
-         <li><a href="#">Profile</a></li>
+         <li><a href="<c:url value="/user/${loginModel.username}"/> ">Profile</a></li>
          <li><a href="#">Account</a></li>
          <li><a href="javascript:logout()">Log out</a></li>
       </ul>

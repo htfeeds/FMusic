@@ -287,6 +287,7 @@ blockquote.right {
 #top-links li.google-plus a { background: transparent url('../img/googleplus.png') center center no-repeat; }
 #top-links li.youtube a { background: transparent url('../img/youtube.png') center center no-repeat; }
 #top-links li.search a { background: transparent url('../img/search.png') center center no-repeat; }
+#top-links li.upload a { background: transparent url('../img/upload.png') center center no-repeat; }
 
 #top-links li.search #top-search {
 	float: left;
@@ -1323,7 +1324,7 @@ ul.share a:hover  {
 }
 
 .songs .track-meta {
-	width: 40%;
+	width: 45%;
 	float: left;
 	margin: 13px 0 0 20px;
 	overflow: hidden;
@@ -2042,16 +2043,14 @@ a.next:hover, a.prev:hover {
 	color: #8222b3;
 }
 
-#contact-form input[type="text"],
-#contact-form input[type="email"],
-#contact-form textarea {
+#contact-form #name {
 	display: block;
 	background: #2a2a2a;
 	width: 100%;
-	height: 50px;
-	line-height: 30px;
+/* 	height: 50px; */
+/* 	line-height: 30px; */
 	margin-bottom: 25px;
-	padding: 10px;
+ 	padding: 6px 12px;
 	outline: none;
 	color: #777777;
 	border: none;

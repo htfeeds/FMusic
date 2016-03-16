@@ -145,6 +145,15 @@
                                     <div class="hr-line-dashed"></div>
                                     
                                     <div class="form-group">
+                                        <label class="col-sm-2 control-label">Type</label>
+                                        <div class="col-lg-4">
+                                            <form:select path="type" items="${songTypes}" class="form-control" />
+                                            <form:errors path="type" cssClass="error" />
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
                                         <label class="col-sm-2 control-label">File Url</label>
                                         <div class="col-sm-10">
                                         	<div class="input-group m-b">

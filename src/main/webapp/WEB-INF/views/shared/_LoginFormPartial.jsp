@@ -69,6 +69,7 @@
         	        	$(".register").remove();
         	        	$.get("/get-user-link", function(data) {
         	        		$("#top-links").prepend(data);
+        	        		$('#top-links li.upload a').attr("data-login", "true");
         	        	});
         	        	$.get("/get-logout-form", function(data) {
         	        		$("#authentication").append(data);

@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -53,7 +54,7 @@ public final class Playlist extends BaseEntity {
 
     @JsonView(Views.Summary.class)
     @Column(name = "image_url")
-    private String imageUrl;
+    private String imageUrl = "/static/img/playlist/img-plist-full.jpg";
 
     @JsonView(Views.Summary.class)
     @Column(name = "show_on_home")
@@ -88,6 +89,9 @@ public final class Playlist extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "playlist")
     private Set<SongPlaylist> songPlaylists = new HashSet<SongPlaylist>(0);
+
+    @ManyToMany(mappedBy = "playlists")
+    private Set<User> users = new HashSet<User>();
 
     public Integer getId() {
         return id;
@@ -201,6 +205,14 @@ public final class Playlist extends BaseEntity {
         this.songPlaylists = songPlaylists;
     }
 
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
     public void update(String newName, Integer newTotalViews, Integer newWeekViews, String newCountry, Artist newArtist, Genre newGenre,
             String newType, Boolean newOnHome, Week newWeek, Boolean newSlideActived) {
         this.name = newName;
@@ -217,6 +229,11 @@ public final class Playlist extends BaseEntity {
 
     public void addSongPlaylist(SongPlaylist songPlaylists) {
         this.songPlaylists.add(songPlaylists);
+    }
+
+    public void incrementViews() {
+        this.weekViews += 1;
+        this.totalViews += 1;
     }
 
     @Override

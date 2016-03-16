@@ -33,4 +33,8 @@ public interface SongService extends BaseService<Song, Integer> {
 
     public List<Song> getRelatedSongs(Artist artist);
 
+    public List<Song> getNewUserUploadSong();
+
+    public Song getById(Integer id);//This method will find Song entry and increments views
+
 }

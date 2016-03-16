@@ -106,29 +106,27 @@
 </div>
 
 <script>
-$(document).ready(function() {
-	$('.footable').footable();
-    $('.delete-user').click(
-        function(e) {
-            e.preventDefault();
-            var href = $(this).attr("href");
-            swal({
-                    title: "Are you sure?",
-                    text: "You will not be able to recover this user!",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function() {
-                	$.get(href,function(){
-                    	swal("Deleted!", "User has been deleted.", "success");
-                    	window.location.href = "list";
-                	}).fail(function(){
-                		swal("Error", "User could not be deleted", "error");
-                	});
-                });
-        });
-});
+	$(document).ready(function() {
+		$('.footable').footable();
+		$('.delete-user').click(function(e) {
+			e.preventDefault();
+			var href = $(this).attr("href");
+			swal({
+				title : "Are you sure?",
+				text : "You will not be able to recover this user!",
+				type : "warning",
+				showCancelButton : true,
+				confirmButtonColor : "#DD6B55",
+				confirmButtonText : "Yes, delete it!",
+				closeOnConfirm : false
+			}, function() {
+				$.get(href, function() {
+					swal("Deleted!", "User has been deleted.", "success");
+					window.location.href = "list";
+				}).fail(function() {
+					swal("Error", "User could not be deleted", "error");
+				});
+			});
+		});
+	});
 </script>

@@ -77,6 +77,24 @@
                                         </p>
                                     </div>
                                 </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Created By</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control-static">
+                                            <c:out value="${genre.createdByUser}" />
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Modified By</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control-static">
+                                            <c:out value="${genre.modifiedByUser}" />
+                                        </p>
+                                    </div>
+                                </div>
 
                             </fieldset>
                             

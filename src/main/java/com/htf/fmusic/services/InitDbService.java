@@ -58,6 +58,10 @@ public class InitDbService {
             role2.setType(RoleType.DBA.getRoleType());
             Role dbaRole = roleService.create(role2);
 
+            Role role3 = new Role();
+            role3.setType(RoleType.USER.getRoleType());
+            Role userRole = roleService.create(role2);
+
             User user = new User();
             user.setUsername("htfeeds");
             user.setPassword("124356");
@@ -69,6 +73,7 @@ public class InitDbService {
             user.setImageUrl("/static/img/user/htfeeds.jpg");
             user.getRoles().add(adminRole);
             user.getRoles().add(dbaRole);
+            user.getRoles().add(userRole);
 
             userService.create(user);
 
@@ -136,7 +141,7 @@ public class InitDbService {
                 } else {
                     pl.setGenre(rnbG);
                 }
-                
+
                 playlistService.create(pl);
             }
         }

@@ -23,8 +23,10 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-content">
+                
+                	<input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search for User">
 
-                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15" data-filter=#filter>
                         <thead>
                             <tr>
 

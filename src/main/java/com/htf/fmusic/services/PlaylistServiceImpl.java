@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.collections.ListUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import com.htf.fmusic.models.SongPlaylist;
 import com.htf.fmusic.models.Week;
 import com.htf.fmusic.repositories.PlaylistRepository;
 import com.htf.fmusic.repositories.SongPlaylistRepository;
+import com.htf.fmusic.repositories.UserRepository;
 import com.htf.fmusic.repositories.WeekRepository;
 
 /**
@@ -39,7 +41,9 @@ public class PlaylistServiceImpl implements PlaylistService {
     private final WeekRepository weekRepository;
 
     @Autowired
-    PlaylistServiceImpl(PlaylistRepository repository, SongPlaylistRepository songPlaylistRepository, WeekRepository weekRepository) {
+    public PlaylistServiceImpl(PlaylistRepository repository, SongPlaylistRepository songPlaylistRepository, WeekRepository weekRepository,
+            UserRepository userRepository) {
+        super();
         this.repository = repository;
         this.songPlaylistRepository = songPlaylistRepository;
         this.weekRepository = weekRepository;
@@ -153,13 +157,28 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Playlist> getUserPlaylists(String username) {
-        LOGGER.info("Finding all playlist entries by username: {}", username);
+    public List<Playlist> getTop3UserPlaylists(String username) {
+        LOGGER.info("Finding Top 3 playlist entries by username: {}", username);
 
-        List<Playlist> playlistEntries = repository.findByCreatedByUserOrderByIdDesc(username);
+        List<Playlist> playlistEntries = repository.findTop3ByCreatedByUserOrderByIdDesc(username);
         LOGGER.info("Found {} playlist entries", playlistEntries.size());
 
         return playlistEntries;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    @Transactional(readOnly = true)
+    public List<Playlist> getAllUserPlaylists(String username) {
+        LOGGER.info("Finding ALL playlist entries by username: {}", username);
+
+        List<Playlist> playlistEntries = repository.findByCreatedByUserOrderByIdDesc(username);
+        List<Playlist> playlistEntries2 = repository.findByUsersUsername(username);
+
+        List<Playlist> playlistFinal = ListUtils.union(playlistEntries, playlistEntries2);
+        LOGGER.info("Found {} playlist entries", playlistFinal.size());
+
+        return playlistFinal;
     }
 
     @Override
@@ -229,6 +248,55 @@ public class PlaylistServiceImpl implements PlaylistService {
         LOGGER.info("Found {} playlist entries", playlistEntries.size());
 
         return playlistEntries;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Playlist> getRecommendedPlaylists(String recentPlaylists) {
+        LOGGER.info("Finding Top 3 Recommended playlist entries");
+
+        List<Playlist> returned = new ArrayList<Playlist>();
+
+        //Get Playlist From User Cookie
+        if (!recentPlaylists.equals("")) {
+            //recentPlaylists pattern: {id}:{times}\n ...
+            for (String retval : recentPlaylists.split("\n", 3)) {
+                LOGGER.debug("PLAYLIST HISTORY: ", retval);
+            }
+        }
+
+        int no = returned.size();
+
+        //Make sure you enough get 3 playlists
+        if (no < 3) {
+            List<String> types = new ArrayList<String>();
+            types.add(PlaylistType.OFFICIAL.getPlaylistType());
+            types.add(PlaylistType.COLLECTION.getPlaylistType());
+
+            List<Playlist> weekTopPls = repository.findTop3ByTypeInOrderByWeekViewsDesc(types);
+            for (int i = 0; i < 3 - no; i++) {
+                returned.add(weekTopPls.get(i));
+            }
+        }
+
+        LOGGER.info("Found {} playlist entries", returned.size());
+        return returned;
+    }
+
+    @Override
+    @Transactional
+    public Playlist getById(Integer id) {
+        LOGGER.info("Finding playlist entry by using id: {}", id);
+
+        Playlist playlistEntry = findPlaylistEntryById(id);
+        LOGGER.info("Found playlist entry: {}", playlistEntry);
+
+        LOGGER.info("Increments Views of playlist entrie: {}", playlistEntry);
+
+        playlistEntry.incrementViews();
+        repository.flush();
+
+        return playlistEntry;
     }
 
 }

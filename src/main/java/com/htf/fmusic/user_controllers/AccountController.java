@@ -74,22 +74,24 @@ public class AccountController {
         Object userRole = roleService.findByType(RoleType.USER.getRoleType());
         if (userRole != null) {
             user.getRoles().add(((Role) userRole));
+        } else {
+            //There is no else
         }
 
         userService.create(user);
         return "account/register_successful";
     }
-    
+
     @RequestMapping(value = "/forgot_password", method = RequestMethod.GET)
     public String forgotPasswordPage(Model model) {
         return "account/forgot_password";
     }
-    
+
     @RequestMapping(value = "/get-user-link", method = RequestMethod.GET)
     public String getUserLink(Model model) {
         return "shared/_UserLinkPartial";
     }
-    
+
     @RequestMapping(value = "/get-logout-form", method = RequestMethod.GET)
     public String getLogoutForm(Model model) {
         return "shared/_LogoutFormPartial";

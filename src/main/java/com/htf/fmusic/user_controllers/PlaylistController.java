@@ -1,6 +1,9 @@
 package com.htf.fmusic.user_controllers;
 
+import java.security.Principal;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,6 +32,7 @@ import com.htf.fmusic.services.GenreService;
 import com.htf.fmusic.services.PlaylistService;
 import com.htf.fmusic.services.SongPlaylistService;
 import com.htf.fmusic.services.SongService;
+import com.htf.fmusic.services.UserService;
 
 /**
  * @author HTFeeds
@@ -40,16 +46,18 @@ public class PlaylistController {
     private final PlaylistService playlistService;
     private final SongPlaylistService songPlaylistService;
     private final SongService songService;
+    private final UserService userService;
 
     @Autowired
     public PlaylistController(GenreService genreService, PlaylistService playlistService, SongPlaylistService songPlaylistService,
-            SongService songService) {
+            SongService songService, UserService userService) {
         super();
         LOGGER.info("Inside PlaylistController constructor.");
         this.genreService = genreService;
         this.playlistService = playlistService;
         this.songPlaylistService = songPlaylistService;
         this.songService = songService;
+        this.userService = userService;
     }
 
     @RequestMapping(value = { "", "/", "/index" }, method = RequestMethod.GET)
@@ -72,7 +80,7 @@ public class PlaylistController {
         return "playlist/index";
     }
 
-    @RequestMapping(value = { "/{genre}.{pageNumber}" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/{genre}/{pageNumber}" }, method = RequestMethod.GET)
     public String index(@PathVariable String genre, @PathVariable Integer pageNumber, Model model) {
         List<Genre> genres = genreService.findAll();
 
@@ -98,13 +106,13 @@ public class PlaylistController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String details(@PathVariable Integer id, Model model) throws JsonProcessingException {
-        Playlist playlist = playlistService.findById(id);
+    public String details(@PathVariable Integer id, HttpServletResponse response, Model model) throws JsonProcessingException {
+        Playlist playlist = playlistService.getById(id);
 
         if (playlist == null) {
             return "shared/404";
         }
-
+        
         List<Playlist> relatedPlaylists = playlistService.getRelatedPlaylists(playlist.getArtist());
         List<Song> relatedSongs = songService.getRelatedSongs(playlist.getArtist());
         List<SongPlaylist> songs = songPlaylistService.findByPlaylistOrderByOrderAsc(playlist);
@@ -123,6 +131,25 @@ public class PlaylistController {
         model.addAttribute("relatedPlaylists", relatedPlaylists);
         model.addAttribute("relatedSongs", relatedSongs);
 
+        //ADD TO COOKIE
+        //response.addCookie(new Cookie("recent", "{id}:{times}\n"));
+
         return "playlist/details";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String addPlaylistToUser(@RequestParam Integer id, Principal principal) {
+        if (principal == null) {
+            return "unauthorized";
+        }
+
+        Playlist playlist = playlistService.findById(id);
+        boolean b = userService.addPlaylistToUser(principal.getName(), playlist);
+        if (b) {
+            return "success";
+        } else {
+            return "fail";
+        }
     }
 }

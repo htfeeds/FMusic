@@ -2,5 +2,5 @@
 <%@ include file="../../shared/taglib.jsp"%>
 
 <div class="wrapper wrapper-content">
-    <p align="center">MailBox</p>
+    <p align="center">NOT YET</p>
 </div>

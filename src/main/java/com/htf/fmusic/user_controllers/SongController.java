@@ -87,7 +87,7 @@ public class SongController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String details(@PathVariable Integer id, Model model) {
-        Song song = songService.findById(id);
+        Song song = songService.getById(id);
 
         if (song == null) {
             return "shared/404";

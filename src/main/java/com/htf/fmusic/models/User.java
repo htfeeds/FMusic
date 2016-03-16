@@ -30,7 +30,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "users")
-public final class User extends SimpleBaseEntity {
+public final class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -84,7 +84,7 @@ public final class User extends SimpleBaseEntity {
 
     @JsonView(Views.ExtendedPublic.class)
     @Column(name = "image_url")
-    private String imageUrl;
+    private String imageUrl = "/static/img/user/avatar_default.jpg";
 
     @JsonView(Views.ExtendedPublic.class)
     @Column(name = "state", nullable = false)
@@ -93,6 +93,11 @@ public final class User extends SimpleBaseEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role_mappings", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private Set<Role> roles = new HashSet<Role>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_playlist_mappings", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+            @JoinColumn(name = "playlist_id") })
+    private Set<Playlist> playlists = new HashSet<Playlist>();
 
     public Integer getId() {
         return id;
@@ -182,6 +187,14 @@ public final class User extends SimpleBaseEntity {
         this.roles = roles;
     }
 
+    public Set<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public void setPlaylists(Set<Playlist> playlists) {
+        this.playlists = playlists;
+    }
+
     public void update(String newFullname, String newEmail, Date newBirthDate, String newPhoneNumber, String newSex, String newState,
             Set<Role> newRoles) {
         this.fullname = newFullname;
@@ -191,6 +204,14 @@ public final class User extends SimpleBaseEntity {
         this.sex = newSex;
         this.state = newState;
         this.roles = newRoles;
+    }
+
+    public boolean addPlaylist(Playlist newPlaylist) {
+        if (this.playlists.contains(newPlaylist)) {
+            return false;
+        }
+        this.playlists.add(newPlaylist);
+        return true;
     }
 
     @Override

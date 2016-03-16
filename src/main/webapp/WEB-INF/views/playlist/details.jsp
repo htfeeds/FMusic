@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../shared/taglib.jsp"%>
 
+<c:url var="addPlaylistUrl" value="/playlist/add" />
+
 <div id="fb-root"></div>
 <script>
 	(function(d, s, id) {
@@ -37,13 +39,9 @@
 						</div>
 					</div>
 				</div>
-
-				<ul class="share clearfix">
-					<li><a href="#"><i class="fa fa-lg fa-facebook"></i></a></li>
-					<li><a href="#"><i class="fa fa-lg fa-twitter"></i></a></li>
-					<li><a href="#"><i class="fa fa-lg fa-flickr"></i></a></li>
-					<li><a href="#"><i class="fa fa-lg fa-google-plus"></i></a></li>
-				</ul>
+				<a id="btnAddPlaylist" class="btn btn-sm btn-outline" style="text-transform:none">Add to..</a>
+				<div id="addsuccess" class="alert alert-success" style="display:none">Well done! You successfully add this playlist.</div>
+				<div id="addfail" class="alert alert-danger" style="display:none">You already have this playlist.</div>
 			</div>
 
 			<div class="col-sm-8 col-md-9">
@@ -192,5 +190,21 @@
 	            swfPath: '<c:url value="/static/js/player"/>'
 	        }
 	    });
+	    
+	    $("#btnAddPlaylist").click(function(e) {
+	    	e.preventDefault();
+	        $.get("${addPlaylistUrl}", {
+	            id: "${playlist.id}"
+	        }, function(data, status) {
+	            if (data == 'unauthorized') {
+	                $('#login-modal').modal();
+	            } else if (data == 'fail') {
+	            	$("#addfail").show().delay(4000).fadeOut();
+	            } else {
+	            	$("#addsuccess").show().delay(4000).fadeOut();
+	            }
+	        });
+	    });
+
 	});
 </script>

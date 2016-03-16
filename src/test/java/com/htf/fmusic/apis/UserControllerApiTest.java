@@ -2,8 +2,6 @@ package com.htf.fmusic.apis;
 
 import org.springframework.web.client.RestTemplate;
 
-import com.htf.fmusic.models.Credentials;
-
 /**
  * @author HTFeeds
  */
@@ -30,9 +28,9 @@ public class UserControllerApiTest {
         System.out.println(created);
     }
 
-    public static void postLogin(Credentials credentials) {
+    public static void postLogin(ClientUser user) {
         RestTemplate restTemplate = new RestTemplate();
-        boolean b = restTemplate.postForObject(REST_USER_URI + "login", credentials, Boolean.class);
+        boolean b = restTemplate.postForObject(REST_USER_URI + "login", user, Boolean.class);
         System.out.println(b);
     }
 
@@ -51,7 +49,7 @@ public class UserControllerApiTest {
         System.out.println("Register with user: " + user);
         postRegister(user);
 
-        Credentials credentials = new Credentials();
+        ClientUser credentials = new ClientUser();
         credentials.setUsername("tester001");
         credentials.setPassword("123456");
         System.out.println("Login with username: " + credentials.getUsername());

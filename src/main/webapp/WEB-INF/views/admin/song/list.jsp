@@ -23,8 +23,10 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-content">
+                
+                	<input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search for Song">
 
-                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15" data-filter=#filter>
                         <thead>
                             <tr>
 
@@ -33,6 +35,7 @@
                                 <th data-hide="phone">Artist</th>
                                 <th data-hide="phone">Week Views</th>
                                 <th data-hide="phone">Date added</th>
+                                <th data-hide="phone">Play</th>
                                 <th data-hide="phone,tablet">Total Views</th>
                                 <th data-hide="phone,tablet">On Homepage</th>
                                 <th class="text-right">Action</th>
@@ -56,6 +59,7 @@
                                     <td>
                                         <fmt:formatDate type="date" value="${song.creationTime}" />
                                     </td>
+                                    <td><audio src="${song.url}" preload="auto"></audio></td>
                                     <td>
                                         <fmt:formatNumber type="number" value="${song.totalViews}" />
                                     </td>
@@ -94,29 +98,27 @@
 </div>
 
 <script>
-$(document).ready(function() {
-	$('.footable').footable();
-    $('.delete-song').click(
-        function(e) {
-            e.preventDefault();
-            var href = $(this).attr("href");
-            swal({
-                    title: "Are you sure?",
-                    text: "You will not be able to recover this song!",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                },
-                function() {
-                	$.get(href,function(){
-                    	swal("Deleted!", "Song has been deleted.", "success");
-                    	window.location.href = "list";
-                	}).fail(function(){
-                		swal("Error", "Song could not be deleted", "error");
-                	});
-                });
-        });
-});
+	$(document).ready(function() {
+		$('.footable').footable();
+		$('.delete-song').click(function(e) {
+			e.preventDefault();
+			var href = $(this).attr("href");
+			swal({
+				title : "Are you sure?",
+				text : "You will not be able to recover this song!",
+				type : "warning",
+				showCancelButton : true,
+				confirmButtonColor : "#DD6B55",
+				confirmButtonText : "Yes, delete it!",
+				closeOnConfirm : false
+			}, function() {
+				$.get(href, function() {
+					swal("Deleted!", "Song has been deleted.", "success");
+					window.location.href = "list";
+				}).fail(function() {
+					swal("Error", "Song could not be deleted", "error");
+				});
+			});
+		});
+	});
 </script>

@@ -54,6 +54,19 @@
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Artists</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <form:select path="artists" data-placeholder="Choose a Artist..." class="chosen-select" style="width:555px;" tabindex="4" multiple="true">
+                                                	<option value="">Select</option>
+                     								<form:options items="${artists}" itemLabel="name" itemValue="id" />
+                                                </form:select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
 
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Total Views</label>
@@ -121,6 +134,15 @@
                                     <div class="hr-line-dashed"></div>
                                     
                                     <div class="form-group">
+                                        <label class="col-sm-2 control-label">Type</label>
+                                        <div class="col-lg-4">
+                                            <form:select path="type" items="${songTypes}" class="form-control" />
+                                            <form:errors path="type" cssClass="error" />
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    
+                                    <div class="form-group">
                                         <label class="col-sm-2 control-label">File Url</label>
                                         <div class="col-sm-10">
                                         	<div class="input-group m-b">
@@ -181,6 +203,7 @@
 </form:form>
 
 <script>
+
     $(document).ready(function() {
     	//Chosen Select
 	    var config = {
@@ -216,4 +239,5 @@
         });
         
     });
+
 </script>

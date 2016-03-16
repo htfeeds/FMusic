@@ -26,6 +26,14 @@
 		<put-attribute name="title" value="Dashboard | FMusic Administration" />
 		<put-attribute name="body" value="/WEB-INF/views/admin/dashboard/index.jsp" />
 		<put-attribute name="current" value="dashboard" cascade="true" />
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="/static/css/plugins/sweetalert/sweetalert.css" />
+			<add-attribute value="/static/css/audiojs.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/sweetalert/sweetalert.min.js" />
+			<add-attribute value="/static/js/audio.js" />
+		</put-list-attribute>
 	</definition>
 
 	<!-- Admin Mailbox -->
@@ -53,7 +61,7 @@
 			<add-attribute value="/static/js/plugins/chosen/chosen.jquery.js" />
 		</put-list-attribute>
 	</definition>
-	
+
 	<definition name="admin/artist/edit" extends="layout.admin">
 		<put-attribute name="title" expression="${requestScope.title}" />
 		<put-attribute name="body" value="/WEB-INF/views/admin/artist/edit.jsp" />
@@ -75,6 +83,22 @@
 	<!-- Role Management View -->
 
 	<!-- Song Management View -->
+	<definition name="admin/song/list" extends="layout.admin">
+		<put-attribute name="title" expression="${requestScope.title}" />
+		<put-attribute name="current" value="song" cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/song/list.jsp" />
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="/static/css/plugins/sweetalert/sweetalert.css" />
+			<add-attribute value="/static/css/plugins/footable/footable.core.css" />
+			<add-attribute value="/static/css/audiojs.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/footable/footable.all.min.js" />
+			<add-attribute value="/static/js/plugins/sweetalert/sweetalert.min.js" />
+			<add-attribute value="/static/js/audio.js" />
+		</put-list-attribute>
+	</definition>
+	
 	<definition name="admin/song/create" extends="layout.admin">
 		<put-attribute name="title" expression="${requestScope.title}" />
 		<put-attribute name="body" value="/WEB-INF/views/admin/song/create.jsp" />

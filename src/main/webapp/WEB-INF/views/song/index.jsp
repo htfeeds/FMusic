@@ -18,10 +18,10 @@
 				<c:forEach items="${genres}" var="genre">
 					<c:choose>
 						<c:when test="${currentGenre eq genre.name }">
-							<li class="current"><i class="fa fa-ellipsis-v"></i><a href="<c:url value="/song/${genre.name}.1"/>">${genre.name}</a></li>
+							<li class="current"><i class="fa fa-ellipsis-v"></i><a href="<c:url value="/song/${genre.name}/1"/>">${genre.name}</a></li>
 						</c:when>
 						<c:otherwise>
-							<li><i class="fa fa-ellipsis-v"></i><a href="<c:url value="/song/${genre.name}.1"/>">${genre.name}</a></li>	
+							<li><i class="fa fa-ellipsis-v"></i><a href="<c:url value="/song/${genre.name}/1"/>">${genre.name}</a></li>	
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
@@ -38,7 +38,7 @@
 								<li>
 									<div class="track-meta" style="width:50%;margin:18px 0 18px 20px;">
 										<h5 style="line-height:24px;margin-bottom:0">
-											<a href="#" class="name-song">${song.name}</a>
+											<a href="${songUrl}/${song.id}" class="name-song">${song.name}</a>
 											<c:out value=" - "/> 
 											<a href="#" class="name-single">
 												<c:forEach items="${song.artists}" var="artist" varStatus="loop">
@@ -73,12 +73,12 @@
 			<c:choose>
 				<c:when test="${currentIndex == 1}"></c:when>
 				<c:otherwise>
-					<c:url var="prevUrl" value="/song/${currentGenre}.${currentIndex - 1}" />
+					<c:url var="prevUrl" value="/song/${currentGenre}/${currentIndex - 1}" />
 					<li><a href="${prevUrl}"><i class="fa fa-angle-double-left"></i></a></li>		
 				</c:otherwise>
 			</c:choose>
 			<c:forEach var="i" begin="${beginIndex}" end="${endIndex}">
-				<c:url var="pageUrl" value="/song/${currentGenre}.${i}" />
+				<c:url var="pageUrl" value="/song/${currentGenre}/${i}" />
 				<c:choose>
 					<c:when test="${i == currentIndex}">
 						<li class="current"><a href="${pageUrl}">${i}</a></li>
@@ -91,7 +91,7 @@
 			<c:choose>
 				<c:when test="${currentIndex == page.totalPages}"></c:when>
 				<c:otherwise>
-					<c:url var="nextUrl" value="/song/${currentGenre}.${currentIndex + 1}" />
+					<c:url var="nextUrl" value="/song/${currentGenre}/${currentIndex + 1}" />
 					<li><a href="${nextUrl}"><i class="fa fa-angle-double-right"></i></a></li>		
 				</c:otherwise>
 			</c:choose>

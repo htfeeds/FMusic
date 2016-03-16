@@ -23,12 +23,18 @@ public interface PlaylistService extends BaseService<Playlist, Integer> {
 
     public Playlist getLatestTopPlaylist(String country);
 
-    public List<Playlist> getUserPlaylists(String username);
+    public List<Playlist> getTop3UserPlaylists(String username);
+
+    public List<Playlist> getAllUserPlaylists(String username);
 
     public Page<Playlist> getAllOfficialAndCollectionPlaylists(int page);
 
     public Page<Playlist> getPlaylistByGenreName(String genreName, int page);
 
     public List<Playlist> getRelatedPlaylists(Artist artist);
+
+    public List<Playlist> getRecommendedPlaylists(String recentPlaylists);
+
+    public Playlist getById(Integer id);//This method will find Playlist entry and increments views
 
 }

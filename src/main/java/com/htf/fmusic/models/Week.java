@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonView;
  */
 @Entity
 @Table(name = "weeks")
-public final class Week extends SimpleBaseEntity {
+public final class Week extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @JsonView(Views.Summary.class)

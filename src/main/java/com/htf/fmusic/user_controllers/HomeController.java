@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -44,7 +45,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
-    public String home(Locale locale, Model model, Principal principal) {
+    public String home(@CookieValue(value = "recent", defaultValue = "") String recent, Locale locale, Model model, Principal principal) {
         LOGGER.info("Welcome home! The client locale is {}.", locale);
 
         Date date = new Date();
@@ -58,6 +59,9 @@ public class HomeController {
         Page<Playlist> homePlaylists = playlistService.getHomePlaylists();
         model.addAttribute("homePlaylists", homePlaylists);
 
+        List<Song> homeSongs = songService.getHomeSongs();
+        model.addAttribute("homeSongs", homeSongs);
+
         Playlist topVnPl = playlistService.getLatestTopPlaylist(Country.VN.getCountry());
         List<SongPlaylist> topVn = songPlaylistService.findByPlaylistOrderByOrderAsc(topVnPl);
         model.addAttribute("topVn", topVn);
@@ -70,11 +74,11 @@ public class HomeController {
         List<SongPlaylist> topKr = songPlaylistService.findByPlaylistOrderByOrderAsc(topKrPl);
         model.addAttribute("topKr", topKr);
 
-        List<Song> homeSongs = songService.getHomeSongs();
-        model.addAttribute("homeSongs", homeSongs);
+        List<Playlist> recommendedPlaylists = playlistService.getRecommendedPlaylists(recent);
+        model.addAttribute("recommendedPlaylists", recommendedPlaylists);
 
         if (principal != null) {
-            List<Playlist> userPlaylists = playlistService.getUserPlaylists(principal.getName());
+            List<Playlist> userPlaylists = playlistService.getTop3UserPlaylists(principal.getName());
             model.addAttribute("userPlaylists", userPlaylists);
         }
 

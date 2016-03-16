@@ -13,6 +13,7 @@ import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.htf.fmusic.enums.PlaylistType;
 import com.htf.fmusic.exceptions.SongNotFoundException;
 import com.htf.fmusic.models.Artist;
 import com.htf.fmusic.models.Song;
@@ -102,7 +103,7 @@ public class SongServiceImpl implements SongService {
         Song updated = findSongEntryById(updatedEntry.getId());
         updated.update(updatedEntry.getName(), updatedEntry.getUrl(), updatedEntry.getTotalViews(), updatedEntry.getWeekViews(),
                 updatedEntry.getCountry(), updatedEntry.getDescription(), updatedEntry.getOnHome(), updatedEntry.getIsPublished(),
-                updatedEntry.getGenre());
+                updatedEntry.getGenre(), updatedEntry.getType());
 
         //We need to flush the changes or otherwise the returned object
         //doesn't contain the updated audit information.
@@ -199,6 +200,38 @@ public class SongServiceImpl implements SongService {
         LOGGER.info("Found {} song entries", songEntries.size());
 
         return songEntries;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Song> getNewUserUploadSong() {
+        LOGGER.info("Finding user upload song entries of a week:");
+
+        List<Song> songEntries = repository.findByIsPublishedFalseAndType(PlaylistType.USER.getPlaylistType());
+        for (Song song : songEntries) {
+            Hibernate.initialize(song.getArtists());
+        }
+        LOGGER.info("Found {} song entries", songEntries.size());
+
+        return songEntries;
+    }
+
+    @Override
+    @Transactional
+    public Song getById(Integer id) {
+        LOGGER.info("Finding song entry by using id: {}", id);
+
+        Song songEntry = findSongEntryById(id);
+        if (songEntry != null) {
+            Hibernate.initialize(songEntry.getArtists());
+        }
+
+        LOGGER.info("Found song entry: {}", songEntry);
+        LOGGER.info("Increments Views of song entrie: {}", songEntry);
+        songEntry.incrementViews();
+        repository.flush();
+        
+        return songEntry;
     }
 
 }

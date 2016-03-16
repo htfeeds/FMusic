@@ -249,6 +249,7 @@ public class PlaylistManagementController {
         types.add(PlaylistType.COLLECTION.getPlaylistType());
         types.add(PlaylistType.USER.getPlaylistType());
         types.add(PlaylistType.TOP.getPlaylistType());
+        types.add(PlaylistType.HOT.getPlaylistType());
         return types;
     }
 

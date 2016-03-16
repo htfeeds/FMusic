@@ -29,6 +29,12 @@ public interface PlaylistRepository extends BaseRepository<Playlist, Integer> {
 
     public List<Playlist> findByCreatedByUserOrderByIdDesc(String username);
 
-    public List<Playlist> findTop4ByTypeInAndArtistOrderByIdDesc(Collection<String> types, Artist artist);   
+    public List<Playlist> findTop3ByCreatedByUserOrderByIdDesc(String username);
+
+    public List<Playlist> findTop4ByTypeInAndArtistOrderByIdDesc(Collection<String> types, Artist artist);
+
+    public List<Playlist> findTop3ByTypeInOrderByWeekViewsDesc(Collection<String> types);
+
+    public List<Playlist> findByUsersUsername(String username);
 
 }

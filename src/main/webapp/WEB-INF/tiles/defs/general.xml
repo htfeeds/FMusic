@@ -37,7 +37,7 @@
 			<add-attribute value="/static/image-slider/js/jssor.slider.mini.js" />
 		</put-list-attribute>
 	</definition>
-	
+
 	<definition name="song/index" extends="layout.main">
 		<put-attribute name="title" value="Songs | FMusic" />
 		<put-attribute name="body" value="/WEB-INF/views/song/index.jsp" />
@@ -72,6 +72,30 @@
 			<add-attribute value="/static/player/js/libs/jquery.jplayer.js" />
 			<add-attribute value="/static/player/js/libs/ttw-music-player.js" />
 		</put-list-attribute>
+	</definition>
+
+	<definition name="user/index" extends="layout.main">
+		<put-attribute name="title" expression="${requestScope.title}" />
+		<put-attribute name="body" value="/WEB-INF/views/user/index.jsp" />
+		<put-attribute name="current" value="" cascade="true" />
+	</definition>
+
+	<definition name="upload/form" extends="layout.main">
+		<put-attribute name="title" expression="${requestScope.title}" />
+		<put-attribute name="body" value="/WEB-INF/views/upload/form.jsp" />
+		<put-attribute name="current" value="" cascade="true" />
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="/static/css/plugins/chosen/chosen.css" />
+		</put-list-attribute>
+		<put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="/static/js/plugins/chosen/chosen.jquery.js" />
+		</put-list-attribute>
+	</definition>
+
+	<definition name="upload/success" extends="layout.main">
+		<put-attribute name="title" expression="${requestScope.title}" />
+		<put-attribute name="body" value="/WEB-INF/views/upload/success.jsp" />
+		<put-attribute name="current" value="" cascade="true" />
 	</definition>
 
 	<definition name="account/login" template="/WEB-INF/views/account/login.jsp" />

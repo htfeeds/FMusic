@@ -64,7 +64,7 @@ public final class Song extends BaseEntity {
 
     @JsonView(Views.Summary.class)
     @Column(name = "image_url")
-    private String imageUrl;
+    private String imageUrl = "/static/img/song/img-song.jpg";
 
     @JsonView(Views.Summary.class)
     @Column(name = "description")
@@ -76,7 +76,7 @@ public final class Song extends BaseEntity {
 
     @JsonView(Views.Summary.class)
     @Column(name = "is_published")
-    private Boolean isPublished;
+    private Boolean isPublished = false;
 
     @JsonView(Views.ExtendedPublic.class)
     @ManyToOne
@@ -87,6 +87,10 @@ public final class Song extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "lyric_id")
     private Lyric lyric;
+
+    @JsonView(Views.Summary.class)
+    @Column(name = "type")
+    private String type;
 
     @JsonView(Views.ExtendedPublic.class)
     @ManyToMany(fetch = FetchType.LAZY)
@@ -209,8 +213,16 @@ public final class Song extends BaseEntity {
         this.lyric = lyric;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public void update(String newName, String newUrl, Integer newTotalViews, Integer newWeekViews, String newCountry, String newDescription,
-            Boolean newOnHome, Boolean newIsPublished, Genre newGenre) {
+            Boolean newOnHome, Boolean newIsPublished, Genre newGenre, String newType) {
         this.name = newName;
         this.url = newUrl;
         this.totalViews = newTotalViews;
@@ -220,6 +232,7 @@ public final class Song extends BaseEntity {
         this.onHome = newOnHome;
         this.isPublished = newIsPublished;
         this.genre = newGenre;
+        this.type = newType;
     }
 
     public Artist addArtist(Artist artist) {
@@ -232,6 +245,11 @@ public final class Song extends BaseEntity {
 
     public boolean removeArtist(Artist artist) {
         return this.artists.remove(artist);
+    }
+
+    public void incrementViews() {
+        this.weekViews += 1;
+        this.totalViews += 1;
     }
 
     @Override

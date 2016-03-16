@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.htf.fmusic.enums.Country;
+import com.htf.fmusic.enums.PlaylistType;
 import com.htf.fmusic.models.Artist;
 import com.htf.fmusic.models.Genre;
 import com.htf.fmusic.models.Song;
@@ -56,7 +57,6 @@ public class SongManagementController {
     @Autowired
     SongManagementController(SongService songService, GenreService genreService, ServletContext servletContext, ArtistService artistService) {
         LOGGER.info("Inside constructor of SongManagementController.");
-
         this.songService = songService;
         this.genreService = genreService;
         this.artistService = artistService;
@@ -90,6 +90,7 @@ public class SongManagementController {
         Song song = new Song();
         model.addAttribute("song", song);
         model.addAttribute("title", "Add a new Song | FMusic Administration");
+
         return "admin/song/create";
     }
 
@@ -249,5 +250,16 @@ public class SongManagementController {
         countries.add(Country.CA.getCountry());
         countries.add(Country.UNKNOWN.getCountry());
         return countries;
+    }
+    
+    @ModelAttribute(value = "songTypes")
+    private List<String> initializeSongTypes() {
+        List<String> types = new ArrayList<String>();
+        types.add(PlaylistType.OFFICIAL.getPlaylistType());
+        types.add(PlaylistType.COLLECTION.getPlaylistType());
+        types.add(PlaylistType.USER.getPlaylistType());
+        types.add(PlaylistType.TOP.getPlaylistType());
+        types.add(PlaylistType.HOT.getPlaylistType());
+        return types;
     }
 }

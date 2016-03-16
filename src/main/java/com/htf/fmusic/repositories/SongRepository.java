@@ -22,4 +22,6 @@ public interface SongRepository extends BaseRepository<Song, Integer> {
 
     public List<Song> findTop6ByIsPublishedTrueAndArtistsNameOrderByIdDesc(String name);
 
+    public List<Song> findByIsPublishedFalseAndType(String type);
+
 }
