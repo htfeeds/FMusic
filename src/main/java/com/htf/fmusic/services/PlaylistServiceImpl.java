@@ -274,7 +274,8 @@ public class PlaylistServiceImpl implements PlaylistService {
             types.add(PlaylistType.COLLECTION.getPlaylistType());
 
             List<Playlist> weekTopPls = repository.findTop3ByTypeInOrderByWeekViewsDesc(types);
-            for (int i = 0; i < 3 - no; i++) {
+            int size = Math.min(3 - no, weekTopPls.size());
+            for (int i = 0; i < size; i++) {
                 returned.add(weekTopPls.get(i));
             }
         }

@@ -26,7 +26,7 @@
 					<div class="latest-content-info">
 						<div class="meta">
 							<div class="icon" style="width:60px"><i class="fa fa-user"></i></div>
-							<h4>${user.fullname}</h4><p>${user.sex}</p>
+							<h4>${user.fullname}</h4><p>${user.sex != null ? user.sex : 'Unknown'}</p>
 						</div>
 					</div>
 					<div class="event-info">
@@ -49,7 +49,7 @@
 
 			<div class="col-sm-8 col-md-9">
 				<div class="row">
-					<div class="col-xs-12"><h3>Playlists<c:if test="${loginModel.username == user.username && userPlaylists.size() > 0}"><a href="#" class="view-all" style="margin-top:5px"><span>Edit</span> <i class="fa fa-pencil view-all-icon"></i></a></c:if></h3></div>
+					<div class="col-xs-12"><h3>Playlists<c:if test="${loginModel.username == user.username && userPlaylists.size() > 0}"><a href="#" class="view-all" style="margin-top:-5px"><span>Edit</span> <i class="fa fa-pencil view-all-icon"></i></a></c:if></h3></div>
 					<c:forEach items="${userPlaylists}" var="pl">
 						<div class="col-sm-6 col-md-3 album">
 							<div class="latest-content">

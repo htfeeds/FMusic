@@ -36,8 +36,7 @@
 								<div class="latest-content-image"><img src="<c:url value="${pl.imageUrl}"/>" alt="" /></div>
 								<div class="latest-content-info">
 									<div class="meta">
-										<div class="icon"><i class="fa fa-headphones"></i></div>
-										<h4>${pl.name}</h4><p>${pl.artist.name}</p>
+										<h4>${pl.name}</h4><p>${pl.artist.name != null ? pl.artist.name : 'Updating'}</p>
 									</div>
 								</div>
 							</a>

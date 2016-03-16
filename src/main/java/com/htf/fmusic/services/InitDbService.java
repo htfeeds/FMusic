@@ -47,6 +47,7 @@ public class InitDbService {
 
     @PostConstruct
     public void init() throws ParseException {
+
         if (roleService.findByType(RoleType.ADMIN.getRoleType()) == null) {
             LOGGER.info("Create a new Admin");
 
@@ -63,8 +64,8 @@ public class InitDbService {
             Role userRole = roleService.create(role2);
 
             User user = new User();
-            user.setUsername("htfeeds");
-            user.setPassword("124356");
+            user.setUsername("fmusic");
+            user.setPassword("fmusic");
             user.setFullname("HTFeeds");
             user.setSex("Male");
             user.setBirthDate(new SimpleDateFormat("dd/MM/yyyy").parse("07/01/1991"));
@@ -80,11 +81,6 @@ public class InitDbService {
             //Create X Album
             create();
 
-            //Create a new Artist
-            Artist a = new Artist();
-            a.setName("Generated Artist");
-            Artist artist = artistService.create(a);
-
             //Create some Genre
             Genre genre = new Genre();
             genre.setName("Pop");
@@ -98,54 +94,51 @@ public class InitDbService {
             Genre genre4 = new Genre();
             genre4.setName("R&B");
 
+            Genre genre5 = new Genre();
+            genre5.setName("Country");
+
+            Genre genre6 = new Genre();
+            genre6.setName("Dance");
+
             Genre popG = genreService.create(genre);
             Genre rockG = genreService.create(genre2);
             Genre rapG = genreService.create(genre3);
             Genre rnbG = genreService.create(genre4);
+            Genre country = genreService.create(genre5);
+            Genre dance = genreService.create(genre6);
 
-            //Create 1000Songs For Test
-            for (int i = 0; i < 1000; i++) {
+            //Create 20 Artsit
+            Artist a = new Artist();
+            a.setName("Generateed Artsit");
+            a.setSex("Male");
+            a.setCountry(Country.VN.getCountry());
+            a.setImageUrl("/static/img/artist/edsheeran.jpg");
+            Artist artist = artistService.create(a);
+
+            //Create 100 Songs
+            for (int i = 0; i < 100; i++) {
                 Song s = new Song();
                 s.setName("Generated song " + i);
+                s.setUrl("/static/data/mp3/Runaway - Ed Sheeran.mp3");
                 s.addArtist(artist);
                 s.setIsPublished(true);
-                if (i < 250) {
+                if (i < 50) {
                     s.setGenre(popG);
-                } else if (i < 500) {
+                } else if (i < 60) {
                     s.setGenre(rockG);
-                } else if (i < 750) {
+                } else if (i < 70) {
                     s.setGenre(rapG);
-                } else {
+                } else if (i < 80) {
+                    s.setGenre(country);
+                } else if (i < 90) {
                     s.setGenre(rnbG);
                 }
-
                 songService.create(s);
-            }
-
-            //Create 1000Album For Test
-            for (int i = 0; i < 1000; i++) {
-                Playlist pl = new Playlist();
-                pl.setName("Generated album " + i);
-                pl.setArtist(artist);
-                pl.setImageUrl("/static/img/playlist/xdeluxe.png");
-                if (i < 250) {
-                    pl.setType(PlaylistType.OFFICIAL.getPlaylistType());
-                    pl.setSlideImageUrl("/static/img/playlist/xalbumbanner.jpg");
-                    pl.setGenre(genre4);
-                    pl.setGenre(popG);
-                } else if (i < 500) {
-                    pl.setType(PlaylistType.COLLECTION.getPlaylistType());
-                    pl.setGenre(rockG);
-                } else if (i < 750) {
-                    pl.setGenre(rapG);
-                } else {
-                    pl.setGenre(rnbG);
-                }
-
-                playlistService.create(pl);
             }
         }
 
+        //Call one time
+        //create50Playlits();
     }
 
     public void create() throws ParseException {
@@ -164,7 +157,7 @@ public class InitDbService {
         pl.setTotalViews(0);
         pl.setImageUrl("/static/img/playlist/xdeluxe.png");
         pl.setSlideImageUrl("/static/img/playlist/xalbumbanner.jpg");
-        pl.setType(PlaylistType.TOP.getPlaylistType());
+        pl.setType(PlaylistType.OFFICIAL.getPlaylistType());
         pl.setOnHome(true);
         pl.setSlideActived(true);
         Playlist playlist = playlistService.create(pl);
@@ -172,60 +165,87 @@ public class InitDbService {
         Song s1 = new Song();
         s1.setName("One");
         s1.addArtist(artist);
-        s1.setUrl("/static/data/mp3/one.mp3");
+        s1.setUrl("/static/data/mp3/One - Ed Sheeran.mp3");
+        s1.setIsPublished(true);
         s1.setOnHome(true);
         s1.setImageUrl("/static/img/artist/edsheeran.jpg");
 
         Song s2 = new Song();
         s2.setName("I'm A Mess");
         s2.addArtist(artist);
-        s2.setUrl("/static/data/mp3/imamess.mp3");
+        s2.setUrl("/static/data/mp3/I'm A Mess - Ed Sheeran.mp3");
+        s2.setIsPublished(true);
         s2.setOnHome(true);
 
         Song s3 = new Song();
         s3.setName("Sing");
         s3.addArtist(artist);
-        s3.setUrl("/static/data/mp3/sing.mp3");
+        s3.setUrl("/static/data/mp3/Sing - Ed Sheeran.mp3");
+        s3.setIsPublished(true);
+        s3.setOnHome(true);
 
         Song s4 = new Song();
         s4.setName("Don't");
         s4.addArtist(artist);
-        s4.setUrl("/static/data/mp3/dont.mp3");
+        s4.setUrl("/static/data/mp3/Don't - Ed Sheeran.mp3");
+        s4.setIsPublished(true);
+        s4.setOnHome(true);
 
         Song s5 = new Song();
         s5.setName("Nina");
         s5.addArtist(artist);
-        s5.setUrl("/static/data/mp3/nina.mp3");
+        s5.setUrl("/static/data/mp3/Nina - Ed Sheeran.mp3");
+        s5.setIsPublished(true);
+        s5.setOnHome(true);
 
         Song s6 = new Song();
         s6.setName("Photograph");
         s6.addArtist(artist);
-        s6.setUrl("/static/data/mp3/photograph.mp3");
+        s6.setUrl("/static/data/mp3/Photograph - Ed Sheeran.mp3");
+        s6.setIsPublished(true);
+        s6.setOnHome(true);
 
         Song s7 = new Song();
         s7.setName("Bloodstream");
         s7.addArtist(artist);
         s7.setUrl("/static/data/mp3/bloodstream.mp3");
+        s7.setIsPublished(true);
+        s7.setOnHome(true);
 
         Song s8 = new Song();
         s8.setName("Tenerife Sea");
         s8.addArtist(artist);
-        s8.setUrl("/static/data/mp3/tenerifesea.mp3");
+        s8.setUrl("/static/data/mp3/Tenerife Sea - Ed Sheeran.mp3");
+        s8.setIsPublished(true);
+        s8.setOnHome(true);
 
         Song s9 = new Song();
         s9.setName("Runaway");
         s9.addArtist(artist);
-        s9.setUrl("/static/data/mp3/runaway.mp3");
+        s9.setUrl("/static/data/mp3/Runaway - Ed Sheeran.mp3");
+        s9.setIsPublished(true);
+        s9.setOnHome(true);
 
         Song s10 = new Song();
         s10.setName("The Man");
         s10.addArtist(artist);
-        s10.setUrl("/static/data/mp3/theman.mp3");
+        s10.setUrl("/static/data/mp3/The Man - Ed Sheeran.mp3");
+        s10.setIsPublished(true);
+        s10.setOnHome(true);
 
         Song s11 = new Song();
         s11.setName("Thinking Out Loud");
         s11.addArtist(artist);
-        s11.setUrl("/static/data/mp3/thinkingoutloud.mp3");
+        s11.setUrl("/static/data/mp3/Thinking Out Loud.mp3");
+        s11.setIsPublished(true);
+        s11.setOnHome(true);
+
+        Song s12 = new Song();
+        s12.setName("I See Fire");
+        s12.addArtist(artist);
+        s12.setUrl("/static/data/mp3/I See Fire - Ed Sheeran.mp3");
+        s12.setIsPublished(true);
+        s12.setOnHome(true);
 
         List<Song> lsSongs = new ArrayList<Song>();
         lsSongs.add(songService.create(s1));
@@ -239,7 +259,45 @@ public class InitDbService {
         lsSongs.add(songService.create(s9));
         lsSongs.add(songService.create(s10));
         lsSongs.add(songService.create(s11));
+        lsSongs.add(songService.create(s12));
 
         playlistService.addSongs(playlist.getId(), lsSongs);
+    }
+
+    public void create50Playlits() throws ParseException {
+        Artist a = new Artist();
+        a.setName("Robin Thicke");
+        Artist artist = artistService.create(a);
+
+        Song s1 = new Song();
+        s1.setName("I Can't Make You Love Me");
+        s1.addArtist(artist);
+        s1.setUrl("/static/data/mp3/Josh Kaufman - I Can't Make You Love Me - Studio Version - The Voice 2014.mp3");
+        s1.setIsPublished(true);
+        s1.setOnHome(true);
+        
+        Song s2 = new Song();
+        s2.setName("Too Little Too Late");
+        s2.addArtist(artist);
+        s2.setUrl("/static/data/mp3/Too Little Too Late.mp3");
+        s2.setIsPublished(true);
+        s2.setOnHome(true);
+        
+        List<Song> lsSongs = new ArrayList<Song>();
+        lsSongs.add(songService.create(s1));
+        lsSongs.add(songService.create(s2));
+
+        for (int i = 0; i < 100; i++) {
+            Playlist pl = new Playlist();
+            pl.setName("Generated Album " + i);
+            pl.setArtist(artist);
+            pl.setTotalViews(1234567);
+            pl.setType(PlaylistType.COLLECTION.getPlaylistType());
+
+            Playlist playlist = playlistService.create(pl);
+
+            playlistService.addSongs(playlist.getId(), lsSongs);
+        }
+
     }
 }

@@ -63,14 +63,17 @@ public class HomeController {
         model.addAttribute("homeSongs", homeSongs);
 
         Playlist topVnPl = playlistService.getLatestTopPlaylist(Country.VN.getCountry());
+        model.addAttribute("topVnPl", topVnPl);
         List<SongPlaylist> topVn = songPlaylistService.findByPlaylistOrderByOrderAsc(topVnPl);
         model.addAttribute("topVn", topVn);
 
         Playlist topUsPl = playlistService.getLatestTopPlaylist(Country.US.getCountry());
+        model.addAttribute("topUsPl", topUsPl);
         List<SongPlaylist> topUs = songPlaylistService.findByPlaylistOrderByOrderAsc(topUsPl);
         model.addAttribute("topUs", topUs);
 
         Playlist topKrPl = playlistService.getLatestTopPlaylist(Country.KR.getCountry());
+        model.addAttribute("topKrPl", topKrPl);
         List<SongPlaylist> topKr = songPlaylistService.findByPlaylistOrderByOrderAsc(topKrPl);
         model.addAttribute("topKr", topKr);
 

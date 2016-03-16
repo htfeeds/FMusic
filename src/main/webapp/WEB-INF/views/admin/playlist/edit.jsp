@@ -260,14 +260,14 @@
     
     $(function() {
 
-        $("#jsGrid").jsGrid({
+    	var grid = new jsGrid.Grid($("#jsGrid"), {
             height: "320px",
             width: "100%",
             editing: true,
             sorting: true,
             autoload: true,
             deleteConfirm: "Do you really want to remove this song?",
-            controller: db,
+            controller: db,	
             fields: [
 				{ name: "id", type: "text", editing: false, visible: false },                     
                 { name: "song.id", type: "text", width: 35, align: "center", title: "Song ID", editing: false, visible: false },
@@ -295,7 +295,8 @@
         $("#btnAddSong").click(function() {
         	mywindow = window.open("${playlist.id}/AddSongs", "mywindow", "menubar=1,resizable=1,width=800,height=800");
        	    mywindow.onbeforeunload = function(){
-       	    	//need to reload data of jsgrid
+       	    	//refresh table
+       	    	grid.loadData();
     		};
         });
 

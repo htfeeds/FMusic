@@ -159,6 +159,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public boolean addPlaylistToUser(String username, Playlist playlist) {
         User user = findByUsername(username);
+        
+        //Check if playlist is created by theirself
+        if (playlist.getCreatedByUser().equals(username)) {
+            return false;
+        }
+        
         boolean b = user.addPlaylist(playlist);
         repository.flush();
 

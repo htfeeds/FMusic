@@ -59,7 +59,7 @@
                                     <td>
                                         <fmt:formatDate type="date" value="${song.creationTime}" />
                                     </td>
-                                    <td><audio src="${song.url}" preload="auto"></audio></td>
+                                    <td><audio src="${song.url}" preload="none"></audio></td>
                                     <td>
                                         <fmt:formatNumber type="number" value="${song.totalViews}" />
                                     </td>

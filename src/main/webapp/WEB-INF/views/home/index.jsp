@@ -52,7 +52,7 @@
 										<a href="${playlistUrl}/${pl.id}">
 											<div class="latest-content-image"><img src="<c:url value="${pl.imageUrl}"/>" /></div>
 											<div class="latest-content-info">
-												<div class="meta"><h4>${pl.name}</h4><p>${pl.artist.name}</p></div>
+												<div class="meta"><h4>${pl.name}</h4><p>${pl.artist.name != null ? pl.artist.name : 'Updating'}</p></div>
 											</div>
 										</a>
 									</div>
@@ -131,17 +131,21 @@
 				<div class="col-md-4 recent-blog">
 					<div style="margin-top:300px;"></div>
 					<!-- top songs -->
-					<h2>Top <span>songs</span><a href="${playlistUrl}/1}" class="play-all"><i class="fa fa-play"></i></a></h2>
+					<c:url var="topVnUrl" value="/playlist/${topVnPl.id}" />
+					<c:url var="topUsUrl" value="/playlist/${topUsPl.id}" />
+					<c:url var="topKrUrl" value="/playlist/${topKrPl.id}" />
+					<h2>Top <span>songs</span><a href="${topVnUrl}" class="play-all"><i class="fa fa-play"></i></a></h2>
 					<div class="widget">
 						<!-- Nav tabs -->
 						<ul class="tabs">
-							<li class="active"><a href="#recent" data-toggle="tab">V-POP</a></li>
-							<li><a href="#mostcomments" data-toggle="tab">US-UK</a></li>
-							<li><a href="#popular" data-toggle="tab">K-POP</a></li>
+							<li class="active"><a href="#recent" data-href="${topVnUrl}" data-toggle="tab">V-POP</a></li>
+							<li><a href="#mostcomments" data-href="${topUsUrl}" data-toggle="tab">US-UK</a></li>
+							<li><a href="#popular" data-href="${topKrUrl}" data-toggle="tab">K-POP</a></li>
 						</ul>
 
-						<!-- Tap V-POP -->
 						<div class="tab-content">
+						
+							<!-- Tap V-POP -->
 							<div class="tab-pane fade in active" id="recent">
 								<c:forEach items="${topVn}" var="sp" begin="0" end="0">								
 									<div class="row recent-post">
@@ -209,10 +213,9 @@
 									</c:forEach>
 								</ul>
 							</div>
-						</div>
-						<!-- Tap US-UK -->
-						<div class="tab-content">
-							<div class="tab-pane fade in active" id="recent">
+						
+							<!-- Tap US-UK -->
+							<div class="tab-pane fade" id="mostcomments">
 								<c:forEach items="${topUs}" var="sp" begin="0" end="0">								
 									<div class="row recent-post">
 										<div class="col-md-4 post-image" style="margin:15px 0">
@@ -279,10 +282,9 @@
 									</c:forEach>
 								</ul>
 							</div>
-						</div>
-						<!-- Tap K-POP -->
-						<div class="tab-content">
-							<div class="tab-pane fade in active" id="recent">
+						
+							<!-- Tap K-POP -->
+							<div class="tab-pane fade" id="popular">
 								<c:forEach items="${topKr}" var="sp" begin="0" end="0">								
 									<div class="row recent-post">
 										<div class="col-md-4 post-image" style="margin:15px 0">
@@ -349,6 +351,7 @@
 									</c:forEach>
 								</ul>
 							</div>
+							
 						</div>
 					</div>
 
@@ -370,7 +373,7 @@
 									<a href="${playlistUrl}/${pl.id}">
 										<div class="latest-content-image"><img src="${pl.imageUrl}" alt="" /></div>
 										<div class="latest-content-info">
-											<div class="meta"><h4>${pl.name}</h4><p>${pl.artist.name}</p></div>
+											<div class="meta"><h4>${pl.name}</h4><p>${pl.artist.name != null ? pl.artist.name : 'Updating'}</p></div>
 										</div>
 									</a>
 								</div>
@@ -380,7 +383,7 @@
 				</div>
 				<c:if test="${userPlaylists.size() > 0}">
 					<div class="col-md-6 latest-videos">
-						<h2>Your <span>Playlists</span><a href="#" class="view-all"><span>Edit</span> <i class="fa fa-pencil view-all-icon"></i></a></h2>
+						<h2>Your <span>Playlists</span><a href="/user/${loginModel.username}" class="view-all"><span>View All</span> <i class="fa fa-angle-double-right view-all-icon"></i></a></h2>
 						<div class="row">
 							<c:forEach items="${userPlaylists}" var="pl">
 								<div class="col-xs-6 col-sm-4">
@@ -389,7 +392,7 @@
 											<div class="latest-content-image"><img src="${pl.imageUrl}" alt="" /></div>
 											<div class="latest-content-info">
 												<div class="meta">
-													<h4>${pl.name}</h4><p>${pl.artist.name}</p>
+													<h4>${pl.name}</h4><p>${pl.artist.name != null ? pl.artist.name : 'Updating'}</p>
 												</div>
 											</div>
 										</a>
@@ -404,3 +407,13 @@
 	</section>
 </main>
 <!-- end main content area -->
+
+<script>
+	$(document).ready(function() {
+		//change playallbtn url
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+			var target = $(e.target).attr("data-href") // activated tab
+			$('a.play-all').attr("href", target);
+		});
+	});
+</script>

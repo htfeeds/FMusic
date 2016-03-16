@@ -108,14 +108,17 @@ public class PlaylistController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String details(@PathVariable Integer id, HttpServletResponse response, Model model) throws JsonProcessingException {
         Playlist playlist = playlistService.getById(id);
-
         if (playlist == null) {
-            return "shared/404";
+            //throws Exception
         }
-        
+
+        List<SongPlaylist> songs = songPlaylistService.findByPlaylistOrderByOrderAsc(playlist);
+        if (songs.size() == 0) {
+            //throws Exception
+        }
+
         List<Playlist> relatedPlaylists = playlistService.getRelatedPlaylists(playlist.getArtist());
         List<Song> relatedSongs = songService.getRelatedSongs(playlist.getArtist());
-        List<SongPlaylist> songs = songPlaylistService.findByPlaylistOrderByOrderAsc(playlist);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
