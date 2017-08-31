@@ -118,7 +118,7 @@
 							   <td><c:out value="${song.genre.name}" /></td>
 							   <td><fmt:formatDate type="date" value="${song.creationTime}" /></td>
 							   <td><c:out value="${song.createdByUser}" /></td>
-							   <td><audio src="${song.url}" preload="none"></audio></td>
+							   <td><audio src="<c:url value="${song.url}"/>" preload="none"></audio></td>
 							   <td class="text-right">
 							      <div class="btn-group">
 							         <a href="<c:url value='song/details-${song.id}' />" class="btn-white btn btn-xs">View</a> <a href="<c:url value='song/edit-${song.id}' />" class="btn-white btn btn-xs">Edit</a> <a href="<c:url value='song/delete-${song.id}' />" class="btn-white btn btn-xs delete-song">Delete</a>

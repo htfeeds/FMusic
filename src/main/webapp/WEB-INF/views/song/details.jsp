@@ -179,7 +179,7 @@
 	$(document).ready(function() {
 		var myPlaylist = [];
 		myPlaylist.push({
-			mp3: "${song.url}",
+			mp3: '<c:url value="${song.url}"/>',
 	        title: "${song.name}" + ' - ' + "${artists}",
 	        buy: '',
 	        price: "<a href='#' target='_blank' title='Download'><i class='fa fa-download'></i></a> <a href='#' target='_blank' title='Add'><i class='fa fa-plus'></i></a> <a href='#' target='_blank' title='Share'><i class='fa fa-share-alt'></i></a>  <a href='#' target='_blank' title='Go to...'><i class='fa fa-arrow-right'></i></a>",

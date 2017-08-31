@@ -371,7 +371,7 @@
 							<div class="col-xs-6 col-sm-4">
 								<div class="latest-content">
 									<a href="${playlistUrl}/${pl.id}">
-										<div class="latest-content-image"><img src="${pl.imageUrl}" alt="" /></div>
+										<div class="latest-content-image"><img src="<c:url value="${pl.imageUrl}"/>" /></div>
 										<div class="latest-content-info">
 											<div class="meta"><h4>${pl.name}</h4><p>${pl.artist.name != null ? pl.artist.name : 'Updating'}</p></div>
 										</div>
@@ -389,7 +389,7 @@
 								<div class="col-xs-6 col-sm-4">
 									<div class="latest-content">
 										<a href="${playlistUrl}/${pl.id}">
-											<div class="latest-content-image"><img src="${pl.imageUrl}" alt="" /></div>
+											<div class="latest-content-image"><img src="<c:url value="${pl.imageUrl}"/>" /></div>
 											<div class="latest-content-info">
 												<div class="meta">
 													<h4>${pl.name}</h4><p>${pl.artist.name != null ? pl.artist.name : 'Updating'}</p>
